@@ -1,0 +1,320 @@
+{
+  "expenses": [
+    {
+      "type": "Rent",
+      "description": "Monthly apartment rent",
+      "value": 900,
+      "date": "2025-01-03",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "id": "1"
+    },
+    {
+      "type": "Utilities",
+      "description": "Electricity bill",
+      "value": 120,
+      "date": "2025-12-03",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "userId": 101,
+      "type": "Internet",
+      "description": "Monthly internet subscription",
+      "value": 45,
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 15
+      },
+      "date": "2025-01-15"
+    },
+    {
+      "id": "4",
+      "userId": 101,
+      "type": "Streaming",
+      "description": "Netflix subscription",
+      "value": 15.99,
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 20
+      },
+      "date": "2025-01-20"
+    },
+    {
+      "id": "5",
+      "userId": 101,
+      "type": "Groceries",
+      "description": "Weekly grocery shopping",
+      "value": 80,
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "date": "2025-01-07"
+    },
+    {
+      "id": "6",
+      "userId": 101,
+      "type": "Transport",
+      "description": "Monthly public transport pass",
+      "value": 50,
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 1
+      },
+      "date": "2025-01-01"
+    },
+    {
+      "id": "7",
+      "userId": 101,
+      "type": "Insurance",
+      "description": "Car insurance payment",
+      "value": 600,
+      "recurring": {
+        "months": [
+          1
+        ],
+        "dayOfTheMonth": 25
+      },
+      "date": "2025-01-25"
+    },
+    {
+      "id": "8",
+      "userId": 101,
+      "type": "Healthcare",
+      "description": "Doctor visit",
+      "value": 100,
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "date": "2025-03-12"
+    },
+    {
+      "id": "9",
+      "userId": 101,
+      "type": "Vacation",
+      "description": "Summer holiday expenses",
+      "value": 1500,
+      "recurring": {
+        "months": [
+          8
+        ],
+        "dayOfTheMonth": 5
+      },
+      "date": "2025-08-05"
+    },
+    {
+      "id": "10",
+      "userId": 101,
+      "type": "Dining",
+      "description": "Restaurant dinner",
+      "value": 60,
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "date": "2025-02-14"
+    }
+  ],
+  "income": [
+    {
+      "type": "Salary",
+      "description": "Monthly salary payment",
+      "value": 2480,
+      "date": "2025-01-27",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "userId": 101,
+      "type": "Bonus",
+      "description": "Annual performance bonus",
+      "value": 1200,
+      "recurring": {
+        "months": [
+          12
+        ],
+        "dayOfTheMonth": 15
+      },
+      "date": "2025-12-15"
+    },
+    {
+      "id": "3",
+      "userId": 101,
+      "type": "Reimbursement",
+      "description": "Travel expense reimbursement",
+      "value": 300,
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "date": "2025-03-10"
+    },
+    {
+      "id": "4",
+      "userId": 101,
+      "type": "Freelance",
+      "description": "Freelance project payment",
+      "value": 800,
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "date": "2025-04-05"
+    },
+    {
+      "id": "5",
+      "userId": 101,
+      "type": "Dividend",
+      "description": "Quarterly stock dividend",
+      "value": 150,
+      "recurring": {
+        "months": [
+          3,
+          6,
+          9,
+          12
+        ],
+        "dayOfTheMonth": 20
+      },
+      "date": "2025-03-20"
+    },
+    {
+      "id": "6",
+      "userId": 101,
+      "type": "Gift",
+      "description": "Birthday gift from family",
+      "value": 200,
+      "recurring": {
+        "months": [
+          5
+        ],
+        "dayOfTheMonth": 12
+      },
+      "date": "2025-05-12"
+    },
+    {
+      "type": "Interest",
+      "description": "Bank account interest",
+      "value": 70,
+      "date": "2025-01-30",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "id": "7"
+    },
+    {
+      "id": "8",
+      "userId": 101,
+      "type": "Rental Income",
+      "description": "Apartment rental payment",
+      "value": 600,
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 5
+      },
+      "date": "2025-02-05"
+    },
+    {
+      "id": "9",
+      "userId": 101,
+      "type": "Scholarship",
+      "description": "Monthly scholarship allowance",
+      "value": 400,
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "dayOfTheMonth": 1
+      },
+      "date": "2025-01-01"
+    },
+    {
+      "id": "10",
+      "userId": 101,
+      "type": "Refund",
+      "description": "Tax refund",
+      "value": 950,
+      "recurring": {
+        "months": [
+          6
+        ],
+        "dayOfTheMonth": 25
+      },
+      "date": "2025-06-25"
+    }
+  ]
+}
