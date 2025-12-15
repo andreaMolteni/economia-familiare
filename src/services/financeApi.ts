@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Expense, Income } from '../types';
+import type { Expense, Income } from '../../types';
 
 export const financeApi = createApi({
     reducerPath: 'financeApi',

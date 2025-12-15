@@ -23,6 +23,9 @@ import {
     useUpdateIncomeMutation,
 } from "../services/financeApi";
 
+import type { Income } from '../../types';
+import { subtractMonthsSafe } from '../utils/dateUtils'
+
 const IncomeTable: React.FC = () => {
     const { data: income, isLoading, isError } = useGetIncomeQuery();
 
@@ -67,7 +70,7 @@ const IncomeTable: React.FC = () => {
         setForm({ type: "", description: "", value: "", date: "" });
     };
 
-    const startEdit = (row: any) => {
+    const startEdit = (row: Income) => {
         setEditingId(row.id);
         setEditForm({
             type: row.type,
@@ -91,6 +94,51 @@ const IncomeTable: React.FC = () => {
 
         setEditingId(null);
     };
+
+    /**
+    * funzione  per il filtraggio dei dati per il mese corrente
+    */
+    const filterInMonth = (inc: Income[], fixedDate: Date) => {
+        const start: Date = subtractMonthsSafe(fixedDate, 1);
+
+        return inc.filter(r => {
+            const d = new Date(r.date);
+            return d >= start && d < fixedDate;
+        });
+    }
+
+    const filterRecurring = (inc: Income[]) => {
+        return inc.filter(inc => inc.recurring.months.length > 0);
+    }
+
+    const filterRecurringOnMonth = (inc: Income[], fixedDate: Date) => {
+        const targetDay: number = fixedDate.getDay();
+        const etargetMonth: number = fixedDate.getMonth();
+
+        return inc.filter(r => {
+            const expensesDay: number = new Date(r.date).getDay();
+
+            if ((targetDay - expensesDay) >= 0 && r.recurring.months.includes(etargetMonth)) {
+                return r
+            } else if ((targetDay - expensesDay) < 0 && r.recurring.months.includes(etargetMonth - 1)) {
+                return r
+            }
+        });
+    }
+
+    const concatExpenses = (inc1: Income[], inc2: Income[]) => {
+        return [...inc1, ...inc2];
+    }
+
+
+
+
+    const fixedDate: Date = new Date("2025-12-08");
+    const filteredRecurringIncome = filterRecurring(income ?? []);
+    const filteredRecurringOnMonthIncome = filterRecurringOnMonth(filteredRecurringIncome ?? [], fixedDate);
+    const inMonthIncome = filterInMonth(income ?? [], fixedDate);
+    const filteredIncome = concatExpenses(filteredRecurringOnMonthIncome, inMonthIncome);
+
 
     if (isLoading) return <Typography>Loading income...</Typography>;
     if (isError)
@@ -163,7 +211,7 @@ const IncomeTable: React.FC = () => {
                     </TableHead>
 
                     <TableBody>
-                        {income?.map((row) => {
+                        {filteredIncome?.map((row) => {
                             const isEditing = editingId === row.id;
 
                             return (

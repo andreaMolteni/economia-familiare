@@ -1,4 +1,4 @@
-import React from "react";
+ï»¿import React from "react";
 import {
     AppBar,
     Toolbar,
@@ -12,14 +12,33 @@ import {
 } from "@mui/material";
 import IncomeTable from "./components/IncomeTable";
 import ExpensesTable from "./components/ExpensesTable";
+import { useDispatch, useSelector } from "react-redux";
+import { getNextAvailableDayOfMonth } from './utils/dateUtils';
+import type { RootState } from "./app/store";
+import { getDateDDMMYYYY } from "./utils/dateUtils";
+import { setClosingDay, setDayCountDown } from "./slices/dateSlice";
+
 
 const App: React.FC = () => {
+    const dispatch = useDispatch();
+
+
     const monthName = "Dicembre";
     const userName = "Andrea";
+
+    const currentDate = useSelector((state: RootState) => state.date.currentDate);
+    const closingDay = useSelector((state: RootState) => state.date.closingDay);
+    const dayCountDown = useSelector((state: RootState) => state.date.dayCountDown);
+    const fixedDate: Date = getNextAvailableDayOfMonth(currentDate, closingDay);
+
+    //const contDown: number = 31;
+
+    dispatch(setDayCountDown(26));
 
     return (
         <Box
             sx={{
+                borderRadius: 0,
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
@@ -28,7 +47,9 @@ const App: React.FC = () => {
             }}
         >
             {/* HEADER */}
-            <AppBar position="static" color="primary" elevation={0}>
+            <AppBar position="static" color="primary" elevation={0} sx={{
+                borderRadius: 0
+            }} >
                 <Toolbar sx={{ justifyContent: "space-between" }}>
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
                         Economia Familiare
@@ -58,128 +79,79 @@ const App: React.FC = () => {
                         borderRadius: 4,
                         border: "2px solid",
                         borderColor: "primary.main",
-                        p: 3,
-                        mb: 4,
+                        p: 2,
+                        mb: 2,
                     }}
                 >
                     <Grid container spacing={2}>
                         {/* Sinistra */}
                         <Grid
-                            item
-                            xs={12}
-                            md={4}
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                            }}
+                            size={{xs:8}}
                         >
                             <Typography
-                                variant="h3"
-                                sx={{ fontWeight: 700, color: "primary.main", mb: 1 }}
+                                variant="h5"
+                                sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
                             >
-                                {monthName}
+                                Ciao {userName}
+                            </Typography>
+                            <Typography
+                                variant="h5"
+                                sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
+                            >
+                                Oggi Ã¨ il {getDateDDMMYYYY(currentDate)}
                             </Typography>
                             <Typography
                                 variant="h5"
                                 sx={{ fontWeight: 600, color: "primary.main" }}
                             >
-                                Ciao {userName}
+                                Il mese contabile si chiude il  <br /> {getDateDDMMYYYY(fixedDate)}
                             </Typography>
                         </Grid>
 
                         {/* Centro */}
                         <Grid
-                            item
-                            xs={12}
-                            md={4}
-                            sx={{
-                                borderLeft: { md: "2px solid primary.main" },
-                                borderRight: { md: "2px solid primary.main" },
-                                px: 2,
-                            }}
+                            size={{xs: 4}}
                         >
-                            <Typography
-                                variant="subtitle1"
-                                sx={{ fontWeight: 700, color: "primary.main", mb: 1 }}
+                            <Paper elevation={5}
+                                sx={{
+                                    elevation:12,
+                                    borderRadius: 2,
+                                    border: "2px solid",
+                                    borderColor: "primary.main",
+                                    p: 1,
+                                    mb: 2,
+                                }}
                             >
-                                Oggi è il 3 dicembre 2025
-                            </Typography>
-
-                            <List dense sx={{ pl: 2 }}>
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>
-                                                Il saldo disponibile sul tuo conto è <b>2100.32€</b>
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>
-                                                Mancano <b style={{ color: "green" }}>12</b> giorni al
-                                                prossimo mese contabile
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>
-                                                Il tuo budget giornaliero è{" "}
-                                                <b style={{ color: "green" }}>50.00€</b>
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-                            </List>
-                        </Grid>
-
-                        {/* Destra */}
-                        <Grid item xs={12} md={4}>
-                            <Typography
-                                variant="subtitle1"
-                                sx={{ fontWeight: 700, color: "primary.main", mb: 1 }}
-                            >
-                                Ieri
-                            </Typography>
-
-                            <List dense sx={{ pl: 2 }}>
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>
-                                                Le tue spese sono state di{" "}
-                                                <b style={{ color: "green" }}>60.32€</b>
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>10€ in più/di meno rispetto al tuo budget</>
-                                        }
-                                    />
-                                </ListItem>
-
-                                <ListItem sx={{ py: 0.3 }}>
-                                    <ListItemText
-                                        primary={
-                                            <>
-                                                Il tuo budget giornaliero è variato di <b>2€</b>
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-                            </List>
+                                <List sx={{ width: '100%', hight: '100%', bgcolor: 'background.paper' }}>
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemText>
+                                            <Typography
+                                                component="span"
+                                                sx={{ color: 'text.primary', display: 'inline' }}
+                                            />
+                                            Mancano <b>{dayCountDown}</b> giorni alla chiusura del mese contabile
+                                        </ListItemText>
+                                    </ListItem>
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemText>
+                                            <Typography
+                                                component="span"
+                                                sx={{ color: 'text.primary', display: 'inline' }}
+                                            />
+                                            Il saldo disponibile sul tuo conto Ã¨ <b>2100.32â‚¬</b>
+                                        </ListItemText>
+                                    </ListItem>
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemText>
+                                            <Typography 
+                                                component="span"
+                                                sx={{ color: 'text.primary', display: 'inline' }}
+                                            />
+                                            Il tuo budget giornaliero Ã¨ di <b>54.32â‚¬</b>
+                                        </ListItemText>
+                                    </ListItem>
+                                </List>
+                            </Paper>
                         </Grid>
                     </Grid>
                 </Paper>
