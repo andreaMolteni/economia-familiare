@@ -1,13 +1,14 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { getDateYYYYMMDD } from "../utils/dateUtils"
 
-interface AppState {
-    currentDate: Date; // data corrente
+interface DateState {
+    currentDate: string; // data corrente formato YYYY-MM-DD
     closingDay: number; // giorno della chiusura contabile del mese
     dayCountDown: number; // giorni rimanenti alla fine del mese contabile
 }
 
-const initialState: AppState = {
-    currentDate: new Date(), // valore iniziale
+const initialState: DateState = {
+    currentDate: "4-12-2025",//getDateYYYYMMDD(new Date), // valore iniziale
     closingDay: 14,
     dayCountDown: 31
 };
@@ -16,7 +17,7 @@ const dateSlice = createSlice({
     name: "date",
     initialState,
     reducers: {
-        setCurrentDate(state, action: PayloadAction<Date>) {
+        setCurrentDate(state, action: PayloadAction<string>) {
             state.currentDate = action.payload;
         },
         setClosingDay(state, action: PayloadAction<number>) {

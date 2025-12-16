@@ -1,4 +1,4 @@
-import React from "react";
+ï»¿import React from "react";
 import {
     Typography,
     Grid,
@@ -8,22 +8,35 @@ import {
     ListItemText,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getNextAvailableDayOfMonth } from '../utils/dateUtils';
+import { getNextAvailableDayOfMonth, diffInDays, formatDDMMYYYYtoYYYYMMDD } from '../utils/dateUtils';
 import type { RootState } from "../app/store";
-import { getDateDDMMYYYY } from "../utils/dateUtils";
+import { getDateDDMMYYYY, stringToDate } from "../utils/dateUtils";
 import { setClosingDay, setDayCountDown } from "../slices/dateSlice";
+
 
 
 
 const ResumeData: React.FC = () => {
     const dispatch = useDispatch();
 
+    // data di oggi
     const currentDate = useSelector((state: RootState) => state.date.currentDate);
     const closingDay = useSelector((state: RootState) => state.date.closingDay);
     const dayCountDown = useSelector((state: RootState) => state.date.dayCountDown);
-    const fixedDate: Date = getNextAvailableDayOfMonth(currentDate, closingDay);
+    // data di chiusura del mese contabile:
+    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
+    const balance = useSelector((state: RootState) => state.money.balance);
+    const budget = useSelector((state: RootState) => state.money.budget);
+    const remainingExpenses = useSelector((state: RootState) => state.money.remainingExpenses);
+    const remainingIncome = useSelector((state: RootState) => state.money.remainingIncome);
+
+
+    //console.log("fine: ", stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))));
+    //console.log("inzio: ", stringToDate(currentDate));
+    //console.log("mancano: ", diffInDays(stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))), stringToDate(currentDate)));
 
     dispatch(setDayCountDown(26));
+    //dispatch(setDayCountDown(diffInDays(stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))), stringToDate(currentDate))));
 
     const userName = "Andrea";
 
@@ -54,7 +67,7 @@ const ResumeData: React.FC = () => {
                             variant="h5"
                             sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
                         >
-                            Oggi è il {getDateDDMMYYYY(currentDate)}
+                            Oggi Ã¨ il {currentDate}
                         </Typography>
                         <Typography
                             variant="h5"
@@ -94,7 +107,7 @@ const ResumeData: React.FC = () => {
                                             component="span"
                                             sx={{ color: 'text.primary', display: 'inline' }}
                                         />
-                                        Il saldo disponibile sul tuo conto è <b>2100.32€</b>
+                                        Il saldo disponibile sul tuo conto Ã¨ <b>{balance}â‚¬</b>
                                     </ListItemText>
                                 </ListItem>
                                 <ListItem alignItems="flex-start">
@@ -103,7 +116,7 @@ const ResumeData: React.FC = () => {
                                             component="span"
                                             sx={{ color: 'text.primary', display: 'inline' }}
                                         />
-                                        Il tuo budget giornaliero è di <b>54.32€</b>
+                                        Il tuo budget giornaliero Ã¨ di <b>54.32â‚¬</b>
                                     </ListItemText>
                                 </ListItem>
                             </List>

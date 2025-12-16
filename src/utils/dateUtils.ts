@@ -1,4 +1,4 @@
-export function  subtractMonthsSafe(date: Date, months: number): Date {
+export function subtractMonthsSafe(date: Date, months: number): Date {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
@@ -28,6 +28,23 @@ export function getDateDDMMYYYY(date: Date): string {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${day}-${month}-${year}`;
+}
+
+export function formatDDMMYYYYtoYYYYMMDD(dateStr: string): string {
+    if (!/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+        throw new Error("Formato data non valido. Atteso DD-MM-YYYY");
+    }
+
+    const [day, month, year] = dateStr.split("-");
+
+    return `${year}-${month}-${day}`;
+}
+
+export function getDateYYYYMMDD(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
 }
 
 /**
@@ -66,4 +83,29 @@ export function getNextAvailableDayOfMonth(start: Date, targetDay: number): Date
 
     // in pratica non ci arrivi mai
     throw new Error("Impossibile trovare una data valida");
+}
+
+
+export function stringToDate(date: string): Date {
+    return new Date(date);
+}
+
+
+export function diffInDays(dateA: Date, dateB: Date): number {
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    // Normalizziamo a mezzanotte per evitare problemi di orari / DST
+    const utcA = Date.UTC(
+        dateA.getFullYear(),
+        dateA.getMonth(),
+        dateA.getDate()
+    );
+
+    const utcB = Date.UTC(
+        dateB.getFullYear(),
+        dateB.getMonth(),
+        dateB.getDate()
+    );
+
+    return Math.floor((utcA - utcB) / MS_PER_DAY);
 }

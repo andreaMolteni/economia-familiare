@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Paper,
     Table,
@@ -24,9 +25,18 @@ import {
 } from "../services/financeApi";
 
 import type { Income } from '../../types';
-import { subtractMonthsSafe } from '../utils/dateUtils'
+import { getNextAvailableDayOfMonth, stringToDate } from '../utils/dateUtils';
+import {
+    filterInMonth,
+    filterRecurring,
+    filterRecurringOnMonth
+} from '../utils/moneyUtils';
+import type { RootState } from "../app/store";
+import { setTotalIncome, setRemainingIncome } from "../slices/moneySlice";
 
 const IncomeTable: React.FC = () => {
+    const dispatch = useDispatch();
+
     const { data: income, isLoading, isError } = useGetIncomeQuery();
 
     const [addIncome] = useAddIncomeMutation();
@@ -95,50 +105,50 @@ const IncomeTable: React.FC = () => {
         setEditingId(null);
     };
 
-    /**
-    * funzione  per il filtraggio dei dati per il mese corrente
-    */
-    const filterInMonth = (inc: Income[], fixedDate: Date) => {
-        const start: Date = subtractMonthsSafe(fixedDate, 1);
 
-        return inc.filter(r => {
-            const d = new Date(r.date);
-            return d >= start && d < fixedDate;
-        });
-    }
-
-    const filterRecurring = (inc: Income[]) => {
-        return inc.filter(inc => inc.recurring.months.length > 0);
-    }
-
-    const filterRecurringOnMonth = (inc: Income[], fixedDate: Date) => {
-        const targetDay: number = fixedDate.getDay();
-        const etargetMonth: number = fixedDate.getMonth();
-
-        return inc.filter(r => {
-            const expensesDay: number = new Date(r.date).getDay();
-
-            if ((targetDay - expensesDay) >= 0 && r.recurring.months.includes(etargetMonth)) {
-                return r
-            } else if ((targetDay - expensesDay) < 0 && r.recurring.months.includes(etargetMonth - 1)) {
-                return r
-            }
-        });
-    }
-
-    const concatExpenses = (inc1: Income[], inc2: Income[]) => {
+    const concatIncome = (inc1: Income[], inc2: Income[]) => {
         return [...inc1, ...inc2];
     }
 
 
+    // data di oggi
+    const currentDate = useSelector((state: RootState) => state.date.currentDate);
+
+    const closingDay = useSelector((state: RootState) => state.date.closingDay);
+    // data della chiusura del mese
+    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
 
 
-    const fixedDate: Date = new Date("2025-12-08");
     const filteredRecurringIncome = filterRecurring(income ?? []);
     const filteredRecurringOnMonthIncome = filterRecurringOnMonth(filteredRecurringIncome ?? [], fixedDate);
     const inMonthIncome = filterInMonth(income ?? [], fixedDate);
-    const filteredIncome = concatExpenses(filteredRecurringOnMonthIncome, inMonthIncome);
 
+    //voci di spesa totali del mese corrente
+    const filteredIncome = concatIncome(filteredRecurringOnMonthIncome, inMonthIncome);
+
+
+
+    //totali spese del mese
+    const totalIncome = filteredIncome.reduce(
+        (acc, exp) => acc + exp.value,
+        0
+    );
+
+    dispatch(setTotalIncome(totalIncome));
+
+    //spese ancora da pagare
+    const RemainingFilteredIncome = filteredIncome.filter((exp) => stringToDate(exp.date) > stringToDate(currentDate));
+
+    //totale da pagare
+    const totalRemainingIncome = RemainingFilteredIncome.reduce(
+        (acc, exp) => acc + exp.value,
+        0
+    );
+
+    dispatch(setRemainingIncome(totalRemainingIncome));
+
+    console.log("Income: ", totalIncome);
+    console.log("Remaining Income: ", totalRemainingIncome);
 
     if (isLoading) return <Typography>Loading income...</Typography>;
     if (isError)

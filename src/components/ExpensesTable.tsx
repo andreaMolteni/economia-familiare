@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import {
     Paper,
     Table,
@@ -23,11 +24,17 @@ import {
 } from '../services/financeApi';
 
 import type { Expense } from '../../types';
-import { subtractMonthsSafe, getNextAvailableDayOfMonth } from '../utils/dateUtils'
-import { useSelector } from "react-redux";
+import { getNextAvailableDayOfMonth, stringToDate } from '../utils/dateUtils';
+import {
+    filterInMonth,
+    filterRecurring,
+    filterRecurringOnMonth
+} from '../utils/moneyUtils';
 import type { RootState } from "../app/store";
+import { setTotalExpenses, setRemainingExpenses } from "../slices/moneySlice";
 
 const ExpensesTable: React.FC = () => {
+    const dispatch = useDispatch();
     const { data: expenses, isLoading, isError } = useGetExpensesQuery();
     const [addExpense] = useAddExpenseMutation();
     const [deleteExpense] = useDeleteExpenseMutation();
@@ -95,66 +102,50 @@ const ExpensesTable: React.FC = () => {
         setEditingId(null);
     };
 
-    /**
-     * funzione  per il filtraggio dei dati per il mese corrente
-     */
-    const filterInMonth = (exp: Expense[], fixedDate: Date) => {
-        const start: Date = subtractMonthsSafe(fixedDate, 1); 
-
-        return exp.filter(r => {
-            const d = new Date(r.date);
-            return d >= start && d < fixedDate;
-        });
-    }
-
-    /**
-     * filtra le spese ricorrenti
-     * @param exp
-     * @returns
-     */
-    const filterRecurring = (exp: Expense[]) => {
-        return exp.filter(exp => exp.recurring.months.length > 0);
-    }
-
-
-    /**
-     * filtra le spese ricorrenti del mese corrente
-     * @param exp
-     * @param fixedDate
-     * @returns
-     */
-    const filterRecurringOnMonth = (exp: Expense[], fixedDate: Date) => {
-        const targetDay: number = fixedDate.getDay();
-        const etargetMonth: number = fixedDate.getMonth();
-
-        return exp.filter(r => {
-            const expensesDay: number = new Date(r.date).getDay();
-
-            if ((targetDay - expensesDay) >= 0 && r.recurring.months.includes(etargetMonth)){
-                return r
-            } else if ((targetDay - expensesDay) < 0 && r.recurring.months.includes(etargetMonth-1)){
-                return r
-            }
-        });
-    }
-
 
     const concatExpenses = (exp1: Expense[], exp2: Expense[]) => {
         return [...exp1, ...exp2];
     }
 
 
-
+    // data di oggi
     const currentDate = useSelector((state: RootState) => state.date.currentDate);
+
     const closingDay = useSelector((state: RootState) => state.date.closingDay);
-    const fixedDate: Date = getNextAvailableDayOfMonth(currentDate, closingDay);
+    // data della chiusura del mese
+    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
 
  
     const filteredRecurringExpenses = filterRecurring(expenses ?? []);
     const filteredRecurringOnMonthExpenses = filterRecurringOnMonth(filteredRecurringExpenses ?? [], fixedDate);
     const inMonthExpenses = filterInMonth(expenses ?? [], fixedDate);
+
+    //voci di spesa totali del mese corrente
     const filteredExpenses = concatExpenses(filteredRecurringOnMonthExpenses, inMonthExpenses);
 
+    
+
+    //totali spese del mese
+    const totalEspenses = filteredExpenses.reduce(
+        (acc, exp) => acc + exp.value,
+        0
+    );
+
+    dispatch(setTotalExpenses(totalEspenses));
+
+    //spese ancora da pagare
+    const RemainingFilteredExpenses = filteredExpenses.filter((exp) => stringToDate(exp.date) > stringToDate(currentDate));
+
+    //totale da pagare
+    const totalRemainingEspenses = RemainingFilteredExpenses.reduce(
+        (acc, exp) => acc + exp.value,
+        0
+    );
+
+    dispatch(setRemainingExpenses(totalRemainingEspenses));
+
+    console.log("expeses: ", totalEspenses);
+    console.log("Remaining expeses: ", totalRemainingEspenses);
     
 
 
