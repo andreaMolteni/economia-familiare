@@ -39,11 +39,14 @@ const ResumeData: React.FC = () => {
     const [isEditingBalance, setIsEditingBalance] = useState(false);
     const [balanceDraft, setBalanceDraft] = useState<string>(balance.toFixed(2));
 
-    useEffect(() => {
-        if (!isEditingBalance) {
-            setBalanceDraft(balance.toFixed(2));
-        }
-    }, [balance, isEditingBalance]);
+    const calculateBudget = (
+        remainingIncome: number,
+        remainingExpenses: number,
+        balance: number,
+        remainingDay: number
+    ): number => {
+        return (remainingIncome + balance - remainingExpenses) / remainingDay;
+    };
 
     useEffect(() => {
         const days = diffInDays(
@@ -81,14 +84,7 @@ const ResumeData: React.FC = () => {
 
     //dispatch(setDayCountDown(diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate))));
 
-    const calculateBudget = (
-        remainingIncome: number,
-        remainingExpenses: number,
-        balance: number,
-        remainingDay: number
-    ): number => {
-        return (remainingIncome + balance - remainingExpenses) / remainingDay;
-    };
+    
 
     //dispatch(setBudget(calculateBudget(remainingIncome, remainingExpenses, balance, dayCountDown)));
 
@@ -168,7 +164,10 @@ const ResumeData: React.FC = () => {
                                                 <IconButton
                                                     size="small"
                                                     sx={{ ml: 1 }}
-                                                    onClick={() => setIsEditingBalance(true)}
+                                                    onClick={() => {
+                                                        setBalanceDraft(balance.toFixed(2));
+                                                        setIsEditingBalance(true);
+                                                    }}
                                                     aria-label="Modifica saldo"
                                                 >
                                                     <EditIcon fontSize="small" />
