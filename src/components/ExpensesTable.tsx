@@ -13,6 +13,7 @@ import {
     TextField,
     Button,
     IconButton,
+    InputAdornment
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -154,14 +155,23 @@ const ExpensesTable: React.FC = () => {
             />
 
             <TableContainer component={Paper}>
-                <Table size="small">
+                <Table
+                    size="small"
+                    sx={{
+                        tableLayout: "fixed", // rende le colonne più controllabili
+                        "& .MuiTableCell-root": {
+                            py: 1,              // padding verticale ridotto
+                            px: 1,              // padding orizzontale ridotto
+                        },
+                    }}
+                >
                     <TableHead>
                         <TableRow>
-                            <TableCell>Type</TableCell>
+                            <TableCell sx={{ width: 130 }}>Type</TableCell>
                             <TableCell>Description</TableCell>
-                            <TableCell align="right">Value</TableCell>
-                            <TableCell>Date</TableCell>
-                            <TableCell align="center">Actions</TableCell>
+                            <TableCell sx={{ width: 110 }} align="right">Value</TableCell>
+                            <TableCell sx={{ width: 110 }}>Date</TableCell>
+                            <TableCell sx={{ width: 90 }} align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -230,7 +240,7 @@ const ExpensesTable: React.FC = () => {
                                         )}
                                     </TableCell>
 
-                                    <TableCell>
+                                    <TableCell sx={{ whiteSpace: "nowrap" }}>
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
@@ -258,13 +268,14 @@ const ExpensesTable: React.FC = () => {
                                             </Button>
                                         ) : (
                                             <>
-                                                <IconButton onClick={() => startEdit(exp)}>
-                                                    <EditIcon />
-                                                </IconButton>
-
-                                                <IconButton onClick={() => deleteExpense(exp.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
+                                                <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
+                                                    <IconButton size="small" onClick={() => startEdit(exp)}>
+                                                        <EditIcon fontSize="small" />
+                                                    </IconButton>
+                                                    <IconButton size="small" onClick={() => deleteExpense(exp.id)}>
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Box>
                                             </>
                                         )}
                                     </TableCell>
