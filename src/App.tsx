@@ -76,9 +76,6 @@ const App: React.FC = () => {
                     {/* Colonna sinistra: Entrate */}
                     <Box sx={{ flex: 1 }}>
                         <Paper sx={{ p: 2, height: "100%" }}>
-                            <Typography variant="h6" sx={{ mb: 2 }}>
-                                Tabella entrate
-                            </Typography>
                             <IncomeTable />
                         </Paper>
                     </Box>
@@ -86,9 +83,6 @@ const App: React.FC = () => {
                     {/* Colonna destra: Uscite */}
                     <Box sx={{ flex: 1 }}>
                         <Paper sx={{ p: 2, height: "100%" }}>
-                            <Typography variant="h6" sx={{ mb: 2 }}>
-                                Tabella uscite
-                            </Typography>
                             <ExpensesTable />
                         </Paper>
                     </Box>

@@ -3379,6 +3379,66 @@
         "dayOfTheMonth": null
       },
       "date": "2025-12-02"
+    },
+    {
+      "id": "2265",
+      "userId": 101,
+      "type": "rate",
+      "description": "rata computer Marina",
+      "value": 56,
+      "date": "2025-12-01",
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 1
+      }
+    },
+    {
+      "id": "54b7",
+      "userId": 101,
+      "type": "alimentari",
+      "description": "dodecaà",
+      "value": 30,
+      "date": "2025-12-22",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      }
+    },
+    {
+      "id": "06aa",
+      "userId": 101,
+      "type": "pippo",
+      "description": "pluto",
+      "value": 0,
+      "date": "2025-12-10",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      }
+    },
+    {
+      "type": "pippo",
+      "description": "pluto paperino",
+      "value": 400,
+      "date": "2025-12-13",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      },
+      "id": "9690"
     }
   ],
   "income": [
@@ -6739,6 +6799,43 @@
         "dayOfTheMonth": null
       },
       "date": "2025-12-04"
+    },
+    {
+      "id": "5175",
+      "userId": 101,
+      "type": "lezioni private",
+      "description": "lezioni Simone",
+      "value": 30,
+      "date": "2025-12-05",
+      "recurring": {
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "dayOfTheMonth": 5
+      }
+    },
+    {
+      "id": "810e",
+      "userId": 101,
+      "type": "lezione privata",
+      "description": "Filippo",
+      "value": 30,
+      "date": "2025-12-13",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      }
     }
   ]
 }

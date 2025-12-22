@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Paper,
@@ -13,32 +13,37 @@ import {
     TextField,
     Button,
     IconButton,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
+import TransactionDialog from "./TransactionDialog";
+import type { TransactionDraft } from "./TransactionDialog";
+
 import {
     useGetExpensesQuery,
     useAddExpenseMutation,
     useDeleteExpenseMutation,
-    useUpdateExpenseMutation
-} from '../services/financeApi';
+    useUpdateExpenseMutation,
+} from "../services/financeApi";
 
-import type { Expense } from '../../types';
-import { getNextAvailableDayOfMonth, stringToDate } from '../utils/dateUtils';
-import {
-    filterInMonth,
-    filterRecurring,
-    filterRecurringOnMonth
-} from '../utils/moneyUtils';
+import type { Expense } from "../../types";
+import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
+import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
 import type { RootState } from "../app/store";
 import { setTotalExpenses, setRemainingExpenses } from "../slices/moneySlice";
 
 const ExpensesTable: React.FC = () => {
     const dispatch = useDispatch();
+
+    // ✅ HOOKS SEMPRE IN CIMA
+    const [open, setOpen] = useState(false);
+
     const { data: expenses, isLoading, isError } = useGetExpensesQuery();
     const [addExpense] = useAddExpenseMutation();
     const [deleteExpense] = useDeleteExpenseMutation();
     const [updateExpense] = useUpdateExpenseMutation();
+
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState({
         type: "",
@@ -47,34 +52,42 @@ const ExpensesTable: React.FC = () => {
         date: "",
     });
 
-    const [form, setForm] = useState({
-        type: '',
-        description: '',
-        value: '',
-        date: '',
-    });
+    // data di oggi
+    const currentDate = useSelector((state: RootState) => state.date.currentDate);
+    const closingDay = useSelector((state: RootState) => state.date.closingDay);
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
+    const fixedDate: Date = useMemo(
+        () => getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay),
+        [currentDate, closingDay]
+    );
 
-    const handleAdd = async () => {
-        if (!form.type || !form.value || !form.date) return;
+    // ✅ calcolo righe mese contabile (memo)
+    const filteredExpenses: Expense[] = useMemo(() => {
+        const recurring = filterRecurring(expenses ?? []);
+        const recurringOnMonth = filterRecurringOnMonth(recurring, fixedDate);
+        const inMonth = filterInMonth(expenses ?? [], fixedDate);
 
-        await addExpense({
-            userId: 101,
-            type: form.type,
-            description: form.description,
-            value: Number(form.value),
-            date: form.date,
-            recurring: { months: [], dayOfTheMonth: null },
-        });
+        // concat
+        return [...recurringOnMonth, ...inMonth];
+    }, [expenses, fixedDate]);
 
-        setForm({ type: '', description: '', value: '', date: '' });
-    };
+    // ✅ calcolo totali (memo)
+    const totalExpenses = useMemo(() => {
+        return filteredExpenses.reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredExpenses]);
+
+    const totalRemainingExpenses = useMemo(() => {
+        const remaining = filteredExpenses.filter(
+            (exp) => stringToDate(exp.date) > stringToDate(currentDate)
+        );
+        return remaining.reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredExpenses, currentDate]);
+
+    // ✅ dispatch dei totali SOLO in effect (non nel render)
+    useEffect(() => {
+        dispatch(setTotalExpenses(totalExpenses));
+        dispatch(setRemainingExpenses(totalRemainingExpenses));
+    }, [dispatch, totalExpenses, totalRemainingExpenses]);
 
     const startEdit = (exp: Expense) => {
         setEditingId(exp.id);
@@ -86,9 +99,8 @@ const ExpensesTable: React.FC = () => {
         });
     };
 
-
     const saveEdit = async () => {
-        if (!editingId) return;
+        if (editingId === null) return;
 
         await updateExpense({
             id: editingId,
@@ -96,109 +108,51 @@ const ExpensesTable: React.FC = () => {
             description: editForm.description,
             value: Number(editForm.value),
             date: editForm.date,
-            recurring: { months: [], dayOfTheMonth: null }
+            // ⚠️ qui stai forzando non-ricorrente: se vuoi editare anche ricorrente lo estendiamo dopo
+            recurring: { months: [], dayOfTheMonth: null },
         });
 
         setEditingId(null);
     };
 
+    const handleSubmit = async (payload: TransactionDraft) => {
+        await addExpense(payload);
+    };
 
-    const concatExpenses = (exp1: Expense[], exp2: Expense[]) => {
-        return [...exp1, ...exp2];
-    }
+    const orderedExpenses = useMemo(() => {
+        return [...filteredExpenses].sort((a, b) => {
+            // prima ordino per data desc
+            const da = new Date(a.date).getTime();
+            const db = new Date(b.date).getTime();
+            if (db !== da) return db - da;
 
-
-    // data di oggi
-    const currentDate = useSelector((state: RootState) => state.date.currentDate);
-
-    const closingDay = useSelector((state: RootState) => state.date.closingDay);
-    // data della chiusura del mese
-    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
-
- 
-    const filteredRecurringExpenses = filterRecurring(expenses ?? []);
-    const filteredRecurringOnMonthExpenses = filterRecurringOnMonth(filteredRecurringExpenses ?? [], fixedDate);
-    const inMonthExpenses = filterInMonth(expenses ?? [], fixedDate);
-
-    //voci di spesa totali del mese corrente
-    const filteredExpenses = concatExpenses(filteredRecurringOnMonthExpenses, inMonthExpenses);
-
-    
-
-    //totali spese del mese
-    const totalEspenses = filteredExpenses.reduce(
-        (acc, exp) => acc + exp.value,
-        0
-    );
-
-    dispatch(setTotalExpenses(totalEspenses));
-
-    //spese ancora da pagare
-    const RemainingFilteredExpenses = filteredExpenses.filter((exp) => stringToDate(exp.date) > stringToDate(currentDate));
-
-    //totale da pagare
-    const totalRemainingEspenses = RemainingFilteredExpenses.reduce(
-        (acc, exp) => acc + exp.value,
-        0
-    );
-
-    dispatch(setRemainingExpenses(totalRemainingEspenses));
-
-    console.log("expeses: ", totalEspenses);
-    console.log("Remaining expeses: ", totalRemainingEspenses);
-    
+            // a parità di data, id desc (più nuovo sopra)
+            return b.id - a.id;
+        });
+    }, [filteredExpenses]);
 
 
+    // ✅ returns condizionali DOPO gli hook
     if (isLoading) return <Typography>Loading expenses...</Typography>;
     if (isError) return <Typography color="error">Error loading expenses</Typography>;
 
+    
     return (
         <Box>
-            <Typography variant="h6" gutterBottom>
-                Expenses
-            </Typography>
-
-            {/* Form di inserimento */}
-            <Box
-                sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}
-            >
-                <TextField
-                    label="Type"
-                    name="type"
-                    size="small"
-                    value={form.type}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Description"
-                    name="description"
-                    size="small"
-                    value={form.description}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Value"
-                    name="value"
-                    size="small"
-                    type="number"
-                    value={form.value}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Date"
-                    name="date"
-                    size="small"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    value={form.date}
-                    onChange={handleChange}
-                />
-                <Button variant="contained" onClick={handleAdd}>
-                    Add Expense
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                <Typography variant="h6">Spese</Typography>
+                <Button variant="contained" onClick={() => setOpen(true)}>
+                    Aggiungi spesa
                 </Button>
             </Box>
 
-            {/* Tabella */}
+            <TransactionDialog
+                open={open}
+                onClose={() => setOpen(false)}
+                mode="expense"
+                onSubmit={handleSubmit}
+            />
+
             <TableContainer component={Paper}>
                 <Table size="small">
                     <TableHead>
@@ -210,9 +164,11 @@ const ExpensesTable: React.FC = () => {
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
-                        {filteredExpenses.map((exp) => {
+                        {orderedExpenses.map((exp) => {
                             const isEditing = editingId === exp.id;
+
                             return (
                                 <TableRow key={exp.id}>
                                     <TableCell>
@@ -220,7 +176,9 @@ const ExpensesTable: React.FC = () => {
                                             <TextField
                                                 size="small"
                                                 value={editForm.type}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, type: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setEditForm((prev) => ({ ...prev, type: e.target.value }))
+                                                }
                                             />
                                         ) : (
                                             exp.type
@@ -232,7 +190,12 @@ const ExpensesTable: React.FC = () => {
                                             <TextField
                                                 size="small"
                                                 value={editForm.description}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setEditForm((prev) => ({
+                                                        ...prev,
+                                                        description: e.target.value,
+                                                    }))
+                                                }
                                             />
                                         ) : (
                                             exp.description
@@ -245,10 +208,25 @@ const ExpensesTable: React.FC = () => {
                                                 size="small"
                                                 type="number"
                                                 value={editForm.value}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, value: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setEditForm((prev) => ({ ...prev, value: e.target.value }))
+                                                }
+                                                slotProps={{
+                                                    input: {
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">€</InputAdornment>
+                                                        ),
+                                                    },
+                                                }}
                                             />
                                         ) : (
-                                            exp.value.toFixed(2)
+                                            <Typography component="span">
+                                                {exp.value.toLocaleString("it-IT", {
+                                                    style: "currency",
+                                                    currency: "EUR",
+                                                    minimumFractionDigits: 2,
+                                                })}
+                                            </Typography>
                                         )}
                                     </TableCell>
 
@@ -259,16 +237,23 @@ const ExpensesTable: React.FC = () => {
                                                 type="date"
                                                 InputLabelProps={{ shrink: true }}
                                                 value={editForm.date}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, date: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setEditForm((prev) => ({ ...prev, date: e.target.value }))
+                                                }
                                             />
                                         ) : (
-                                            exp.date
+                                                formatYYYYMMDDtoDDMMYYYY(exp.date)
                                         )}
                                     </TableCell>
 
                                     <TableCell align="center">
                                         {isEditing ? (
-                                            <Button variant="contained" color="success" size="small" onClick={saveEdit}>
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                size="small"
+                                                onClick={saveEdit}
+                                            >
                                                 Salva
                                             </Button>
                                         ) : (
@@ -286,7 +271,8 @@ const ExpensesTable: React.FC = () => {
                                 </TableRow>
                             );
                         })}
-                        {expenses && expenses.length === 0 && (
+
+                        {filteredExpenses.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
                                     No expenses yet

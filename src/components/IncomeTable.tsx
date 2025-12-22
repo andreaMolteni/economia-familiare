@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Paper,
@@ -13,9 +13,13 @@ import {
     TextField,
     Button,
     IconButton,
+    InputAdornment
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
+import TransactionDialog from "./TransactionDialog";
+import type { TransactionDraft } from "./TransactionDialog";
 
 import {
     useGetIncomeQuery,
@@ -24,31 +28,22 @@ import {
     useUpdateIncomeMutation,
 } from "../services/financeApi";
 
-import type { Income } from '../../types';
-import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from '../utils/dateUtils';
-import {
-    filterInMonth,
-    filterRecurring,
-    filterRecurringOnMonth
-} from '../utils/moneyUtils';
+import type { Income } from "../../types";
+import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
+import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
 import type { RootState } from "../app/store";
 import { setTotalIncome, setRemainingIncome } from "../slices/moneySlice";
 
 const IncomeTable: React.FC = () => {
     const dispatch = useDispatch();
 
-    const { data: income, isLoading, isError } = useGetIncomeQuery();
+    // ✅ HOOKS SEMPRE IN CIMA
+    const [open, setOpen] = useState(false);
 
+    const { data: income, isLoading, isError } = useGetIncomeQuery();
     const [addIncome] = useAddIncomeMutation();
     const [deleteIncome] = useDeleteIncomeMutation();
     const [updateIncome] = useUpdateIncomeMutation();
-
-    const [form, setForm] = useState({
-        type: "",
-        description: "",
-        value: "",
-        date: "",
-    });
 
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState({
@@ -58,40 +53,54 @@ const IncomeTable: React.FC = () => {
         date: "",
     });
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
+    // data di oggi
+    const currentDate = useSelector((state: RootState) => state.date.currentDate);
+    const closingDay = useSelector((state: RootState) => state.date.closingDay);
 
-    const handleAdd = async () => {
-        if (!form.type || !form.value || !form.date) return;
+    const fixedDate: Date = useMemo(
+        () => getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay),
+        [currentDate, closingDay]
+    );
 
-        await addIncome({
-            userId: 101,
-            type: form.type,
-            description: form.description,
-            value: Number(form.value),
-            date: form.date,
-            recurring: { months: [], dayOfTheMonth: null },
-        });
+    // ✅ calcolo righe mese contabile (memo)
+    const filteredIncome: Income[] = useMemo(() => {
+        const recurring = filterRecurring(income ?? []);
+        const recurringOnMonth = filterRecurringOnMonth(recurring, fixedDate);
+        const inMonth = filterInMonth(income ?? [], fixedDate);
 
-        setForm({ type: "", description: "", value: "", date: "" });
-    };
+        return [...recurringOnMonth, ...inMonth];
+    }, [income, fixedDate]);
 
-    const startEdit = (row: Income) => {
-        setEditingId(row.id);
+    // ✅ calcolo totali (memo)
+    const totalIncome = useMemo(() => {
+        return filteredIncome.reduce((acc, inc) => acc + inc.value, 0);
+    }, [filteredIncome]);
+
+    const totalRemainingIncome = useMemo(() => {
+        const remaining = filteredIncome.filter(
+            (inc) => stringToDate(inc.date) > stringToDate(currentDate)
+        );
+        return remaining.reduce((acc, inc) => acc + inc.value, 0);
+    }, [filteredIncome, currentDate]);
+
+    // ✅ dispatch dei totali SOLO in effect (non nel render)
+    useEffect(() => {
+        dispatch(setTotalIncome(totalIncome));
+        dispatch(setRemainingIncome(totalRemainingIncome));
+    }, [dispatch, totalIncome, totalRemainingIncome]);
+
+    const startEdit = (inc: Income) => {
+        setEditingId(inc.id);
         setEditForm({
-            type: row.type,
-            description: row.description,
-            value: String(row.value),
-            date: row.date,
+            type: inc.type,
+            description: inc.description,
+            value: String(inc.value),
+            date: inc.date,
         });
     };
 
     const saveEdit = async () => {
-        if (!editingId) return;
+        if (editingId === null) return;
 
         await updateIncome({
             id: editingId,
@@ -99,115 +108,49 @@ const IncomeTable: React.FC = () => {
             description: editForm.description,
             value: Number(editForm.value),
             date: editForm.date,
+            // ⚠️ come per expenses: qui forziamo non-ricorrente; se vuoi edit ricorrenza lo estendiamo dopo
             recurring: { months: [], dayOfTheMonth: null },
         });
 
         setEditingId(null);
     };
 
+    const handleSubmit = async (payload: TransactionDraft) => {
+        await addIncome(payload);
+    };
 
-    const concatIncome = (inc1: Income[], inc2: Income[]) => {
-        return [...inc1, ...inc2];
-    }
+    const orderedIncome = useMemo(() => {
+        return [...filteredIncome].sort((a, b) => {
+            // prima ordino per data desc
+            const da = new Date(a.date).getTime();
+            const db = new Date(b.date).getTime();
+            if (db !== da) return db - da;
 
+            // a parità di data, id desc (più nuovo sopra)
+            return b.id - a.id;
+        });
+    }, [filteredIncome]);
 
-    // data di oggi
-    const currentDate = useSelector((state: RootState) => state.date.currentDate);
-
-    const closingDay = useSelector((state: RootState) => state.date.closingDay);
-    // data della chiusura del mese
-    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
-
-
-    const filteredRecurringIncome = filterRecurring(income ?? []);
-    const filteredRecurringOnMonthIncome = filterRecurringOnMonth(filteredRecurringIncome ?? [], fixedDate);
-    const inMonthIncome = filterInMonth(income ?? [], fixedDate);
-
-    //voci di spesa totali del mese corrente
-    const filteredIncome = concatIncome(filteredRecurringOnMonthIncome, inMonthIncome);
-
-
-
-    //totali spese del mese
-    const totalIncome = filteredIncome.reduce(
-        (acc, exp) => acc + exp.value,
-        0
-    );
-
-    dispatch(setTotalIncome(totalIncome));
-
-    //spese ancora da pagare
-    const RemainingFilteredIncome = filteredIncome.filter((exp) => stringToDate(exp.date) > stringToDate(currentDate));
-
-    //totale da pagare
-    const totalRemainingIncome = RemainingFilteredIncome.reduce(
-        (acc, exp) => acc + exp.value,
-        0
-    );
-
-    dispatch(setRemainingIncome(totalRemainingIncome));
-
-    console.log("Income: ", totalIncome);
-    console.log("Remaining Income: ", totalRemainingIncome);
-
+    // ✅ returns condizionali DOPO gli hook
     if (isLoading) return <Typography>Loading income...</Typography>;
-    if (isError)
-        return <Typography color="error">Error loading income</Typography>;
+    if (isError) return <Typography color="error">Error loading income</Typography>;
 
     return (
         <Box>
-            <Typography variant="h6" gutterBottom>
-                Income
-            </Typography>
-
-            {/* Form di inserimento */}
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 2,
-                    mb: 2,
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                }}
-            >
-                <TextField
-                    label="Type"
-                    name="type"
-                    size="small"
-                    value={form.type}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Description"
-                    name="description"
-                    size="small"
-                    value={form.description}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Value"
-                    name="value"
-                    type="number"
-                    size="small"
-                    value={form.value}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Date"
-                    name="date"
-                    type="date"
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    value={form.date}
-                    onChange={handleChange}
-                />
-
-                <Button variant="contained" onClick={handleAdd}>
-                    Add Income
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                <Typography variant="h6">Entrate</Typography>
+                <Button variant="contained" onClick={() => setOpen(true)}>
+                    Aggiungi Entrata
                 </Button>
             </Box>
 
-            {/* Tabella principale */}
+            <TransactionDialog
+                open={open}
+                onClose={() => setOpen(false)}
+                mode="income"
+                onSubmit={handleSubmit}
+            />
+
             <TableContainer component={Paper}>
                 <Table size="small">
                     <TableHead>
@@ -221,22 +164,22 @@ const IncomeTable: React.FC = () => {
                     </TableHead>
 
                     <TableBody>
-                        {filteredIncome?.map((row) => {
-                            const isEditing = editingId === row.id;
+                        {orderedIncome.map((inc) => {
+                            const isEditing = editingId === inc.id;
 
                             return (
-                                <TableRow key={row.id}>
+                                <TableRow key={inc.id}>
                                     <TableCell>
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
                                                 value={editForm.type}
                                                 onChange={(e) =>
-                                                    setEditForm((p) => ({ ...p, type: e.target.value }))
+                                                    setEditForm((prev) => ({ ...prev, type: e.target.value }))
                                                 }
                                             />
                                         ) : (
-                                            row.type
+                                            inc.type
                                         )}
                                     </TableCell>
 
@@ -246,14 +189,14 @@ const IncomeTable: React.FC = () => {
                                                 size="small"
                                                 value={editForm.description}
                                                 onChange={(e) =>
-                                                    setEditForm((p) => ({
-                                                        ...p,
+                                                    setEditForm((prev) => ({
+                                                        ...prev,
                                                         description: e.target.value,
                                                     }))
                                                 }
                                             />
                                         ) : (
-                                            row.description
+                                            inc.description
                                         )}
                                     </TableCell>
 
@@ -264,14 +207,24 @@ const IncomeTable: React.FC = () => {
                                                 type="number"
                                                 value={editForm.value}
                                                 onChange={(e) =>
-                                                    setEditForm((p) => ({
-                                                        ...p,
-                                                        value: e.target.value,
-                                                    }))
+                                                    setEditForm((prev) => ({ ...prev, value: e.target.value }))
                                                 }
+                                                slotProps={{
+                                                    input: {
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">€</InputAdornment>
+                                                        ),
+                                                    },
+                                                }}
                                             />
                                         ) : (
-                                            row.value.toFixed(2)
+                                            <Typography component="span">
+                                                {inc.value.toLocaleString("it-IT", {
+                                                    style: "currency",
+                                                    currency: "EUR",
+                                                    minimumFractionDigits: 2,
+                                                })}
+                                            </Typography>
                                         )}
                                     </TableCell>
 
@@ -281,32 +234,33 @@ const IncomeTable: React.FC = () => {
                                                 size="small"
                                                 type="date"
                                                 InputLabelProps={{ shrink: true }}
-                                                value={editForm.date}
+                                                value={ editForm.date}
                                                 onChange={(e) =>
-                                                    setEditForm((p) => ({ ...p, date: e.target.value }))
+                                                    setEditForm((prev) => ({ ...prev, date: e.target.value }))
                                                 }
                                             />
                                         ) : (
-                                            formatYYYYMMDDtoDDMMYYYY(row.date)
+                                            formatYYYYMMDDtoDDMMYYYY(inc.date)
                                         )}
                                     </TableCell>
 
                                     <TableCell align="center">
                                         {isEditing ? (
                                             <Button
-                                                size="small"
                                                 variant="contained"
                                                 color="success"
+                                                size="small"
                                                 onClick={saveEdit}
                                             >
-                                                Save
+                                                Salva
                                             </Button>
                                         ) : (
                                             <>
-                                                <IconButton onClick={() => startEdit(row)}>
+                                                <IconButton onClick={() => startEdit(inc)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton onClick={() => deleteIncome(row.id)}>
+
+                                                <IconButton onClick={() => deleteIncome(inc.id)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </>
@@ -316,10 +270,10 @@ const IncomeTable: React.FC = () => {
                             );
                         })}
 
-                        {income && income.length === 0 && (
+                        {filteredIncome.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
-                                    No income yet.
+                                    No income yet
                                 </TableCell>
                             </TableRow>
                         )}

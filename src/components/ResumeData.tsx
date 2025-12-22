@@ -6,39 +6,64 @@ import {
     List,
     ListItem,
     ListItemText,
+    IconButton,
+    TextField,
+    Stack,
 } from "@mui/material";
-import { IconButton, TextField, Stack, } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
-import { getNextAvailableDayOfMonth, diffInDays, formatDDMMYYYYtoYYYYMMDD, formatYYYYMMDDtoDDMMYYYY } from '../utils/dateUtils';
+
 import type { RootState } from "../app/store";
-import { getDateDDMMYYYY, getDateYYYYMMDD, stringToDate } from "../utils/dateUtils";
-import { setClosingDay, setDayCountDown } from "../slices/dateSlice";
+import {
+    getNextAvailableDayOfMonth,
+    diffInDays,
+    formatYYYYMMDDtoDDMMYYYY,
+    getDateDDMMYYYY,
+    getDateYYYYMMDD,
+    stringToDate,
+} from "../utils/dateUtils";
+
+import { setDayCountDown } from "../slices/dateSlice";
 import { setBalance, setBudget } from "../slices/moneySlice";
-
-
-
 
 const ResumeData: React.FC = () => {
     const dispatch = useDispatch();
 
-    // data di oggi
+    /* ======================
+       REDUX STATE
+    ====================== */
     const currentDate = useSelector((state: RootState) => state.date.currentDate);
     const closingDay = useSelector((state: RootState) => state.date.closingDay);
     const dayCountDown = useSelector((state: RootState) => state.date.dayCountDown);
-    // data di chiusura del mese contabile:
-    const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
-    const balance: number = useSelector((state: RootState) => state.money.balance);
-    const budget: number = useSelector((state: RootState) => state.money.budget);
-    const remainingExpenses: number = useSelector((state: RootState) => state.money.remainingExpenses);
-    const remainingIncome: number = useSelector((state: RootState) => state.money.remainingIncome);
 
+    const balance = useSelector((state: RootState) => state.money.balance);
+    const budget = useSelector((state: RootState) => state.money.budget);
+    const remainingExpenses = useSelector(
+        (state: RootState) => state.money.remainingExpenses
+    );
+    const remainingIncome = useSelector(
+        (state: RootState) => state.money.remainingIncome
+    );
 
+    /* ======================
+       DATE CALCULATIONS
+    ====================== */
+    const fixedDate: Date = getNextAvailableDayOfMonth(
+        stringToDate(currentDate),
+        closingDay
+    );
+
+    /* ======================
+       LOCAL STATE (EDIT BALANCE)
+    ====================== */
     const [isEditingBalance, setIsEditingBalance] = useState(false);
-    const [balanceDraft, setBalanceDraft] = useState<string>(balance.toFixed(2));
+    const [balanceDraft, setBalanceDraft] = useState(balance.toFixed(2));
 
+    /* ======================
+       BUDGET CALCULATION
+    ====================== */
     const calculateBudget = (
         remainingIncome: number,
         remainingExpenses: number,
@@ -48,6 +73,9 @@ const ResumeData: React.FC = () => {
         return (remainingIncome + balance - remainingExpenses) / remainingDay;
     };
 
+    /* ======================
+       SIDE EFFECTS
+    ====================== */
     useEffect(() => {
         const days = diffInDays(
             stringToDate(getDateYYYYMMDD(fixedDate)),
@@ -56,7 +84,6 @@ const ResumeData: React.FC = () => {
 
         dispatch(setDayCountDown(days));
 
-        // Evita divisione per 0
         const safeDays = Math.max(days, 1);
         const newBudget = calculateBudget(
             remainingIncome,
@@ -69,24 +96,11 @@ const ResumeData: React.FC = () => {
     }, [
         dispatch,
         currentDate,
-        closingDay,
         fixedDate,
         remainingIncome,
         remainingExpenses,
         balance,
     ]);
-
-
-
-    console.log("fine: ", stringToDate(getDateYYYYMMDD(fixedDate)));
-    console.log("inzio: ", stringToDate(currentDate));
-    console.log("mancano: ", diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate)));
-
-    //dispatch(setDayCountDown(diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate))));
-
-    
-
-    //dispatch(setBudget(calculateBudget(remainingIncome, remainingExpenses, balance, dayCountDown)));
 
     const userName = "Andrea";
 

@@ -119,3 +119,19 @@ export function diffInDays(dateA: Date, dateB: Date): number {
 
     return Math.floor((utcA - utcB) / MS_PER_DAY);
 }
+
+
+export function daysInMonth(year: number, month1to12: number): number {
+    return new Date(year, month1to12, 0).getDate();
+}
+
+export function toYYYYMMDD(year: number, month1to12: number, day: number): string {
+    const mm = String(month1to12).padStart(2, "0");
+    const dd = String(day).padStart(2, "0");
+    return `${year}-${mm}-${dd}`;
+}
+
+/** se day=31 e il mese ha 30 o 28 giorni, lo porta all’ultimo giorno disponibile */
+export function clampDayToMonth(year: number, month1to12: number, day: number): number {
+    return Math.min(day, daysInMonth(year, month1to12));
+}
