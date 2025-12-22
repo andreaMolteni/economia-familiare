@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect, useState } from "react";
 import {
     Typography,
     Grid,
@@ -7,12 +7,16 @@ import {
     ListItem,
     ListItemText,
 } from "@mui/material";
+import { IconButton, TextField, Stack, } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { getNextAvailableDayOfMonth, diffInDays, formatDDMMYYYYtoYYYYMMDD, formatYYYYMMDDtoDDMMYYYY } from '../utils/dateUtils';
 import type { RootState } from "../app/store";
 import { getDateDDMMYYYY, getDateYYYYMMDD, stringToDate } from "../utils/dateUtils";
 import { setClosingDay, setDayCountDown } from "../slices/dateSlice";
-import { setBudget } from "../slices/moneySlice";
+import { setBalance, setBudget } from "../slices/moneySlice";
 
 
 
@@ -32,11 +36,50 @@ const ResumeData: React.FC = () => {
     const remainingIncome: number = useSelector((state: RootState) => state.money.remainingIncome);
 
 
+    const [isEditingBalance, setIsEditingBalance] = useState(false);
+    const [balanceDraft, setBalanceDraft] = useState<string>(balance.toFixed(2));
+
+    useEffect(() => {
+        if (!isEditingBalance) {
+            setBalanceDraft(balance.toFixed(2));
+        }
+    }, [balance, isEditingBalance]);
+
+    useEffect(() => {
+        const days = diffInDays(
+            stringToDate(getDateYYYYMMDD(fixedDate)),
+            stringToDate(currentDate)
+        );
+
+        dispatch(setDayCountDown(days));
+
+        // Evita divisione per 0
+        const safeDays = Math.max(days, 1);
+        const newBudget = calculateBudget(
+            remainingIncome,
+            remainingExpenses,
+            balance,
+            safeDays
+        );
+
+        dispatch(setBudget(newBudget));
+    }, [
+        dispatch,
+        currentDate,
+        closingDay,
+        fixedDate,
+        remainingIncome,
+        remainingExpenses,
+        balance,
+    ]);
+
+
+
     console.log("fine: ", stringToDate(getDateYYYYMMDD(fixedDate)));
     console.log("inzio: ", stringToDate(currentDate));
     console.log("mancano: ", diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate)));
 
-    dispatch(setDayCountDown(diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate))));
+    //dispatch(setDayCountDown(diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate))));
 
     const calculateBudget = (
         remainingIncome: number,
@@ -47,7 +90,7 @@ const ResumeData: React.FC = () => {
         return (remainingIncome + balance - remainingExpenses) / remainingDay;
     };
 
-    dispatch(setBudget(calculateBudget(remainingIncome, remainingExpenses, balance, dayCountDown)));
+    //dispatch(setBudget(calculateBudget(remainingIncome, remainingExpenses, balance, dayCountDown)));
 
     const userName = "Andrea";
 
@@ -118,7 +161,56 @@ const ResumeData: React.FC = () => {
                                             component="span"
                                             sx={{ color: 'text.primary', display: 'inline' }}
                                         />
-                                        Il saldo disponibile sul tuo conto è <b>{balance.toFixed(2)} €</b>
+                                        Il saldo disponibile sul tuo conto è{" "}
+                                        {!isEditingBalance ? (
+                                            <>
+                                                <b>{balance.toFixed(2)} €</b>
+                                                <IconButton
+                                                    size="small"
+                                                    sx={{ ml: 1 }}
+                                                    onClick={() => setIsEditingBalance(true)}
+                                                    aria-label="Modifica saldo"
+                                                >
+                                                    <EditIcon fontSize="small" />
+                                                </IconButton>
+                                            </>
+                                        ) : (
+                                            <Stack direction="row" spacing={1} sx={{ display: "inline-flex", ml: 1 }} alignItems="center">
+                                                <TextField
+                                                    size="small"
+                                                    type="number"
+                                                    value={balanceDraft}
+                                                    onChange={(e) => setBalanceDraft(e.target.value)}
+                                                    inputProps={{ step: "0.01" }}
+                                                    sx={{ width: 120 }}
+                                                />
+                                                <IconButton
+                                                    size="small"
+                                                    color="success"
+                                                    aria-label="Salva saldo"
+                                                    onClick={() => {
+                                                        const v = Number(balanceDraft);
+                                                        if (!Number.isFinite(v)) return;
+                                                        dispatch(setBalance(v));
+                                                        setIsEditingBalance(false);
+                                                    }}
+                                                >
+                                                    <CheckIcon fontSize="small" />
+                                                </IconButton>
+
+                                                <IconButton
+                                                    size="small"
+                                                    color="error"
+                                                    aria-label="Annulla"
+                                                    onClick={() => {
+                                                        setBalanceDraft(balance.toFixed(2));
+                                                        setIsEditingBalance(false);
+                                                    }}
+                                                >
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Stack>
+                                        )}
                                     </ListItemText>
                                 </ListItem>
                                 <ListItem alignItems="flex-start">
