@@ -30,17 +30,42 @@ export const filterRecurring = (exp: (Expense[] | Income[])) => {
  * @param fixedDate
  * @returns
  */
-export const filterRecurringOnMonth = (exp: (Expense[] | Income[]), fixedDate: Date) => {
-    const targetDay: number = fixedDate.getDay();
-    const etargetMonth: number = fixedDate.getMonth();
+export const filterRecurringOnMonth = (exp: (Expense[] | Income[]), fixedDate: Date): (Expense[] | Income[]) => {
+    const targetDay: number = fixedDate.getDate();
+    const etargetMonth: number = fixedDate.getMonth() + 1;
 
-    return exp.filter(r => {
-        const expensesDay: number = new Date(r.date).getDay();
+    const temp = new Date("2025-01-01");
+
+    console.log("Data temporanera: ", temp);
+    console.log("Mese Data temporanera: ", temp.getMonth());
+
+    let exp_new = exp.filter(r => {
+        const expensesDay: number = new Date(r.date).getDate();
+        const[year, , day] = r.date.split("-");
 
         if ((targetDay - expensesDay) >= 0 && r.recurring.months.includes(etargetMonth)) {
-            return r
+            return {
+                ...r,
+                date: `${year}-${etargetMonth}-${day}`,
+            }
         } else if ((targetDay - expensesDay) < 0 && r.recurring.months.includes(etargetMonth - 1)) {
-            return r
+            return {
+                ...r,
+                date: `${year}-${etargetMonth -1 }-${day}`,
+            };
         }
     });
+
+    exp_new = exp_new.map((r) => {
+        const expensesDay: number = new Date(r.date).getDate();
+        const [year, , day] = r.date.split("-");
+        const month = (targetDay - expensesDay) >= 0 ? etargetMonth : etargetMonth - 1;
+        return {
+            ...r,
+            date: `${year}-${month}-${day}`,
+        };
+
+       
+    });
+    return exp_new;
 }

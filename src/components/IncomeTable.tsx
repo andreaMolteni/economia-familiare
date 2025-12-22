@@ -25,7 +25,7 @@ import {
 } from "../services/financeApi";
 
 import type { Income } from '../../types';
-import { getNextAvailableDayOfMonth, stringToDate } from '../utils/dateUtils';
+import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from '../utils/dateUtils';
 import {
     filterInMonth,
     filterRecurring,
@@ -287,7 +287,7 @@ const IncomeTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            row.date
+                                            formatYYYYMMDDtoDDMMYYYY(row.date)
                                         )}
                                     </TableCell>
 

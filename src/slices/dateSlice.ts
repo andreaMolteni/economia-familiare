@@ -8,7 +8,7 @@ interface DateState {
 }
 
 const initialState: DateState = {
-    currentDate: "4-12-2025",//getDateYYYYMMDD(new Date), // valore iniziale
+    currentDate: "2025-12-04",//getDateYYYYMMDD(new Date), // valore iniziale
     closingDay: 14,
     dayCountDown: 31
 };

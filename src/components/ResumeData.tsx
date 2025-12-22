@@ -8,10 +8,11 @@ import {
     ListItemText,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getNextAvailableDayOfMonth, diffInDays, formatDDMMYYYYtoYYYYMMDD } from '../utils/dateUtils';
+import { getNextAvailableDayOfMonth, diffInDays, formatDDMMYYYYtoYYYYMMDD, formatYYYYMMDDtoDDMMYYYY } from '../utils/dateUtils';
 import type { RootState } from "../app/store";
-import { getDateDDMMYYYY, stringToDate } from "../utils/dateUtils";
+import { getDateDDMMYYYY, getDateYYYYMMDD, stringToDate } from "../utils/dateUtils";
 import { setClosingDay, setDayCountDown } from "../slices/dateSlice";
+import { setBudget } from "../slices/moneySlice";
 
 
 
@@ -25,18 +26,28 @@ const ResumeData: React.FC = () => {
     const dayCountDown = useSelector((state: RootState) => state.date.dayCountDown);
     // data di chiusura del mese contabile:
     const fixedDate: Date = getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay);
-    const balance = useSelector((state: RootState) => state.money.balance);
-    const budget = useSelector((state: RootState) => state.money.budget);
-    const remainingExpenses = useSelector((state: RootState) => state.money.remainingExpenses);
-    const remainingIncome = useSelector((state: RootState) => state.money.remainingIncome);
+    const balance: number = useSelector((state: RootState) => state.money.balance);
+    const budget: number = useSelector((state: RootState) => state.money.budget);
+    const remainingExpenses: number = useSelector((state: RootState) => state.money.remainingExpenses);
+    const remainingIncome: number = useSelector((state: RootState) => state.money.remainingIncome);
 
 
-    //console.log("fine: ", stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))));
-    //console.log("inzio: ", stringToDate(currentDate));
-    //console.log("mancano: ", diffInDays(stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))), stringToDate(currentDate)));
+    console.log("fine: ", stringToDate(getDateYYYYMMDD(fixedDate)));
+    console.log("inzio: ", stringToDate(currentDate));
+    console.log("mancano: ", diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate)));
 
-    dispatch(setDayCountDown(26));
-    //dispatch(setDayCountDown(diffInDays(stringToDate(formatDDMMYYYYtoYYYYMMDD(getDateDDMMYYYY(fixedDate))), stringToDate(currentDate))));
+    dispatch(setDayCountDown(diffInDays(stringToDate(getDateYYYYMMDD(fixedDate)), stringToDate(currentDate))));
+
+    const calculateBudget = (
+        remainingIncome: number,
+        remainingExpenses: number,
+        balance: number,
+        remainingDay: number
+    ): number => {
+        return (remainingIncome + balance - remainingExpenses) / remainingDay;
+    };
+
+    dispatch(setBudget(calculateBudget(remainingIncome, remainingExpenses, balance, dayCountDown)));
 
     const userName = "Andrea";
 
@@ -67,7 +78,7 @@ const ResumeData: React.FC = () => {
                             variant="h5"
                             sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
                         >
-                            Oggi è il {currentDate}
+                            Oggi è il {formatYYYYMMDDtoDDMMYYYY(currentDate)}
                         </Typography>
                         <Typography
                             variant="h5"
@@ -107,7 +118,7 @@ const ResumeData: React.FC = () => {
                                             component="span"
                                             sx={{ color: 'text.primary', display: 'inline' }}
                                         />
-                                        Il saldo disponibile sul tuo conto è <b>{balance}€</b>
+                                        Il saldo disponibile sul tuo conto è <b>{balance.toFixed(2)} €</b>
                                     </ListItemText>
                                 </ListItem>
                                 <ListItem alignItems="flex-start">
@@ -116,7 +127,7 @@ const ResumeData: React.FC = () => {
                                             component="span"
                                             sx={{ color: 'text.primary', display: 'inline' }}
                                         />
-                                        Il tuo budget giornaliero è di <b>54.32€</b>
+                                        Il tuo budget giornaliero è di <b>{budget.toFixed(2)} €</b>
                                     </ListItemText>
                                 </ListItem>
                             </List>
