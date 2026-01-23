@@ -376,29 +376,15 @@
       "date": "2025-01-16"
     },
     {
-      "id": "16",
-      "userId": 101,
       "type": "Loan Car",
       "description": "Car loan monthly payment",
       "value": 250,
+      "date": "2025-02-13",
       "recurring": {
-        "months": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12
-        ],
-        "dayOfTheMonth": 13
+        "months": [],
+        "dayOfTheMonth": null
       },
-      "date": "2025-01-13"
+      "id": "16"
     },
     {
       "id": "17",
@@ -3439,6 +3425,18 @@
         "dayOfTheMonth": null
       },
       "id": "9690"
+    },
+    {
+      "id": "a299",
+      "userId": 101,
+      "type": "hdzh",
+      "description": "zdfbhzdfh",
+      "value": 34,
+      "date": "2026-01-30",
+      "recurring": {
+        "months": [],
+        "dayOfTheMonth": null
+      }
     }
   ],
   "income": [

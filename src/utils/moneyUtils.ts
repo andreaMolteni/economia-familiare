@@ -59,7 +59,10 @@ export const filterRecurringOnMonth = (exp: (Expense[] | Income[]), fixedDate: D
     exp_new = exp_new.map((r) => {
         const expensesDay: number = new Date(r.date).getDate();
         const [year, , day] = r.date.split("-");
-        const month = (targetDay - expensesDay) >= 0 ? etargetMonth : etargetMonth - 1;
+        const month = String(
+            (targetDay - expensesDay) >= 0 ? etargetMonth : etargetMonth - 1
+        ).padStart(2, "0");
+
         return {
             ...r,
             date: `${year}-${month}-${day}`,

@@ -132,6 +132,20 @@ const ExpensesTable: React.FC = () => {
         });
     }, [filteredExpenses]);
 
+    
+
+    const totalShown = useMemo(() => {
+        return filteredExpenses.reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredExpenses]);
+
+    const currentDateObj = useMemo(() => stringToDate(currentDate), [currentDate]);
+
+    const totalNotExpired = useMemo(() => {
+        return filteredExpenses
+            .filter((exp) => stringToDate(exp.date) >= currentDateObj) // oggi NON scaduto
+            .reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredExpenses, currentDateObj]);
+
 
     // ✅ returns condizionali DOPO gli hook
     if (isLoading) return <Typography>Loading expenses...</Typography>;
@@ -178,9 +192,19 @@ const ExpensesTable: React.FC = () => {
                     <TableBody>
                         {orderedExpenses.map((exp) => {
                             const isEditing = editingId === exp.id;
+                            const expired = stringToDate(exp.date) < currentDateObj;
 
                             return (
-                                <TableRow key={exp.id}>
+                                <TableRow key={exp.id}
+                                    sx={
+                                        expired
+                                            ? {
+                                                opacity: 0.65,
+                                                "& td": { textDecoration: "line-through", textDecorationThickness: "1px" },
+                                            }
+                                            : undefined
+                                    }
+                                >
                                     <TableCell>
                                         {isEditing ? (
                                             <TextField
@@ -282,6 +306,27 @@ const ExpensesTable: React.FC = () => {
                                 </TableRow>
                             );
                         })}
+                        <TableRow>
+                            <TableCell colSpan={2} />
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                Totale:
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                {totalShown.toLocaleString("it-IT", { style: "currency", currency: "EUR" })}
+                            </TableCell>
+                            <TableCell />
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell colSpan={2} />
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                Totale non scaduto:
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                {totalNotExpired.toLocaleString("it-IT", { style: "currency", currency: "EUR" })}
+                            </TableCell>
+                            <TableCell />
+                        </TableRow>
 
                         {filteredExpenses.length === 0 && (
                             <TableRow>

@@ -131,6 +131,18 @@ const IncomeTable: React.FC = () => {
         });
     }, [filteredIncome]);
 
+    const totalShown = useMemo(() => {
+        return filteredIncome.reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredIncome]);
+
+    const currentDateObj = useMemo(() => stringToDate(currentDate), [currentDate]);
+
+    const totalNotExpired = useMemo(() => {
+        return filteredIncome
+            .filter((exp) => stringToDate(exp.date) >= currentDateObj) // oggi NON scaduto
+            .reduce((acc, exp) => acc + exp.value, 0);
+    }, [filteredIncome, currentDateObj]);
+
     // ✅ returns condizionali DOPO gli hook
     if (isLoading) return <Typography>Loading income...</Typography>;
     if (isError) return <Typography color="error">Error loading income</Typography>;
@@ -175,9 +187,19 @@ const IncomeTable: React.FC = () => {
                     <TableBody>
                         {orderedIncome.map((inc) => {
                             const isEditing = editingId === inc.id;
+                            const expired = stringToDate(inc.date) < currentDateObj;
 
                             return (
-                                <TableRow key={inc.id}>
+                                <TableRow key={inc.id}
+                                    sx={
+                                        expired
+                                            ? {
+                                                opacity: 0.65,
+                                                "& td": { textDecoration: "line-through", textDecorationThickness: "1px" },
+                                            }
+                                            : undefined
+                                    }
+                                >
                                     <TableCell>
                                         {isEditing ? (
                                             <TextField
@@ -279,6 +301,27 @@ const IncomeTable: React.FC = () => {
                                 </TableRow>
                             );
                         })}
+                        <TableRow>
+                            <TableCell colSpan={2} />
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                Totale:
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                {totalShown.toLocaleString("it-IT", { style: "currency", currency: "EUR" })}
+                            </TableCell>
+                            <TableCell />
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell colSpan={2} />
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                Totale non scaduto:
+                            </TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 700 }}>
+                                {totalNotExpired.toLocaleString("it-IT", { style: "currency", currency: "EUR" })}
+                            </TableCell>
+                            <TableCell />
+                        </TableRow>
 
                         {filteredIncome.length === 0 && (
                             <TableRow>
