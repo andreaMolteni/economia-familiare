@@ -9,7 +9,6 @@ export interface Expense {
     type: string;
     description: string;
     value: number;
-    recurring: Recurring;
     date: string; // ISO string
 }
 
@@ -19,6 +18,31 @@ export interface Income {
     type: string;
     description: string;
     value: number;
-    recurring: Recurring;
     date: string;
+}
+
+
+export type MonthArray<T> = Array<T | null>; // length 12
+
+export interface RecurringExpense {
+    id: number;
+    userId: number;
+    type: string;
+    description: string;
+    value: MonthArray<number>;
+    date: MonthArray<string>;
+    months: number[];        // 1..12
+    dayOfTheMonth: number;   // 1..31
+}
+
+
+export interface RecurringIncome {
+    id: number;
+    userId: number;
+    type: string;
+    description: string;
+    value: MonthArray<number>;
+    date: MonthArray<string>;
+    months: number[];        // 1..12
+    dayOfTheMonth: number;   // 1..31
 }

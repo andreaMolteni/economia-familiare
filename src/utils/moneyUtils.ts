@@ -1,11 +1,12 @@
 import type { Expense, Income } from '../../types';
+import { type MonthRow } from "../utils/resolveMonthRows";
 import { subtractMonthsSafe } from '../utils/dateUtils';
 
 
 /**
 * funzione  per il filtraggio dei dati per il mese corrente
 */
-export const filterInMonth = (exp: (Expense[] | Income[]), fixedDate: Date) => {
+export const filterInMonth = (exp: MonthRow[], fixedDate: Date) => {
     const start: Date = subtractMonthsSafe(fixedDate, 1);
 
     return exp.filter(r => {
@@ -14,14 +15,18 @@ export const filterInMonth = (exp: (Expense[] | Income[]), fixedDate: Date) => {
     });
 }
 
+// GESTIONE VOCI RICORRENTI
+
+
 /**
  * filtra le spese ricorrenti
  * @param exp
  * @returns
  */
+/*
 export const filterRecurring = (exp: (Expense[] | Income[])) => {
     return exp.filter(exp => exp.recurring.months.length > 0);
-}
+}*/
 
 
 /**
@@ -30,6 +35,7 @@ export const filterRecurring = (exp: (Expense[] | Income[])) => {
  * @param fixedDate
  * @returns
  */
+/*
 export const filterRecurringOnMonth = (exp: (Expense[] | Income[]), fixedDate: Date): (Expense[] | Income[]) => {
     const targetDay: number = fixedDate.getDate();
     const etargetMonth: number = fixedDate.getMonth() + 1;
@@ -72,3 +78,6 @@ export const filterRecurringOnMonth = (exp: (Expense[] | Income[]), fixedDate: D
     });
     return exp_new;
 }
+*/
+
+    

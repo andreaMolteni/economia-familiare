@@ -19,20 +19,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import TransactionDialog from "./TransactionDialog";
-import type { TransactionDraft } from "./TransactionDialog";
+import type { SubmitPayload } from "./TransactionDialog";
 
 import {
     useGetIncomeQuery,
     useAddIncomeMutation,
     useDeleteIncomeMutation,
     useUpdateIncomeMutation,
+    useGetRecurringIncomeQuery,
+    useAddRecurringIncomeMutation,
+    useUpdateRecurringIncomeMutation,
+    useDeleteRecurringIncomeMutation
 } from "../services/financeApi";
 
-import type { Income } from "../../types";
-import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
-import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
+import type { RecurringIncome } from "../../types";
+import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY, accountingMonthIdx } from "../utils/dateUtils";
+//import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
+import { filterInMonth } from "../utils/moneyUtils";
 import type { RootState } from "../app/store";
 import { setTotalIncome, setRemainingIncome } from "../slices/moneySlice";
+import { resolveMonthRows, type MonthRow } from "../utils/resolveMonthRows";
 
 const IncomeTable: React.FC = () => {
     const dispatch = useDispatch();
@@ -40,12 +46,23 @@ const IncomeTable: React.FC = () => {
     // ✅ HOOKS SEMPRE IN CIMA
     const [open, setOpen] = useState(false);
 
-    const { data: income, isLoading, isError } = useGetIncomeQuery();
+    const { data: income = [], isLoading, isError } = useGetIncomeQuery();
+    const { data: recurringIncome = [],
+        isLoading: isLoadingRec,
+        isError: isErrorRec
+    } = useGetRecurringIncomeQuery();
+
+    // mutations single
     const [addIncome] = useAddIncomeMutation();
     const [deleteIncome] = useDeleteIncomeMutation();
     const [updateIncome] = useUpdateIncomeMutation();
 
-    const [editingId, setEditingId] = useState<number | null>(null);
+    // mutations recurring
+    const [addRecurringIncome] = useAddRecurringIncomeMutation();
+    const [updateRecurringIncome] = useUpdateRecurringIncomeMutation();
+    const [deleteRecurringIncome] = useDeleteRecurringIncomeMutation();
+
+    const [editingKey, setEditingKey] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({
         type: "",
         description: "",
@@ -62,65 +79,17 @@ const IncomeTable: React.FC = () => {
         [currentDate, closingDay]
     );
 
-    // ✅ calcolo righe mese contabile (memo)
-    const filteredIncome: Income[] = useMemo(() => {
-        const recurring = filterRecurring(income ?? []);
-        const recurringOnMonth = filterRecurringOnMonth(recurring, fixedDate);
-        const inMonth = filterInMonth(income ?? [], fixedDate);
+    const monthIdx0 = accountingMonthIdx(fixedDate);
 
-        return [...recurringOnMonth, ...inMonth];
-    }, [income, fixedDate]);
+    // recupero dei dati e sistemazione delle voci di entrata
+    const rows: MonthRow[] = useMemo(() => {
+        const rows_temp = resolveMonthRows(income, recurringIncome, monthIdx0);
+        return filterInMonth(rows_temp ?? [], fixedDate)
+    }, [income, recurringIncome, monthIdx0, fixedDate]);
 
-    // ✅ calcolo totali (memo)
-    const totalIncome = useMemo(() => {
-        return filteredIncome.reduce((acc, inc) => acc + inc.value, 0);
-    }, [filteredIncome]);
-
-    const totalRemainingIncome = useMemo(() => {
-        const remaining = filteredIncome.filter(
-            (inc) => stringToDate(inc.date) > stringToDate(currentDate)
-        );
-        return remaining.reduce((acc, inc) => acc + inc.value, 0);
-    }, [filteredIncome, currentDate]);
-
-    // ✅ dispatch dei totali SOLO in effect (non nel render)
-    useEffect(() => {
-        dispatch(setTotalIncome(totalIncome));
-        dispatch(setRemainingIncome(totalRemainingIncome));
-    }, [dispatch, totalIncome, totalRemainingIncome]);
-
-    const startEdit = (inc: Income) => {
-        setEditingId(inc.id);
-        setEditForm({
-            type: inc.type,
-            description: inc.description,
-            value: String(inc.value),
-            date: inc.date,
-        });
-    };
-
-    const saveEdit = async () => {
-        if (editingId === null) return;
-
-        await updateIncome({
-            id: editingId,
-            type: editForm.type,
-            description: editForm.description,
-            value: Number(editForm.value),
-            date: editForm.date,
-            // ⚠️ come per expenses: qui forziamo non-ricorrente; se vuoi edit ricorrenza lo estendiamo dopo
-            recurring: { months: [], dayOfTheMonth: null },
-        });
-
-        setEditingId(null);
-    };
-
-    const handleSubmit = async (payload: TransactionDraft) => {
-        await addIncome(payload);
-    };
-
+    // riordino dei dati dal più recente
     const orderedIncome = useMemo(() => {
-        return [...filteredIncome].sort((a, b) => {
+        return [...rows].sort((a, b) => {
             // prima ordino per data desc
             const da = new Date(a.date).getTime();
             const db = new Date(b.date).getTime();
@@ -129,23 +98,117 @@ const IncomeTable: React.FC = () => {
             // a parità di data, id desc (più nuovo sopra)
             return b.id - a.id;
         });
-    }, [filteredIncome]);
+    }, [rows]);
+
+
+    // ✅ calcolo totali (memo)
+    const totalIncome = useMemo(() => {
+        return rows.reduce((acc, inc) => acc + inc.value, 0);
+    }, [rows]);
+
+    const totalRemainingIncome = useMemo(() => {
+        const remaining = rows.filter(
+            (inc) => stringToDate(inc.date) > stringToDate(currentDate)
+        );
+        return remaining.reduce((acc, inc) => acc + inc.value, 0);
+    }, [rows, currentDate]);
+
+    // ✅ dispatch dei totali SOLO in effect (non nel render)
+    useEffect(() => {
+        dispatch(setTotalIncome(totalIncome));
+        dispatch(setRemainingIncome(totalRemainingIncome));
+    }, [dispatch, totalIncome, totalRemainingIncome]);
+
+    const startEdit = (row: MonthRow) => {
+        setEditingKey(row.rowKey);
+        setEditForm({
+            type: row.type,
+            description: row.description,
+            value: String(row.value),
+            date: row.date,
+        });
+    };
+
+    /** helper: prende la recurring originale dato row.id */
+    const findRecurringById = (id: number): RecurringIncome | undefined =>
+        recurringIncome.find((r) => r.id === id);
+
+    /** save edit: single vs recurring */
+    const saveEdit = async (row: MonthRow) => {
+        const v = Number(editForm.value);
+        if (!Number.isFinite(v)) return;
+
+        if (row.source === "single") {
+            await updateIncome({
+                id: row.id,
+                type: editForm.type,
+                description: editForm.description,
+                value: v,
+                date: editForm.date,
+                userId: row.userId,
+            });
+        } else {
+            const original = findRecurringById(row.id);
+            if (!original) return;
+
+            const idx = monthIdx0;
+
+            const newValue = [...original.value];
+            const newDate = [...original.date];
+
+            newValue[idx] = v;
+            newDate[idx] = editForm.date;
+
+            await updateRecurringIncome({
+                id: original.id,
+                userId: original.userId,
+                type: editForm.type,
+                description: editForm.description,
+                months: original.months,
+                dayOfTheMonth: original.dayOfTheMonth,
+                value: newValue,
+                date: newDate,
+            });
+        }
+
+        setEditingKey(null);
+    };
+
+
+    /** delete: single vs recurring */
+    const handleDelete = async (row: MonthRow) => {
+        if (row.source === "single") {
+            await deleteIncome(row.id);
+        } else {
+            await deleteRecurringIncome(row.id);
+        }
+    };
+
+    /** add submit: single vs recurring (delegato al TransactionDialog) */
+    const handleSubmit = async (payload: SubmitPayload) => {
+        if (payload.kind === "recurring") {
+            await addRecurringIncome(payload);
+        } else {
+            await addIncome(payload);
+        }
+    };
+
 
     const totalShown = useMemo(() => {
-        return filteredIncome.reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredIncome]);
+        return rows.reduce((acc, exp) => acc + exp.value, 0);
+    }, [rows]);
 
     const currentDateObj = useMemo(() => stringToDate(currentDate), [currentDate]);
 
     const totalNotExpired = useMemo(() => {
-        return filteredIncome
+        return rows
             .filter((exp) => stringToDate(exp.date) >= currentDateObj) // oggi NON scaduto
             .reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredIncome, currentDateObj]);
+    }, [rows, currentDateObj]);
 
     // ✅ returns condizionali DOPO gli hook
-    if (isLoading) return <Typography>Loading income...</Typography>;
-    if (isError) return <Typography color="error">Error loading income</Typography>;
+    if (isLoading || isLoadingRec) return <Typography>Loading income...</Typography>;
+    if (isError || isErrorRec) return <Typography color="error">Error loading income</Typography>;
 
     return (
         <Box>
@@ -185,12 +248,12 @@ const IncomeTable: React.FC = () => {
                     </TableHead>
 
                     <TableBody>
-                        {orderedIncome.map((inc) => {
-                            const isEditing = editingId === inc.id;
-                            const expired = stringToDate(inc.date) < currentDateObj;
+                        {orderedIncome.map((row) => {
+                            const isEditing = editingKey === row.rowKey;
+                            const expired = stringToDate(row.date) < currentDateObj;
 
                             return (
-                                <TableRow key={inc.id}
+                                <TableRow key={row.rowKey}
                                     sx={
                                         expired
                                             ? {
@@ -210,7 +273,7 @@ const IncomeTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            inc.type
+                                                row.type
                                         )}
                                     </TableCell>
 
@@ -227,7 +290,7 @@ const IncomeTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            inc.description
+                                            row.description
                                         )}
                                     </TableCell>
 
@@ -250,7 +313,7 @@ const IncomeTable: React.FC = () => {
                                             />
                                         ) : (
                                             <Typography component="span">
-                                                {inc.value.toLocaleString("it-IT", {
+                                                {row.value.toLocaleString("it-IT", {
                                                     style: "currency",
                                                     currency: "EUR",
                                                     minimumFractionDigits: 2,
@@ -271,7 +334,7 @@ const IncomeTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            formatYYYYMMDDtoDDMMYYYY(inc.date)
+                                                formatYYYYMMDDtoDDMMYYYY(row.date)
                                         )}
                                     </TableCell>
 
@@ -281,17 +344,17 @@ const IncomeTable: React.FC = () => {
                                                 variant="contained"
                                                 color="success"
                                                 size="small"
-                                                onClick={saveEdit}
+                                                onClick={() => saveEdit(row)}
                                             >
                                                 Salva
                                             </Button>
                                         ) : (
                                             <>
                                                 <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
-                                                        <IconButton size="small" onClick={() => startEdit(inc)}>
+                                                    <IconButton size="small" onClick={() => startEdit(row)}>
                                                         <EditIcon fontSize="small" />
                                                     </IconButton>
-                                                        <IconButton size="small" onClick={() => deleteIncome(inc.id)}>
+                                                    <IconButton size="small" onClick={() => handleDelete(row)}>
                                                         <DeleteIcon fontSize="small" />
                                                     </IconButton>
                                                 </Box>
@@ -323,7 +386,7 @@ const IncomeTable: React.FC = () => {
                             <TableCell />
                         </TableRow>
 
-                        {filteredIncome.length === 0 && (
+                        {rows.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
                                     No income yet

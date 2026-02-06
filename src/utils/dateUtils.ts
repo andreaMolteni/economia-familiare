@@ -135,3 +135,8 @@ export function toYYYYMMDD(year: number, month1to12: number, day: number): strin
 export function clampDayToMonth(year: number, month1to12: number, day: number): number {
     return Math.min(day, daysInMonth(year, month1to12));
 }
+
+export function accountingMonthIdx(fixedDate: Date): number {
+    const idx:number = fixedDate.getMonth();
+    return idx
+}

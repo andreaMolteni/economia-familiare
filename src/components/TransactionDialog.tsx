@@ -1,4 +1,5 @@
-﻿import React, { useMemo, useState } from "react";
+﻿// src/components/TransactionDialog.tsx
+import React, { useMemo, useState } from "react";
 import {
     Dialog,
     DialogTitle,
@@ -6,42 +7,64 @@ import {
     DialogActions,
     Button,
     TextField,
-    Stack,
     FormControlLabel,
     Checkbox,
+    Stack,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
-    ListItemText,
+    OutlinedInput,
+    Chip,
+    Box,
+    Typography,
 } from "@mui/material";
-import { clampDayToMonth, toYYYYMMDD } from "../utils/dateUtils";
 
-type Mode = "income" | "expense";
+type Mode = "expense" | "income";
 
-type Recurring = {
-    months: number[];
-    dayOfTheMonth: number | null;
-};
-
-export type TransactionDraft = {
+// ---------- Types per submit (NO any) ----------
+export type SingleExpensePayload = {
     userId: number;
     type: string;
     description: string;
     value: number;
     date: string; // YYYY-MM-DD
-    recurring: Recurring;
 };
 
+export type RecurringExpensePayload = {
+    userId: number;
+    type: string;
+    description: string;
+    value: Array<number | null>; // 12
+    date: Array<string | null>; // 12
+    months: number[]; // 1..12
+    dayOfTheMonth: number; // 1..31
+};
+
+export type ExpenseSubmitPayload =
+    | ({ kind: "single" } & SingleExpensePayload)
+    | ({ kind: "recurring" } & RecurringExpensePayload);
+
+// income: identico payload
+export type SingleIncomePayload = SingleExpensePayload;
+export type RecurringIncomePayload = RecurringExpensePayload;
+
+export type IncomeSubmitPayload =
+    | ({ kind: "single" } & SingleIncomePayload)
+    | ({ kind: "recurring" } & RecurringIncomePayload);
+
+export type SubmitPayload = ExpenseSubmitPayload | IncomeSubmitPayload;
+
+// ---------- Props ----------
 type Props = {
     open: boolean;
-    onClose: () => void;
     mode: Mode;
-    onSubmit: (payload: TransactionDraft) => Promise<void> | void;
-    userId?: number;
+    onClose: () => void;
+    onSubmit: (payload: SubmitPayload) => Promise<void> | void;
 };
 
-const MONTHS = [
+// ---------- Utils ----------
+const MONTHS_IT = [
     { n: 1, label: "Gennaio" },
     { n: 2, label: "Febbraio" },
     { n: 3, label: "Marzo" },
@@ -56,98 +79,118 @@ const MONTHS = [
     { n: 12, label: "Dicembre" },
 ];
 
-function getTodayYYYYMMDD(): string {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-}
+const pad2 = (n: number) => String(n).padStart(2, "0");
 
-export default function TransactionDialog({
-    open,
-    onClose,
-    mode,
-    onSubmit,
-    userId = 101,
-}: Props) {
-    const title = mode === "income" ? "Nuova entrata" : "Nuova uscita";
+const clampDayToMonth = (year: number, month1to12: number, day: number) => {
+    // ultimo giorno del mese: new Date(year, month, 0)
+    const last = new Date(year, month1to12, 0).getDate();
+    return Math.min(Math.max(day, 1), last);
+};
 
-    const today = useMemo(() => new Date(), []);
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1; // 1..12
+const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) => {
+    const title = mode === "expense" ? "Nuova spesa" : "Nuova entrata";
 
+    // form base
     const [type, setType] = useState("");
     const [description, setDescription] = useState("");
-    const [value, setValue] = useState<string>("");
-
+    const [valueStr, setValueStr] = useState("");
     const [isRecurring, setIsRecurring] = useState(false);
 
-    // non ricorrente
-    const [date, setDate] = useState(getTodayYYYYMMDD());
+    // single
+    const [date, setDate] = useState(""); // YYYY-MM-DD
 
-    // ricorrente
-    const [dayOfMonth, setDayOfMonth] = useState<string>("1");
-    const [months, setMonths] = useState<number[]>([]);
+    // recurring
+    const [dayOfTheMonth, setDayOfTheMonth] = useState<number>(1);
+    const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
 
-    const allSelected = months.length === 12;
+    const allSelected = useMemo(
+        () => selectedMonths.length === 12,
+        [selectedMonths]
+    );
 
-    const reset = () => {
+    const resetForm = () => {
         setType("");
         setDescription("");
-        setValue("");
+        setValueStr("");
         setIsRecurring(false);
-        setDate(getTodayYYYYMMDD());
-        setDayOfMonth("1");
-        setMonths([]);
+        setDate("");
+        setDayOfTheMonth(1);
+        setSelectedMonths([]);
     };
 
     const handleClose = () => {
-        reset();
+        resetForm();
         onClose();
     };
 
-    const handleToggleAll = (checked: boolean) => {
-        setMonths(checked ? MONTHS.map((m) => m.n) : []);
+    const handleToggleAll = () => {
+        setSelectedMonths(allSelected ? [] : MONTHS_IT.map((m) => m.n));
     };
 
-    const handleSubmit = async () => {
-        const v = Number(value);
-        if (!type.trim() || !Number.isFinite(v)) return;
+    const handleMonthsChange = (vals: number[]) => {
+        // Se l'utente seleziona tutti i 12, ok; se rimuove qualcuno, ok.
+        // Non serve logica extra, All lo gestiamo col bottone dedicato.
+        setSelectedMonths(vals);
+    };
+
+    const canSubmit = useMemo(() => {
+        const v = Number(valueStr);
+        if (!type.trim()) return false;
+        if (!Number.isFinite(v)) return false;
 
         if (!isRecurring) {
-            const payload: TransactionDraft = {
+            return !!date; // deve esserci una data
+        }
+
+        // ricorrente: deve avere almeno un mese e day valido
+        if (selectedMonths.length === 0) return false;
+        if (dayOfTheMonth < 1 || dayOfTheMonth > 31) return false;
+        return true;
+    }, [type, valueStr, isRecurring, date, selectedMonths, dayOfTheMonth]);
+
+    const handleSubmit = async () => {
+        const v = Number(valueStr);
+        if (!Number.isFinite(v)) return;
+
+        const userId = 101;
+
+        if (!isRecurring) {
+            const payload: SubmitPayload = {
+                kind: "single",
                 userId,
                 type: type.trim(),
                 description: description.trim(),
                 value: v,
-                date, // scelta utente
-                recurring: { months: [], dayOfTheMonth: null },
+                date,
             };
             await onSubmit(payload);
             handleClose();
             return;
         }
 
-        // ricorrente: months non vuoto + day valido 1..31
-        const dayNum = Math.max(1, Math.min(31, Number(dayOfMonth)));
-        const selectedMonths = [...months].sort((a, b) => a - b);
-        if (selectedMonths.length === 0) return;
+        // recurring payload
+        const year = new Date().getFullYear(); // 2026 se sei in 2026; altrimenti cambia tu con un selector
+        const monthsSet = new Set(selectedMonths);
 
-        // data deve essere anno e mese corrente + giorno scelto (clamp su mesi corti)
-        const safeDay = clampDayToMonth(currentYear, currentMonth, dayNum);
-        const recurringDate = toYYYYMMDD(currentYear, currentMonth, safeDay);
+        const valueArr: Array<number | null> = Array(12).fill(null);
+        const dateArr: Array<string | null> = Array(12).fill(null);
 
-        const payload: TransactionDraft = {
+        for (let m = 1; m <= 12; m++) {
+            if (!monthsSet.has(m)) continue;
+            const safeDay = clampDayToMonth(year, m, dayOfTheMonth);
+            valueArr[m - 1] = v;
+            dateArr[m - 1] = `${year}-${pad2(m)}-${pad2(safeDay)}`;
+        }
+
+        const payload: SubmitPayload = {
+            kind: "recurring",
             userId,
             type: type.trim(),
             description: description.trim(),
-            value: v,
-            date: recurringDate,
-            recurring: {
-                months: selectedMonths,
-                dayOfTheMonth: dayNum,
-            },
+            value: valueArr,
+            date: dateArr,
+            months: selectedMonths.slice().sort((a, b) => a - b),
+            dayOfTheMonth,
         };
 
         await onSubmit(payload);
@@ -158,7 +201,7 @@ export default function TransactionDialog({
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>{title}</DialogTitle>
 
-            <DialogContent dividers>
+            <DialogContent>
                 <Stack spacing={2} sx={{ mt: 1 }}>
                     <TextField
                         label="Tipologia"
@@ -178,11 +221,11 @@ export default function TransactionDialog({
 
                     <TextField
                         label="Valore"
+                        value={valueStr}
+                        onChange={(e) => setValueStr(e.target.value)}
                         type="number"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        fullWidth
                         inputProps={{ step: "0.01" }}
+                        fullWidth
                     />
 
                     <FormControlLabel
@@ -207,58 +250,64 @@ export default function TransactionDialog({
                     ) : (
                         <>
                             <TextField
-                                label="Ricorre il giorno (1..31)"
+                                label="Ricorre il giorno"
                                 type="number"
-                                value={dayOfMonth}
-                                onChange={(e) => setDayOfMonth(e.target.value)}
+                                value={dayOfTheMonth}
+                                onChange={(e) => setDayOfTheMonth(Number(e.target.value))}
                                 inputProps={{ min: 1, max: 31 }}
                                 fullWidth
                             />
 
-                            <FormControl fullWidth>
-                                <InputLabel id="months-label">Scegli i mesi</InputLabel>
+                            <Box>
+                                <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                                    Scegli i mesi
+                                </Typography>
+
+                                <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+                                    <Button
+                                        size="small"
+                                        variant={allSelected ? "contained" : "outlined"}
+                                        onClick={handleToggleAll}
+                                    >
+                                        All
+                                    </Button>
+
+                                    <Typography variant="body2" sx={{ alignSelf: "center", opacity: 0.7 }}>
+                                        {selectedMonths.length} selezionati
+                                    </Typography>
+                                </Stack>
+
+                                <FormControl fullWidth>
+                                    <InputLabel id="months-label">Mesi</InputLabel>
                                     <Select
                                         labelId="months-label"
-                                        label="Scegli i mesi"
                                         multiple
-                                        value={months}
-                                        renderValue={(selected) =>
-                                            selected.length === 12
-                                                ? "Tutti"
-                                                : selected
+                                        value={selectedMonths}
+                                        onChange={(e) => handleMonthsChange(e.target.value as number[])}
+                                        input={<OutlinedInput label="Mesi" />}
+                                        renderValue={(selected) => (
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                                                {(selected as number[])
                                                     .slice()
                                                     .sort((a, b) => a - b)
-                                                    .map((n) => MONTHS.find((m) => m.n === n)?.label)
-                                                    .filter(Boolean)
-                                                    .join(", ")
-                                        }
-                                        onChange={(e) => {
-                                            const val = e.target.value as number[];
-
-                                            // ✅ se clicco "All" (sentinella 0), toggle tutti e stop
-                                            if (val.includes(0)) {
-                                                handleToggleAll(!allSelected);
-                                                return;
-                                            }
-
-                                            // ✅ protezione: rimuove eventuale 0 se arrivasse comunque
-                                            setMonths(val.filter((x) => x !== 0));
-                                        }}
+                                                    .map((m) => (
+                                                        <Chip
+                                                            key={m}
+                                                            label={MONTHS_IT.find((x) => x.n === m)?.label ?? m}
+                                                            size="small"
+                                                        />
+                                                    ))}
+                                            </Box>
+                                        )}
                                     >
-                                        {/* ALL */}
-                                        <MenuItem value={0}>
-                                            <Checkbox checked={allSelected} />
-                                            <ListItemText primary="All" />
-                                        </MenuItem>
-
-                                        {MONTHS.map((m) => (
+                                        {MONTHS_IT.map((m) => (
                                             <MenuItem key={m.n} value={m.n}>
-                                                <Checkbox checked={months.includes(m.n)} />
-                                                <ListItemText primary={m.label} />
+                                                {m.label}
                                             </MenuItem>
                                         ))}
                                     </Select>
-                            </FormControl>
+                                </FormControl>
+                            </Box>
                         </>
                     )}
                 </Stack>
@@ -266,10 +315,12 @@ export default function TransactionDialog({
 
             <DialogActions>
                 <Button onClick={handleClose}>Annulla</Button>
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button variant="contained" onClick={handleSubmit} disabled={!canSubmit}>
                     Salva
                 </Button>
             </DialogActions>
         </Dialog>
     );
-}
+};
+
+export default TransactionDialog;

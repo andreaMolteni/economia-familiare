@@ -19,20 +19,27 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import TransactionDialog from "./TransactionDialog";
-import type { TransactionDraft } from "./TransactionDialog";
+import type { SubmitPayload } from "./TransactionDialog";
 
 import {
     useGetExpensesQuery,
     useAddExpenseMutation,
     useDeleteExpenseMutation,
     useUpdateExpenseMutation,
+    useGetRecurringExpensesQuery,
+    useAddRecurringExpenseMutation,
+    useUpdateRecurringExpenseMutation,
+    useDeleteRecurringExpenseMutation
 } from "../services/financeApi";
 
-import type { Expense } from "../../types";
-import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
-import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
+import type { Expense, RecurringExpense } from "../../types";
+import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY, accountingMonthIdx } from "../utils/dateUtils";
+//import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
+import { filterInMonth } from "../utils/moneyUtils";
 import type { RootState } from "../app/store";
 import { setTotalExpenses, setRemainingExpenses } from "../slices/moneySlice";
+
+import { resolveMonthRows, type MonthRow } from "../utils/resolveMonthRows";
 
 const ExpensesTable: React.FC = () => {
     const dispatch = useDispatch();
@@ -40,12 +47,23 @@ const ExpensesTable: React.FC = () => {
     // ✅ HOOKS SEMPRE IN CIMA
     const [open, setOpen] = useState(false);
 
-    const { data: expenses, isLoading, isError } = useGetExpensesQuery();
+    const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
+    const { data: recurringExpenses = [],
+        isLoading: isLoadingRec,
+        isError: isErrorRec
+    } = useGetRecurringExpensesQuery();
+
+    // mutations single
     const [addExpense] = useAddExpenseMutation();
     const [deleteExpense] = useDeleteExpenseMutation();
     const [updateExpense] = useUpdateExpenseMutation();
 
-    const [editingId, setEditingId] = useState<number | null>(null);
+    // mutations recurring
+    const [addRecurringExpense] = useAddRecurringExpenseMutation();
+    const [updateRecurringExpense] = useUpdateRecurringExpenseMutation();
+    const [deleteRecurringExpense] = useDeleteRecurringExpenseMutation();
+
+    const [editingKey, setEditingKey] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({
         type: "",
         description: "",
@@ -62,66 +80,15 @@ const ExpensesTable: React.FC = () => {
         [currentDate, closingDay]
     );
 
-    // ✅ calcolo righe mese contabile (memo)
-    const filteredExpenses: Expense[] = useMemo(() => {
-        const recurring = filterRecurring(expenses ?? []);
-        const recurringOnMonth = filterRecurringOnMonth(recurring, fixedDate);
-        const inMonth = filterInMonth(expenses ?? [], fixedDate);
+    const monthIdx0 = accountingMonthIdx(fixedDate);
 
-        // concat
-        return [...recurringOnMonth, ...inMonth];
-    }, [expenses, fixedDate]);
-
-    // ✅ calcolo totali (memo)
-    const totalExpenses = useMemo(() => {
-        return filteredExpenses.reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredExpenses]);
-
-    const totalRemainingExpenses = useMemo(() => {
-        const remaining = filteredExpenses.filter(
-            (exp) => stringToDate(exp.date) > stringToDate(currentDate)
-        );
-        return remaining.reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredExpenses, currentDate]);
-
-    // ✅ dispatch dei totali SOLO in effect (non nel render)
-    useEffect(() => {
-        dispatch(setTotalExpenses(totalExpenses));
-        dispatch(setRemainingExpenses(totalRemainingExpenses));
-    }, [dispatch, totalExpenses, totalRemainingExpenses]);
-
-    const startEdit = (exp: Expense) => {
-        setEditingId(exp.id);
-        setEditForm({
-            type: exp.type,
-            description: exp.description,
-            value: String(exp.value),
-            date: exp.date,
-        });
-    };
-
-    const saveEdit = async () => {
-        if (editingId === null) return;
-
-        await updateExpense({
-            id: editingId,
-            type: editForm.type,
-            description: editForm.description,
-            value: Number(editForm.value),
-            date: editForm.date,
-            // ⚠️ qui stai forzando non-ricorrente: se vuoi editare anche ricorrente lo estendiamo dopo
-            recurring: { months: [], dayOfTheMonth: null },
-        });
-
-        setEditingId(null);
-    };
-
-    const handleSubmit = async (payload: TransactionDraft) => {
-        await addExpense(payload);
-    };
+    const rows: MonthRow[] = useMemo(() => {
+        const rows_temp = resolveMonthRows(expenses, recurringExpenses, monthIdx0);
+        return filterInMonth(rows_temp ?? [], fixedDate)
+    }, [expenses, recurringExpenses, monthIdx0, fixedDate]);
 
     const orderedExpenses = useMemo(() => {
-        return [...filteredExpenses].sort((a, b) => {
+        return [...rows].sort((a, b) => {
             // prima ordino per data desc
             const da = new Date(a.date).getTime();
             const db = new Date(b.date).getTime();
@@ -130,26 +97,118 @@ const ExpensesTable: React.FC = () => {
             // a parità di data, id desc (più nuovo sopra)
             return b.id - a.id;
         });
-    }, [filteredExpenses]);
+    }, [rows]);
 
-    
+
+    // ✅ calcolo totali (memo)
+    const totalExpenses = useMemo(() => {
+        return rows.reduce((acc, exp) => acc + exp.value, 0);
+    }, [rows]);
+
+    const totalRemainingExpenses = useMemo(() => {
+        const remaining = rows.filter(
+            (exp) => stringToDate(exp.date) > stringToDate(currentDate)
+        );
+        return remaining.reduce((acc, exp) => acc + exp.value, 0);
+    }, [rows, currentDate]);
+
+    // ✅ dispatch dei totali SOLO in effect (non nel render)
+    useEffect(() => {
+        dispatch(setTotalExpenses(totalExpenses));
+        dispatch(setRemainingExpenses(totalRemainingExpenses));
+    }, [dispatch, totalExpenses, totalRemainingExpenses]);
+
+    const startEdit = (row: MonthRow) => {
+        setEditingKey(row.rowKey);
+        setEditForm({
+            type: row.type,
+            description: row.description,
+            value: String(row.value),
+            date: row.date,
+        });
+    };
+
+
+    /** helper: prende la recurring originale dato row.id */
+    const findRecurringById = (id: number): RecurringExpense | undefined =>
+        recurringExpenses.find((r) => r.id === id);
+
+
+    /** save edit: single vs recurring */
+    const saveEdit = async (row: MonthRow) => {
+        const v = Number(editForm.value);
+        if (!Number.isFinite(v)) return;
+
+        if (row.source === "single") {
+            await updateExpense({
+                id: row.id,
+                type: editForm.type,
+                description: editForm.description,
+                value: v,
+                date: editForm.date,
+                userId: row.userId,
+            });
+        } else {
+            const original = findRecurringById(row.id);
+            if (!original) return;
+
+            const idx = monthIdx0;
+
+            const newValue = [...original.value];
+            const newDate = [...original.date];
+
+            newValue[idx] = v;
+            newDate[idx] = editForm.date;
+
+            await updateRecurringExpense({
+                id: original.id,
+                userId: original.userId,
+                type: editForm.type,
+                description: editForm.description,
+                months: original.months,
+                dayOfTheMonth: original.dayOfTheMonth,
+                value: newValue,
+                date: newDate,
+            });
+        }
+
+        setEditingKey(null);
+    };
+
+    /** delete: single vs recurring */
+    const handleDelete = async (row: MonthRow) => {
+        if (row.source === "single") {
+            await deleteExpense(row.id);
+        } else {
+            await deleteRecurringExpense(row.id);
+        }
+    };
+
+    /** add submit: single vs recurring (delegato al TransactionDialog) */
+    const handleSubmit = async (payload: SubmitPayload) => {
+        if (payload.kind === "recurring") {
+            await addRecurringExpense(payload);
+        } else {
+            await addExpense(payload);
+        }
+    };
 
     const totalShown = useMemo(() => {
-        return filteredExpenses.reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredExpenses]);
+        return rows.reduce((acc, exp) => acc + exp.value, 0);
+    }, [rows]);
 
     const currentDateObj = useMemo(() => stringToDate(currentDate), [currentDate]);
 
     const totalNotExpired = useMemo(() => {
-        return filteredExpenses
+        return rows
             .filter((exp) => stringToDate(exp.date) >= currentDateObj) // oggi NON scaduto
             .reduce((acc, exp) => acc + exp.value, 0);
-    }, [filteredExpenses, currentDateObj]);
+    }, [rows, currentDateObj]);
 
 
     // ✅ returns condizionali DOPO gli hook
-    if (isLoading) return <Typography>Loading expenses...</Typography>;
-    if (isError) return <Typography color="error">Error loading expenses</Typography>;
+    if (isLoading || isLoadingRec) return <Typography>Loading expenses...</Typography>;
+    if (isError || isErrorRec) return <Typography color="error">Error loading expenses</Typography>;
 
     
     return (
@@ -190,12 +249,12 @@ const ExpensesTable: React.FC = () => {
                     </TableHead>
 
                     <TableBody>
-                        {orderedExpenses.map((exp) => {
-                            const isEditing = editingId === exp.id;
-                            const expired = stringToDate(exp.date) < currentDateObj;
+                        {orderedExpenses.map((row) => {
+                            const isEditing = editingKey === row.rowKey;
+                            const expired = stringToDate(row.date) < currentDateObj;
 
                             return (
-                                <TableRow key={exp.id}
+                                <TableRow key={row.rowKey}
                                     sx={
                                         expired
                                             ? {
@@ -215,7 +274,7 @@ const ExpensesTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            exp.type
+                                                row.type
                                         )}
                                     </TableCell>
 
@@ -232,7 +291,7 @@ const ExpensesTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                            exp.description
+                                            row.description
                                         )}
                                     </TableCell>
 
@@ -255,7 +314,7 @@ const ExpensesTable: React.FC = () => {
                                             />
                                         ) : (
                                             <Typography component="span">
-                                                {exp.value.toLocaleString("it-IT", {
+                                                {row.value.toLocaleString("it-IT", {
                                                     style: "currency",
                                                     currency: "EUR",
                                                     minimumFractionDigits: 2,
@@ -276,27 +335,27 @@ const ExpensesTable: React.FC = () => {
                                                 }
                                             />
                                         ) : (
-                                                formatYYYYMMDDtoDDMMYYYY(exp.date)
+                                                formatYYYYMMDDtoDDMMYYYY(row.date)
                                         )}
                                     </TableCell>
 
-                                    <TableCell align="center">
+                                    <TableCell align="center"> 
                                         {isEditing ? (
                                             <Button
                                                 variant="contained"
                                                 color="success"
                                                 size="small"
-                                                onClick={saveEdit}
+                                                onClick={() => saveEdit(row)}
                                             >
                                                 Salva
                                             </Button>
                                         ) : (
                                             <>
                                                 <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
-                                                    <IconButton size="small" onClick={() => startEdit(exp)}>
+                                                    <IconButton size="small" onClick={() => startEdit(row)}>
                                                         <EditIcon fontSize="small" />
                                                     </IconButton>
-                                                    <IconButton size="small" onClick={() => deleteExpense(exp.id)}>
+                                                        <IconButton size="small" onClick={() => handleDelete(row)}>
                                                         <DeleteIcon fontSize="small" />
                                                     </IconButton>
                                                 </Box>
@@ -328,7 +387,7 @@ const ExpensesTable: React.FC = () => {
                             <TableCell />
                         </TableRow>
 
-                        {filteredExpenses.length === 0 && (
+                        {rows.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
                                     No expenses yet
