@@ -5,12 +5,16 @@ interface DateState {
     currentDate: string; // data corrente formato YYYY-MM-DD
     closingDay: number; // giorno della chiusura contabile del mese
     dayCountDown: number; // giorni rimanenti alla fine del mese contabile
+    monthIndex: number; // indice del mese corrente
+    month: string | null; // mese per cui vengono mostrati i dati
 }
 
 const initialState: DateState = {
     currentDate: getDateYYYYMMDD(new Date()), // valore iniziale
-    closingDay: 14,
-    dayCountDown: 31
+    closingDay: 5,
+    dayCountDown: 31,
+    monthIndex: 0,
+    month: "gennaio"
 };
 
 const dateSlice = createSlice({
@@ -26,8 +30,14 @@ const dateSlice = createSlice({
         setDayCountDown(state, action: PayloadAction<number>) {
             state.dayCountDown = action.payload;
         },
+        setMonthIndex(state, action: PayloadAction<number>) {
+            state.monthIndex = action.payload;
+        },
+        setMonth(state, action: PayloadAction<string | null>) {
+            state.month = action.payload;
+        },
     },
 });
 
-export const { setCurrentDate, setClosingDay, setDayCountDown } = dateSlice.actions;
+export const { setCurrentDate, setClosingDay, setDayCountDown, setMonthIndex, setMonth } = dateSlice.actions;
 export default dateSlice.reducer;

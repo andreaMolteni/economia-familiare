@@ -140,3 +140,27 @@ export function accountingMonthIdx(fixedDate: Date): number {
     const idx:number = fixedDate.getMonth();
     return idx
 }
+
+export function getMonthByIndex(index: number): string | null {
+    const mesi: string[] = [
+        "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
+        "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"
+    ];
+
+    return mesi[index] ?? null; // usa null se fuori range
+
+}
+
+export function getIndexMonthByFixedDate(fixedDate: Date): number {
+    
+    const day = fixedDate.getDate();
+    let monthIndex: number = fixedDate.getMonth();
+    if (day < 15 && monthIndex != 0) {
+        monthIndex = monthIndex - 1;
+    } else if (day < 15 && monthIndex == 0) {
+        monthIndex = 11;
+    }
+
+    return monthIndex; // usa null se fuori range
+
+}

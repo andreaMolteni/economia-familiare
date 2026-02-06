@@ -32,13 +32,12 @@ import {
     useDeleteRecurringExpenseMutation
 } from "../services/financeApi";
 
-import type { Expense, RecurringExpense } from "../../types";
+import type { RecurringExpense } from "../../types";
 import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY, accountingMonthIdx } from "../utils/dateUtils";
 //import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
 import { filterInMonth } from "../utils/moneyUtils";
 import type { RootState } from "../app/store";
 import { setTotalExpenses, setRemainingExpenses } from "../slices/moneySlice";
-
 import { resolveMonthRows, type MonthRow } from "../utils/resolveMonthRows";
 
 const ExpensesTable: React.FC = () => {
@@ -82,11 +81,14 @@ const ExpensesTable: React.FC = () => {
 
     const monthIdx0 = accountingMonthIdx(fixedDate);
 
+    // recupero dei dati e sistemazione delle voci di spesa
     const rows: MonthRow[] = useMemo(() => {
         const rows_temp = resolveMonthRows(expenses, recurringExpenses, monthIdx0);
         return filterInMonth(rows_temp ?? [], fixedDate)
     }, [expenses, recurringExpenses, monthIdx0, fixedDate]);
 
+
+    // riordino dei dati dal più recente
     const orderedExpenses = useMemo(() => {
         return [...rows].sort((a, b) => {
             // prima ordino per data desc

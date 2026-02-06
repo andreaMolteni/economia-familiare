@@ -23,9 +23,11 @@ import {
     getDateDDMMYYYY,
     getDateYYYYMMDD,
     stringToDate,
+    getMonthByIndex,
+    getIndexMonthByFixedDate
 } from "../utils/dateUtils";
 
-import { setDayCountDown } from "../slices/dateSlice";
+import { setDayCountDown, setMonth, setMonthIndex } from "../slices/dateSlice";
 import { setBalance, setBudget } from "../slices/moneySlice";
 
 const ResumeData: React.FC = () => {
@@ -37,6 +39,8 @@ const ResumeData: React.FC = () => {
     const currentDate = useSelector((state: RootState) => state.date.currentDate);
     const closingDay = useSelector((state: RootState) => state.date.closingDay);
     const dayCountDown = useSelector((state: RootState) => state.date.dayCountDown);
+    const month = useSelector((state: RootState) => state.date.month);
+    const monthIndex = useSelector((state: RootState) => state.date.monthIndex);
 
     const balance = useSelector((state: RootState) => state.money.balance);
     const budget = useSelector((state: RootState) => state.money.budget);
@@ -82,7 +86,12 @@ const ResumeData: React.FC = () => {
             stringToDate(currentDate)
         );
 
+        
+
         dispatch(setDayCountDown(days));
+
+        dispatch(setMonthIndex(getIndexMonthByFixedDate(fixedDate)));
+        dispatch(setMonth(getMonthByIndex(monthIndex)));
 
         const safeDays = Math.max(days, 1);
         const newBudget = calculateBudget(
@@ -100,6 +109,8 @@ const ResumeData: React.FC = () => {
         remainingIncome,
         remainingExpenses,
         balance,
+        month,
+        monthIndex
     ]);
 
     const userName = "Andrea";
@@ -119,7 +130,7 @@ const ResumeData: React.FC = () => {
                 <Grid container spacing={2}>
                     {/* Sinistra */}
                     <Grid
-                        size={{ xs: 8 }}
+                        size={{ xs: 4 }}
                     >
                         <Typography
                             variant="h5"
@@ -142,6 +153,18 @@ const ResumeData: React.FC = () => {
                     </Grid>
 
                     {/* Centro */}
+                    <Grid
+                        size={{ xs: 4 }}
+                    >
+                        <Typography
+                            variant="h2"
+                            sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
+                        >
+                            {month}
+                        </Typography>
+                    </Grid>
+
+                    {/* Destra */}
                     <Grid
                         size={{ xs: 4 }}
                     >
