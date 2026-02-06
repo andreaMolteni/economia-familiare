@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { getDateYYYYMMDD } from "../utils/dateUtils"
+import { shiftAccountingMonth } from "../utils/accountingMonth";
 
 interface DateState {
     currentDate: string; // data corrente formato YYYY-MM-DD
@@ -36,8 +37,11 @@ const dateSlice = createSlice({
         setMonth(state, action: PayloadAction<string | null>) {
             state.month = action.payload;
         },
+        shiftAccountingMonthBy(state, action: PayloadAction<number>) {
+            state.currentDate = shiftAccountingMonth(state.currentDate, state.closingDay, action.payload);
+        },
     },
 });
 
-export const { setCurrentDate, setClosingDay, setDayCountDown, setMonthIndex, setMonth } = dateSlice.actions;
+export const { setCurrentDate, setClosingDay, setDayCountDown, setMonthIndex, setMonth, shiftAccountingMonthBy } = dateSlice.actions;
 export default dateSlice.reducer;

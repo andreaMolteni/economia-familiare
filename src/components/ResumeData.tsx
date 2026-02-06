@@ -10,9 +10,12 @@ import {
     TextField,
     Stack,
 } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import TodayIcon from "@mui/icons-material/Today";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "../app/store";
@@ -24,10 +27,10 @@ import {
     getDateYYYYMMDD,
     stringToDate,
     getMonthByIndex,
-    getIndexMonthByFixedDate
+    getIndexMonthByFixedDate,
+    todayISO
 } from "../utils/dateUtils";
-
-import { setDayCountDown, setMonth, setMonthIndex } from "../slices/dateSlice";
+import { setDayCountDown, setMonth, setMonthIndex, shiftAccountingMonthBy, setCurrentDate } from "../slices/dateSlice";
 import { setBalance, setBudget } from "../slices/moneySlice";
 
 const ResumeData: React.FC = () => {
@@ -115,6 +118,8 @@ const ResumeData: React.FC = () => {
 
     const userName = "Andrea";
 
+    const goToday = () => dispatch(setCurrentDate(todayISO()));
+
     return (
         <div>
             {/* BOX RIEPILOGO SUPERIORE */}
@@ -162,6 +167,28 @@ const ResumeData: React.FC = () => {
                         >
                             {month}
                         </Typography>
+
+                        {/* Pulsanti SOTTO al mese */}
+                        <Stack direction="row" spacing={6} alignItems="center">
+                            <IconButton
+                                aria-label="Mese precedente"
+                                onClick={() => dispatch(shiftAccountingMonthBy(-1))}
+                                size="large"
+                            >
+                                <ChevronLeftIcon fontSize="large" />
+                            </IconButton>
+                            {/* Pulsante OGGI */}
+                            <IconButton aria-label="Torna a oggi" onClick={goToday} size="large">
+                                <TodayIcon fontSize="large" />
+                            </IconButton>
+                            <IconButton
+                                aria-label="Mese successivo"
+                                onClick={() => dispatch(shiftAccountingMonthBy(+1))}
+                                size="large"
+                            >
+                                <ChevronRightIcon fontSize="large" />
+                            </IconButton>
+                        </Stack>
                     </Grid>
 
                     {/* Destra */}
