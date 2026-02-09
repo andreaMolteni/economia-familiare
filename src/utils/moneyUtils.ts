@@ -1,4 +1,3 @@
-import type { Expense, Income } from '../../types';
 import { type MonthRow } from "../utils/resolveMonthRows";
 import { subtractMonthsSafe } from '../utils/dateUtils';
 
