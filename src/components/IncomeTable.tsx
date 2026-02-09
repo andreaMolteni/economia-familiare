@@ -239,11 +239,11 @@ const IncomeTable: React.FC = () => {
                 >
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 130 }}>Type</TableCell>
+                            <TableCell sx={{ width: 130, minWidth: 130 }}>Type</TableCell>
                             <TableCell>Description</TableCell>
-                            <TableCell sx={{ width: 110 }} align="right">Value</TableCell>
-                            <TableCell sx={{ width: 110 }}>Date</TableCell>
-                            <TableCell sx={{ width: 90 }} align="center">Actions</TableCell>
+                            <TableCell sx={{ width: 140, minWidth: 140 }} align="right">Value</TableCell>
+                            <TableCell sx={{ width: 160, minWidth: 160, whiteSpace: "nowrap" }}>Date</TableCell>
+                            <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -267,10 +267,12 @@ const IncomeTable: React.FC = () => {
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
+                                                fullWidth
                                                 value={editForm.type}
                                                 onChange={(e) =>
                                                     setEditForm((prev) => ({ ...prev, type: e.target.value }))
                                                 }
+                                                sx={{ minWidth: 110 }}
                                             />
                                         ) : (
                                                 row.type
@@ -331,7 +333,10 @@ const IncomeTable: React.FC = () => {
                                                 value={ editForm.date}
                                                 onChange={(e) =>
                                                     setEditForm((prev) => ({ ...prev, date: e.target.value }))
-                                                }
+                                                } sx={{
+                                                    // forza il browser a rendere i controlli nativi coerenti col tema
+                                                    "& input": { colorScheme: "light" }, // oppure "dark" se hai tema scuro
+                                                }}
                                             />
                                         ) : (
                                                 formatYYYYMMDDtoDDMMYYYY(row.date)

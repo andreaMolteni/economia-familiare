@@ -18,6 +18,8 @@ import {
     Chip,
     Box,
     Typography,
+    Divider,
+    ListItemText
 } from "@mui/material";
 
 type Mode = "expense" | "income";
@@ -103,10 +105,34 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
     const [dayOfTheMonth, setDayOfTheMonth] = useState<number>(1);
     const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
 
+    // NEW: menu mesi con OK/Annulla
+    const [monthsOpen, setMonthsOpen] = useState(false);
+    const [monthsDraft, setMonthsDraft] = useState<number[]>([]);
+
+
+    // apri menu -> copia selectedMonths in draft
+    const openMonths = () => {
+        setMonthsDraft(selectedMonths);
+        setMonthsOpen(true);
+    };
+
+    // chiudi senza salvare
+    const cancelMonths = () => {
+        setMonthsDraft(selectedMonths);
+        setMonthsOpen(false);
+    };
+
+    // conferma
+    const confirmMonths = () => {
+        handleMonthsChange(monthsDraft.slice().sort((a, b) => a - b));
+        setMonthsOpen(false);
+    };
+
+    /*
     const allSelected = useMemo(
         () => selectedMonths.length === 12,
         [selectedMonths]
-    );
+    );*/
 
     const resetForm = () => {
         setType("");
@@ -123,8 +149,19 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
         onClose();
     };
 
+    const allMonths = MONTHS_IT.map((m) => m.n);
+    const activeMonths = monthsOpen ? monthsDraft : selectedMonths;
+    const allSelected = activeMonths.length === allMonths.length;
+
     const handleToggleAll = () => {
-        setSelectedMonths(allSelected ? [] : MONTHS_IT.map((m) => m.n));
+        const next = allSelected ? [] : allMonths;
+
+        if (monthsOpen) {
+            setMonthsDraft(next);
+        } else {
+            setSelectedMonths(next);
+            setMonthsDraft(next); // <— mantiene allineato anche il draft
+        }
     };
 
     const handleMonthsChange = (vals: number[]) => {
@@ -143,10 +180,10 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
         }
 
         // ricorrente: deve avere almeno un mese e day valido
-        if (selectedMonths.length === 0) return false;
+        if (activeMonths.length === 0) return false;
         if (dayOfTheMonth < 1 || dayOfTheMonth > 31) return false;
         return true;
-    }, [type, valueStr, isRecurring, date, selectedMonths, dayOfTheMonth]);
+    }, [type, valueStr, isRecurring, date, activeMonths, dayOfTheMonth]);
 
     const handleSubmit = async () => {
         const v = Number(valueStr);
@@ -245,6 +282,10 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
                             InputLabelProps={{ shrink: true }}
+                            sx={{
+                                // forza il browser a rendere i controlli nativi coerenti col tema
+                                "& input": { colorScheme: "light" }, // oppure "dark" se hai tema scuro
+                            }}
                             fullWidth
                         />
                     ) : (
@@ -273,39 +314,58 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
                                     </Button>
 
                                     <Typography variant="body2" sx={{ alignSelf: "center", opacity: 0.7 }}>
-                                        {selectedMonths.length} selezionati
+                                            {activeMonths.length} selezionati
                                     </Typography>
                                 </Stack>
 
                                 <FormControl fullWidth>
                                     <InputLabel id="months-label">Mesi</InputLabel>
-                                    <Select
-                                        labelId="months-label"
-                                        multiple
-                                        value={selectedMonths}
-                                        onChange={(e) => handleMonthsChange(e.target.value as number[])}
-                                        input={<OutlinedInput label="Mesi" />}
-                                        renderValue={(selected) => (
-                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                                                {(selected as number[])
-                                                    .slice()
-                                                    .sort((a, b) => a - b)
-                                                    .map((m) => (
-                                                        <Chip
-                                                            key={m}
-                                                            label={MONTHS_IT.find((x) => x.n === m)?.label ?? m}
-                                                            size="small"
-                                                        />
-                                                    ))}
+
+                                        <Select
+                                            labelId="months-label"
+                                            multiple
+                                            open={monthsOpen}
+                                            onOpen={openMonths}
+                                            onClose={cancelMonths} // se clicca fuori = comportamento "Annulla" (non commit)
+                                            value={monthsOpen ? monthsDraft : selectedMonths}
+                                            onChange={(e) => setMonthsDraft(e.target.value as number[])}
+                                            input={<OutlinedInput label="Mesi" />}
+                                            renderValue={(selected) => (
+                                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                                                    {(selected as number[])
+                                                        .slice()
+                                                        .sort((a, b) => a - b)
+                                                        .map((m) => (
+                                                            <Chip
+                                                                key={m}
+                                                                label={MONTHS_IT.find((x) => x.n === m)?.label ?? m}
+                                                                size="small"
+                                                            />
+                                                        ))}
+                                                </Box>
+                                            )}
+                                            MenuProps={{
+                                                PaperProps: { sx: { maxHeight: 360, width: 300 } },
+                                            }}
+                                        >
+                                            {MONTHS_IT.map((m) => (
+                                                <MenuItem key={m.n} value={m.n}>
+                                                    <Checkbox checked={monthsDraft.includes(m.n)} size="small" />
+                                                    <ListItemText primary={m.label} />
+                                                </MenuItem>
+                                            ))}
+
+                                            <Divider />
+
+                                            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 1 }}>
+                                                <Button size="small" onClick={cancelMonths}>
+                                                    Annulla
+                                                </Button>
+                                                <Button size="small" variant="contained" onClick={confirmMonths}>
+                                                    OK
+                                                </Button>
                                             </Box>
-                                        )}
-                                    >
-                                        {MONTHS_IT.map((m) => (
-                                            <MenuItem key={m.n} value={m.n}>
-                                                {m.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
+                                        </Select>
                                 </FormControl>
                             </Box>
                         </>
