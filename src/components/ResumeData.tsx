@@ -9,6 +9,7 @@ import {
     IconButton,
     TextField,
     Stack,
+    Button
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -178,9 +179,19 @@ const ResumeData: React.FC = () => {
                                 <ChevronLeftIcon fontSize="large" />
                             </IconButton>
                             {/* Pulsante OGGI */}
+                            <Button
+                                variant="outlined"
+                                startIcon={<TodayIcon />}
+                                onClick={goToday}
+                                sx={{ borderRadius: 999, px: 2 }}
+                            >
+                                Oggi
+                            </Button>
+                            {/*
                             <IconButton aria-label="Torna a oggi" onClick={goToday} size="large">
                                 <TodayIcon fontSize="large" />
                             </IconButton>
+                            */}
                             <IconButton
                                 aria-label="Mese successivo"
                                 onClick={() => dispatch(shiftAccountingMonthBy(+1))}
