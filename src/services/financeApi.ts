@@ -6,9 +6,13 @@ import type {
     RecurringIncome,
 } from "../../types";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+console.log("VITE_API_BASE_URL =", import.meta.env.VITE_API_BASE_URL);
+
 export const financeApi = createApi({
     reducerPath: "financeApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
+    baseQuery: fetchBaseQuery({ baseUrl }),
     tagTypes: ["Expenses", "Income", "RecurringExpenses", "RecurringIncome"],
     endpoints: (builder) => ({
         // ---------------- EXPENSES (single) ----------------
