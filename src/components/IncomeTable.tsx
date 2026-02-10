@@ -333,7 +333,8 @@ const IncomeTable: React.FC = () => {
                                                 value={ editForm.date}
                                                 onChange={(e) =>
                                                     setEditForm((prev) => ({ ...prev, date: e.target.value }))
-                                                } sx={{
+                                                }
+                                                sx={{
                                                     // forza il browser a rendere i controlli nativi coerenti col tema
                                                     "& input": { colorScheme: "light" }, // oppure "dark" se hai tema scuro
                                                 }}
