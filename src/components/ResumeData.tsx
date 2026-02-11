@@ -26,7 +26,6 @@ import {
     getNextAvailableDayOfMonth,
     diffInDays,
     formatYYYYMMDDtoDDMMYYYY,
-    getDateDDMMYYYY,
     getDateYYYYMMDD,
     stringToDate,
     getMonthByIndex,
