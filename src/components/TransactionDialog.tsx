@@ -19,17 +19,18 @@ import {
     Box,
     Typography,
     Divider,
-    ListItemText
+    ListItemText,
 } from "@mui/material";
+import type { InitialValues } from "../../types";
 
 type Mode = "expense" | "income";
 
-// ---------- Types per submit (NO any) ----------
+// ---------- Types per submit ----------
 export type SingleExpensePayload = {
     userId: number;
     type: string;
     description: string;
-    value: number;
+    amount: number;
     date: string; // YYYY-MM-DD
 };
 
@@ -37,7 +38,7 @@ export type RecurringExpensePayload = {
     userId: number;
     type: string;
     description: string;
-    value: Array<number | null>; // 12
+    amount: Array<number | null>; // 12
     date: Array<string | null>; // 12
     months: number[]; // 1..12
     dayOfTheMonth: number; // 1..31
@@ -47,7 +48,6 @@ export type ExpenseSubmitPayload =
     | ({ kind: "single" } & SingleExpensePayload)
     | ({ kind: "recurring" } & RecurringExpensePayload);
 
-// income: identico payload
 export type SingleIncomePayload = SingleExpensePayload;
 export type RecurringIncomePayload = RecurringExpensePayload;
 
@@ -57,12 +57,26 @@ export type IncomeSubmitPayload =
 
 export type SubmitPayload = ExpenseSubmitPayload | IncomeSubmitPayload;
 
-// ---------- Props ----------
+export type RecurringEditSingleMonth = {
+    recurringId: number;
+    monthIndex: number; // 0..11
+    originalAmount: Array<number | null>;
+    originalDate: Array<string | null>;
+    originalMonths: number[];
+    originalDayOfTheMonth: number;
+};
+
 type Props = {
     open: boolean;
     mode: Mode;
     onClose: () => void;
     onSubmit: (payload: SubmitPayload) => Promise<void> | void;
+
+    initial?: InitialValues | null;
+    titleOverride?: string;
+
+    // se presente -> edit recurring SOLO quel mese
+    recurringEdit?: RecurringEditSingleMonth | null;
 };
 
 // ---------- Utils ----------
@@ -84,106 +98,117 @@ const MONTHS_IT = [
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
 const clampDayToMonth = (year: number, month1to12: number, day: number) => {
-    // ultimo giorno del mese: new Date(year, month, 0)
     const last = new Date(year, month1to12, 0).getDate();
     return Math.min(Math.max(day, 1), last);
 };
 
-const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) => {
-    const title = mode === "expense" ? "Nuova spesa" : "Nuova entrata";
+const TransactionDialog: React.FC<Props> = ({
+    open,
+    onClose,
+    onSubmit,
+    mode,
+    initial,
+    titleOverride,
+    recurringEdit,
+}) => {
+    const defaultTitle = mode === "expense" ? "Nuova spesa" : "Nuova entrata";
+    const title = titleOverride ?? defaultTitle;
 
-    // form base
-    const [type, setType] = useState("");
-    const [description, setDescription] = useState("");
-    const [valueStr, setValueStr] = useState("");
-    const [isRecurring, setIsRecurring] = useState(false);
+    // ✅ Se sto editando una recurring per singolo mese, la UI deve comportarsi come "single"
+    const forceSingleUI = !!recurringEdit;
 
-    // single
-    const [date, setDate] = useState(""); // YYYY-MM-DD
+    // --- valori iniziali (usati SOLO al mount; quindi useremo key=... nel parent) ---
+    const initialType = initial?.type ?? "";
+    const initialDescription = initial?.description ?? "";
 
-    // recurring
-    const [dayOfTheMonth, setDayOfTheMonth] = useState<number>(1);
-    const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
+    const initialIsRecurring = initial?.kind === "recurring";
+    const initialValueStr =
+        initial?.kind === "single"
+            ? String(initial.amount ?? "")
+            : initial?.kind === "recurring" && initial.currentMonthAmount != null
+                ? String(initial.currentMonthAmount)
+                : "";
 
-    // NEW: menu mesi con OK/Annulla
+    const initialDate =
+        initial?.kind === "single"
+            ? initial.date ?? ""
+            : initial?.kind === "recurring"
+                ? initial.currentMonthDate ?? ""
+                : "";
+
+    const initialDay =
+        initial?.kind === "recurring" ? initial.dayOfTheMonth ?? 1 : 1;
+
+    const initialMonths =
+        initial?.kind === "recurring"
+            ? (initial.months ?? []).slice().sort((a, b) => a - b)
+            : [];
+
+    // --- state form ---
+    const [type, setType] = useState(initialType);
+    const [description, setDescription] = useState(initialDescription);
+    const [valueStr, setValueStr] = useState(initialValueStr);
+    const [isRecurring, setIsRecurring] = useState(initialIsRecurring);
+    const [date, setDate] = useState(initialDate);
+
+    const [dayOfTheMonth, setDayOfTheMonth] = useState<number>(initialDay);
+    const [selectedMonths, setSelectedMonths] = useState<number[]>(initialMonths);
+
+    // mesi OK/Annulla
     const [monthsOpen, setMonthsOpen] = useState(false);
-    const [monthsDraft, setMonthsDraft] = useState<number[]>([]);
+    const [monthsDraft, setMonthsDraft] = useState<number[]>(initialMonths);
 
 
-    // apri menu -> copia selectedMonths in draft
+    const handleClose = () => {
+        onClose();
+    };
+
+    // mesi picker
     const openMonths = () => {
         setMonthsDraft(selectedMonths);
         setMonthsOpen(true);
     };
 
-    // chiudi senza salvare
     const cancelMonths = () => {
         setMonthsDraft(selectedMonths);
         setMonthsOpen(false);
     };
 
-    // conferma
     const confirmMonths = () => {
-        handleMonthsChange(monthsDraft.slice().sort((a, b) => a - b));
+        const next = monthsDraft.slice().sort((a, b) => a - b);
+        setSelectedMonths(next);
         setMonthsOpen(false);
     };
 
-    /*
-    const allSelected = useMemo(
-        () => selectedMonths.length === 12,
-        [selectedMonths]
-    );*/
-
-    const resetForm = () => {
-        setType("");
-        setDescription("");
-        setValueStr("");
-        setIsRecurring(false);
-        setDate("");
-        setDayOfTheMonth(1);
-        setSelectedMonths([]);
-    };
-
-    const handleClose = () => {
-        resetForm();
-        onClose();
-    };
-
-    const allMonths = MONTHS_IT.map((m) => m.n);
+    const allMonths = useMemo(() => MONTHS_IT.map((m) => m.n), []);
     const activeMonths = monthsOpen ? monthsDraft : selectedMonths;
     const allSelected = activeMonths.length === allMonths.length;
 
     const handleToggleAll = () => {
         const next = allSelected ? [] : allMonths;
-
-        if (monthsOpen) {
-            setMonthsDraft(next);
-        } else {
+        if (monthsOpen) setMonthsDraft(next);
+        else {
             setSelectedMonths(next);
-            setMonthsDraft(next); // <— mantiene allineato anche il draft
+            setMonthsDraft(next);
         }
     };
 
-    const handleMonthsChange = (vals: number[]) => {
-        // Se l'utente seleziona tutti i 12, ok; se rimuove qualcuno, ok.
-        // Non serve logica extra, All lo gestiamo col bottone dedicato.
-        setSelectedMonths(vals);
-    };
+    // effective recurring
+    const effectiveIsRecurring = !forceSingleUI && isRecurring;
 
     const canSubmit = useMemo(() => {
         const v = Number(valueStr);
         if (!type.trim()) return false;
         if (!Number.isFinite(v)) return false;
 
-        if (!isRecurring) {
-            return !!date; // deve esserci una data
-        }
+        // single-like (anche forceSingleUI): serve date
+        if (!effectiveIsRecurring) return !!date;
 
-        // ricorrente: deve avere almeno un mese e day valido
-        if (activeMonths.length === 0) return false;
+        // recurring: mesi + day validi
+        if (selectedMonths.length === 0) return false;
         if (dayOfTheMonth < 1 || dayOfTheMonth > 31) return false;
         return true;
-    }, [type, valueStr, isRecurring, date, activeMonths, dayOfTheMonth]);
+    }, [type, valueStr, date, effectiveIsRecurring, selectedMonths, dayOfTheMonth]);
 
     const handleSubmit = async () => {
         const v = Number(valueStr);
@@ -191,31 +216,62 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
 
         const userId = 101;
 
-        if (!isRecurring) {
+        // ✅ edit recurring SOLO mese corrente
+        if (recurringEdit) {
+            const idx = recurringEdit.monthIndex;
+
+            const newAmount = recurringEdit.originalAmount.slice();
+            const newDate = recurringEdit.originalDate.slice();
+
+            newAmount[idx] = v;
+            newDate[idx] = date;
+
+            const monthNumber = idx + 1;
+            const monthsSet = new Set(recurringEdit.originalMonths);
+            monthsSet.add(monthNumber);
+
+            const payload: SubmitPayload = {
+                kind: "recurring",
+                userId,
+                type: type.trim(),
+                description: description.trim(),
+                amount: newAmount,
+                date: newDate,
+                months: Array.from(monthsSet).sort((a, b) => a - b),
+                dayOfTheMonth: recurringEdit.originalDayOfTheMonth,
+            };
+
+            await onSubmit(payload);
+            onClose();
+            return;
+        }
+
+        // ✅ single normale
+        if (!effectiveIsRecurring) {
             const payload: SubmitPayload = {
                 kind: "single",
                 userId,
                 type: type.trim(),
                 description: description.trim(),
-                value: v,
+                amount: v,
                 date,
             };
             await onSubmit(payload);
-            handleClose();
+            onClose();
             return;
         }
 
-        // recurring payload
-        const year = new Date().getFullYear(); // 2026 se sei in 2026; altrimenti cambia tu con un selector
+        // ✅ recurring creazione completa
+        const year = new Date().getFullYear();
         const monthsSet = new Set(selectedMonths);
 
-        const valueArr: Array<number | null> = Array(12).fill(null);
+        const amountArr: Array<number | null> = Array(12).fill(null);
         const dateArr: Array<string | null> = Array(12).fill(null);
 
         for (let m = 1; m <= 12; m++) {
             if (!monthsSet.has(m)) continue;
             const safeDay = clampDayToMonth(year, m, dayOfTheMonth);
-            valueArr[m - 1] = v;
+            amountArr[m - 1] = v;
             dateArr[m - 1] = `${year}-${pad2(m)}-${pad2(safeDay)}`;
         }
 
@@ -224,14 +280,14 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
             userId,
             type: type.trim(),
             description: description.trim(),
-            value: valueArr,
+            amount: amountArr,
             date: dateArr,
             months: selectedMonths.slice().sort((a, b) => a - b),
             dayOfTheMonth,
         };
 
         await onSubmit(payload);
-        handleClose();
+        onClose();
     };
 
     return (
@@ -265,27 +321,26 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
                         fullWidth
                     />
 
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={isRecurring}
-                                onChange={(e) => setIsRecurring(e.target.checked)}
-                            />
-                        }
-                        label="Ricorrente"
-                    />
+                    {!forceSingleUI && (
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isRecurring}
+                                    onChange={(e) => setIsRecurring(e.target.checked)}
+                                />
+                            }
+                            label="Ricorrente"
+                        />
+                    )}
 
-                    {!isRecurring ? (
+                    {!effectiveIsRecurring ? (
                         <TextField
                             label="Data"
                             type="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
                             InputLabelProps={{ shrink: true }}
-                            sx={{
-                                // forza il browser a rendere i controlli nativi coerenti col tema
-                                "& input": { colorScheme: "light" }, // oppure "dark" se hai tema scuro
-                            }}
+                            sx={{ "& input": { colorScheme: "light" } }}
                             fullWidth
                         />
                     ) : (
@@ -314,58 +369,56 @@ const TransactionDialog: React.FC<Props> = ({ open, onClose, onSubmit, mode }) =
                                     </Button>
 
                                     <Typography variant="body2" sx={{ alignSelf: "center", opacity: 0.7 }}>
-                                            {activeMonths.length} selezionati
+                                        {activeMonths.length} selezionati
                                     </Typography>
                                 </Stack>
 
                                 <FormControl fullWidth>
                                     <InputLabel id="months-label">Mesi</InputLabel>
 
-                                        <Select
-                                            labelId="months-label"
-                                            multiple
-                                            open={monthsOpen}
-                                            onOpen={openMonths}
-                                            onClose={cancelMonths} // se clicca fuori = comportamento "Annulla" (non commit)
-                                            value={monthsOpen ? monthsDraft : selectedMonths}
-                                            onChange={(e) => setMonthsDraft(e.target.value as number[])}
-                                            input={<OutlinedInput label="Mesi" />}
-                                            renderValue={(selected) => (
-                                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                                                    {(selected as number[])
-                                                        .slice()
-                                                        .sort((a, b) => a - b)
-                                                        .map((m) => (
-                                                            <Chip
-                                                                key={m}
-                                                                label={MONTHS_IT.find((x) => x.n === m)?.label ?? m}
-                                                                size="small"
-                                                            />
-                                                        ))}
-                                                </Box>
-                                            )}
-                                            MenuProps={{
-                                                PaperProps: { sx: { maxHeight: 360, width: 300 } },
-                                            }}
-                                        >
-                                            {MONTHS_IT.map((m) => (
-                                                <MenuItem key={m.n} value={m.n}>
-                                                    <Checkbox checked={monthsDraft.includes(m.n)} size="small" />
-                                                    <ListItemText primary={m.label} />
-                                                </MenuItem>
-                                            ))}
-
-                                            <Divider />
-
-                                            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 1 }}>
-                                                <Button size="small" onClick={cancelMonths}>
-                                                    Annulla
-                                                </Button>
-                                                <Button size="small" variant="contained" onClick={confirmMonths}>
-                                                    OK
-                                                </Button>
+                                    <Select
+                                        labelId="months-label"
+                                        multiple
+                                        open={monthsOpen}
+                                        onOpen={openMonths}
+                                        onClose={cancelMonths}
+                                        value={monthsOpen ? monthsDraft : selectedMonths}
+                                        onChange={(e) => setMonthsDraft(e.target.value as number[])}
+                                        input={<OutlinedInput label="Mesi" />}
+                                        renderValue={(selected) => (
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                                                {(selected as number[])
+                                                    .slice()
+                                                    .sort((a, b) => a - b)
+                                                    .map((m) => (
+                                                        <Chip
+                                                            key={m}
+                                                            label={MONTHS_IT.find((x) => x.n === m)?.label ?? m}
+                                                            size="small"
+                                                        />
+                                                    ))}
                                             </Box>
-                                        </Select>
+                                        )}
+                                        MenuProps={{ PaperProps: { sx: { maxHeight: 360, width: 300 } } }}
+                                    >
+                                        {MONTHS_IT.map((m) => (
+                                            <MenuItem key={m.n} value={m.n}>
+                                                <Checkbox checked={monthsDraft.includes(m.n)} size="small" />
+                                                <ListItemText primary={m.label} />
+                                            </MenuItem>
+                                        ))}
+
+                                        <Divider />
+
+                                        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 1 }}>
+                                            <Button size="small" onClick={cancelMonths}>
+                                                Annulla
+                                            </Button>
+                                            <Button size="small" variant="contained" onClick={confirmMonths}>
+                                                OK
+                                            </Button>
+                                        </Box>
+                                    </Select>
                                 </FormControl>
                             </Box>
                         </>

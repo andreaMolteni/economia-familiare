@@ -1,5 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+﻿import React, { useMemo, useState } from "react";
 import {
     Paper,
     Table,
@@ -13,7 +12,7 @@ import {
     TextField,
     Button,
     IconButton,
-    InputAdornment
+    InputAdornment,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,161 +21,134 @@ import TransactionDialog from "./TransactionDialog";
 import type { SubmitPayload } from "./TransactionDialog";
 
 import {
-    useGetIncomeQuery,
     useAddIncomeMutation,
     useDeleteIncomeMutation,
     useUpdateIncomeMutation,
     useGetRecurringIncomeQuery,
     useAddRecurringIncomeMutation,
     useUpdateRecurringIncomeMutation,
-    useDeleteRecurringIncomeMutation
+    useDeleteRecurringIncomeMutation,
 } from "../services/financeApi";
 
-import type { RecurringIncome } from "../../types";
-import { getNextAvailableDayOfMonth, stringToDate, formatYYYYMMDDtoDDMMYYYY, accountingMonthIdx } from "../utils/dateUtils";
-//import { filterInMonth, filterRecurring, filterRecurringOnMonth } from "../utils/moneyUtils";
-import { filterInMonth } from "../utils/moneyUtils";
-import type { RootState } from "../app/store";
-import { setTotalIncome, setRemainingIncome } from "../slices/moneySlice";
-import { resolveMonthRows, type MonthRow } from "../utils/resolveMonthRows";
+import type { RecurringIncome, InitialValues } from "../../types";
+import { formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
+import type { FlattenedRow, OverviewTotals } from "../types/overview";
 
-const IncomeTable: React.FC = () => {
-    const dispatch = useDispatch();
+type Props = {
+    rows: FlattenedRow[];
+    totals: OverviewTotals;
+};
 
-    // ✅ HOOKS SEMPRE IN CIMA
+const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
     const [open, setOpen] = useState(false);
+    const { data: recurringIncome = [] } = useGetRecurringIncomeQuery();
 
-    const { data: income = [], isLoading, isError } = useGetIncomeQuery();
-    const { data: recurringIncome = [],
-        isLoading: isLoadingRec,
-        isError: isErrorRec
-    } = useGetRecurringIncomeQuery();
-
-    // mutations single
     const [addIncome] = useAddIncomeMutation();
     const [deleteIncome] = useDeleteIncomeMutation();
     const [updateIncome] = useUpdateIncomeMutation();
 
-    // mutations recurring
     const [addRecurringIncome] = useAddRecurringIncomeMutation();
     const [updateRecurringIncome] = useUpdateRecurringIncomeMutation();
     const [deleteRecurringIncome] = useDeleteRecurringIncomeMutation();
 
+    // inline edit (solo single)
     const [editingKey, setEditingKey] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({
         type: "",
         description: "",
-        value: "",
+        amount: "",
         date: "",
     });
 
-    // data di oggi
-    const currentDate = useSelector((state: RootState) => state.date.currentDate);
-    const closingDay = useSelector((state: RootState) => state.date.closingDay);
+    
+    // supporto edit recurring mese singolo
+    const [editingRecurringId, setEditingRecurringId] = useState<number | null>(null);
+    const [recurringEdit, setRecurringEdit] = useState<{
+        recurringId: number;
+        monthIndex: number;
+        originalAmount: Array<number | null>;
+        originalDate: Array<string | null>;
+        originalMonths: number[];
+        originalDayOfTheMonth: number;
+    } | null>(null);
 
-    const fixedDate: Date = useMemo(
-        () => getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay),
-        [currentDate, closingDay]
-    );
+    const [dialogInitial, setDialogInitial] = useState<InitialValues | null>(null);
 
-    const monthIdx0 = accountingMonthIdx(fixedDate);
+    const openEditRecurringSingleMonth = (row: FlattenedRow) => {
+        const original = recurringIncome.find((r) => r.id === row.id);
+        if (!original) return;
 
-    // recupero dei dati e sistemazione delle voci di entrata
-    const rows: MonthRow[] = useMemo(() => {
-        const rows_temp = resolveMonthRows(income, recurringIncome, monthIdx0);
-        return filterInMonth(rows_temp ?? [], fixedDate)
-    }, [income, recurringIncome, monthIdx0, fixedDate]);
+        const monthIndex = new Date(row.date).getMonth(); // 0..11
 
-    // riordino dei dati dal più recente
-    const orderedIncome = useMemo(() => {
+        setEditingRecurringId(original.id);
+        setRecurringEdit({
+            recurringId: original.id,
+            monthIndex,
+            originalAmount: original.amount,
+            originalDate: original.date,
+            originalMonths: original.months,
+            originalDayOfTheMonth: original.dayOfTheMonth,
+        });
+
+        setDialogInitial({
+            kind: "single",
+            type: row.type,
+            description: row.description,
+            amount: row.amount,
+            date: row.date,
+        });
+
+        setOpen(true);
+    };
+
+    const orderedRows = useMemo(() => {
         return [...rows].sort((a, b) => {
-            // prima ordino per data desc
             const da = new Date(a.date).getTime();
             const db = new Date(b.date).getTime();
             if (db !== da) return db - da;
-
-            // a parità di data, id desc (più nuovo sopra)
             return b.id - a.id;
         });
     }, [rows]);
 
 
-    // ✅ calcolo totali (memo)
-    const totalIncome = useMemo(() => {
-        return rows.reduce((acc, inc) => acc + inc.value, 0);
-    }, [rows]);
+    const startEdit = (row: FlattenedRow) => {
+        if (row.source === "recurring") {
+            openEditRecurringSingleMonth(row);
+            return;
+        }
 
-    const totalRemainingIncome = useMemo(() => {
-        const remaining = rows.filter(
-            (inc) => stringToDate(inc.date) > stringToDate(currentDate)
-        );
-        return remaining.reduce((acc, inc) => acc + inc.value, 0);
-    }, [rows, currentDate]);
-
-    // ✅ dispatch dei totali SOLO in effect (non nel render)
-    useEffect(() => {
-        dispatch(setTotalIncome(totalIncome));
-        dispatch(setRemainingIncome(totalRemainingIncome));
-    }, [dispatch, totalIncome, totalRemainingIncome]);
-
-    const startEdit = (row: MonthRow) => {
         setEditingKey(row.rowKey);
         setEditForm({
             type: row.type,
             description: row.description,
-            value: String(row.value),
+            amount: String(row.amount),
             date: row.date,
         });
     };
 
-    /** helper: prende la recurring originale dato row.id */
-    const findRecurringById = (id: number): RecurringIncome | undefined =>
-        recurringIncome.find((r) => r.id === id);
+    const cancelInlineEdit = () => {
+        setEditingKey(null);
+    };
 
-    /** save edit: single vs recurring */
-    const saveEdit = async (row: MonthRow) => {
-        const v = Number(editForm.value);
+    const saveInlineEdit = async (row: FlattenedRow) => {
+        if (row.source !== "single") return;
+
+        const v = Number(editForm.amount);
         if (!Number.isFinite(v)) return;
 
-        if (row.source === "single") {
-            await updateIncome({
-                id: row.id,
-                type: editForm.type,
-                description: editForm.description,
-                value: v,
-                date: editForm.date,
-                userId: row.userId,
-            });
-        } else {
-            const original = findRecurringById(row.id);
-            if (!original) return;
-
-            const idx = monthIdx0;
-
-            const newValue = [...original.value];
-            const newDate = [...original.date];
-
-            newValue[idx] = v;
-            newDate[idx] = editForm.date;
-
-            await updateRecurringIncome({
-                id: original.id,
-                userId: original.userId,
-                type: editForm.type,
-                description: editForm.description,
-                months: original.months,
-                dayOfTheMonth: original.dayOfTheMonth,
-                value: newValue,
-                date: newDate,
-            });
-        }
+        await updateIncome({
+            id: row.id,
+            type: editForm.type,
+            description: editForm.description,
+            amount: v,
+            date: editForm.date,
+            // userId NON serve più lato backend (/me/..)
+        });
 
         setEditingKey(null);
     };
 
-
-    /** delete: single vs recurring */
-    const handleDelete = async (row: MonthRow) => {
+    const handleDelete = async (row: FlattenedRow) => {
         if (row.source === "single") {
             await deleteIncome(row.id);
         } else {
@@ -184,76 +156,143 @@ const IncomeTable: React.FC = () => {
         }
     };
 
-    /** add submit: single vs recurring (delegato al TransactionDialog) */
-    const handleSubmit = async (payload: SubmitPayload) => {
-        if (payload.kind === "recurring") {
-            await addRecurringIncome(payload);
-        } else {
-            await addIncome(payload);
-        }
+    const monthIndexFromRowKey = (rowKey: string): number | null => {
+        const parts = rowKey.split("-");
+        // recurring-<id>-<monthNumber>
+        if (parts.length !== 3) return null;
+        if (parts[0] !== "recurring") return null;
+        const monthNumber = Number(parts[2]); // 1..12
+        if (!Number.isFinite(monthNumber) || monthNumber < 1 || monthNumber > 12) return null;
+        return monthNumber - 1;
     };
 
 
-    const totalShown = useMemo(() => {
-        return rows.reduce((acc, exp) => acc + exp.value, 0);
-    }, [rows]);
+    const startEditRecurring = (row: FlattenedRow) => {
+        const original: RecurringIncome | undefined = recurringIncome.find((r) => r.id === row.id);
+        if (!original) return;
 
-    const currentDateObj = useMemo(() => stringToDate(currentDate), [currentDate]);
+        const idx =
+            row.monthIndex ?? monthIndexFromRowKey(row.rowKey);
 
-    const totalNotExpired = useMemo(() => {
-        return rows
-            .filter((exp) => stringToDate(exp.date) >= currentDateObj) // oggi NON scaduto
-            .reduce((acc, exp) => acc + exp.value, 0);
-    }, [rows, currentDateObj]);
+        if (idx == null) return;
 
-    // ✅ returns condizionali DOPO gli hook
-    if (isLoading || isLoadingRec) return <Typography>Loading income...</Typography>;
-    if (isError || isErrorRec) return <Typography color="error">Error loading income</Typography>;
+        // ✅ prefill UI: compila i campi con i valori del mese corrente
+        setDialogInitial({
+            kind: "recurring",
+            type: original.type,
+            description: original.description,
+            dayOfTheMonth: original.dayOfTheMonth,
+            months: original.months,
+            amount: original.amount,
+            date: original.date,
+            currentMonthAmount: original.amount[idx],
+            currentMonthDate: original.date[idx],
+        });
+
+        // ✅ info tecnica: serve a TransactionDialog per patchare solo quel mese
+        setRecurringEdit({
+            recurringId: original.id,
+            monthIndex: idx,
+            originalAmount: original.amount,
+            originalDate: original.date,
+            originalMonths: original.months,
+            originalDayOfTheMonth: original.dayOfTheMonth,
+        });
+
+        setEditingRecurringId(original.id);
+        setOpen(true);
+    };
+
+    // sovrascrivo startEdit per recurring usando la funzione sopra
+    const startEditRow = (row: FlattenedRow) => {
+        if (row.source === "recurring") return startEditRecurring(row);
+        return startEdit(row);
+    };
+
+    const handleDialogClose = () => {
+        setOpen(false);
+        setEditingRecurringId(null);
+        setRecurringEdit(null);
+        setDialogInitial(null);
+    };
+
+    const handleDialogSubmit = async (payload: SubmitPayload) => {
+        if (payload.kind === "recurring") {
+            if (editingRecurringId != null) {
+                await updateRecurringIncome({ id: editingRecurringId, ...payload });
+            } else {
+                await addRecurringIncome(payload);
+            }
+        } else {
+            await addIncome(payload);
+        }
+
+        handleDialogClose();
+    };
+
+    const openAdd = () => {
+        setEditingRecurringId(null);
+        setRecurringEdit(null);
+        setDialogInitial(null);
+        setOpen(true);
+    };
+
+    
+    const totalShown = totals.incomeMonth;
+    const totalNotExpired = totals.incomeNotExpired;
 
     return (
         <Box>
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography variant="h6">Entrate</Typography>
-                <Button variant="contained" onClick={() => setOpen(true)}>
-                    Aggiungi Entrata
+                <Button variant="contained" onClick={openAdd}>
+                    Aggiungi entrata
                 </Button>
             </Box>
 
             <TransactionDialog
+                key={`${open}-${editingRecurringId ?? "new"}`}
                 open={open}
-                onClose={() => setOpen(false)}
-                mode="income"
-                onSubmit={handleSubmit}
+                onClose={handleDialogClose}
+                mode="income" // o "expense"
+                onSubmit={handleDialogSubmit}
+                titleOverride={editingRecurringId != null ? "Modifica ricorrente (solo mese corrente)" : undefined}
+                initial={dialogInitial}
+                recurringEdit={recurringEdit}
             />
 
             <TableContainer component={Paper}>
                 <Table
                     size="small"
                     sx={{
-                        tableLayout: "fixed", // rende le colonne più controllabili
-                        "& .MuiTableCell-root": {
-                            py: 1,              // padding verticale ridotto
-                            px: 1,              // padding orizzontale ridotto
-                        },
+                        tableLayout: "fixed",
+                        "& .MuiTableCell-root": { py: 1, px: 1 },
                     }}
                 >
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ width: 130, minWidth: 130 }}>Type</TableCell>
                             <TableCell>Description</TableCell>
-                            <TableCell sx={{ width: 140, minWidth: 140 }} align="right">Value</TableCell>
-                            <TableCell sx={{ width: 160, minWidth: 160, whiteSpace: "nowrap" }}>Date</TableCell>
-                            <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">Actions</TableCell>
+                            <TableCell sx={{ width: 140, minWidth: 140 }} align="right">
+                                Value
+                            </TableCell>
+                            <TableCell sx={{ width: 160, minWidth: 160, whiteSpace: "nowrap" }}>
+                                Date
+                            </TableCell>
+                            <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">
+                                Actions
+                            </TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {orderedIncome.map((row) => {
+                        {orderedRows.map((row) => {
                             const isEditing = editingKey === row.rowKey;
-                            const expired = stringToDate(row.date) < currentDateObj;
+                            const expired = row.expired;
 
                             return (
-                                <TableRow key={row.rowKey}
+                                <TableRow
+                                    key={row.rowKey}
                                     sx={
                                         expired
                                             ? {
@@ -269,13 +308,11 @@ const IncomeTable: React.FC = () => {
                                                 size="small"
                                                 fullWidth
                                                 value={editForm.type}
-                                                onChange={(e) =>
-                                                    setEditForm((prev) => ({ ...prev, type: e.target.value }))
-                                                }
+                                                onChange={(e) => setEditForm((p) => ({ ...p, type: e.target.value }))}
                                                 sx={{ minWidth: 110 }}
                                             />
                                         ) : (
-                                                row.type
+                                            row.type
                                         )}
                                     </TableCell>
 
@@ -284,12 +321,7 @@ const IncomeTable: React.FC = () => {
                                             <TextField
                                                 size="small"
                                                 value={editForm.description}
-                                                onChange={(e) =>
-                                                    setEditForm((prev) => ({
-                                                        ...prev,
-                                                        description: e.target.value,
-                                                    }))
-                                                }
+                                                onChange={(e) => setEditForm((p) => ({ ...p, description: e.target.value }))}
                                             />
                                         ) : (
                                             row.description
@@ -301,21 +333,17 @@ const IncomeTable: React.FC = () => {
                                             <TextField
                                                 size="small"
                                                 type="number"
-                                                value={editForm.value}
-                                                onChange={(e) =>
-                                                    setEditForm((prev) => ({ ...prev, value: e.target.value }))
-                                                }
+                                                value={editForm.amount}
+                                                onChange={(e) => setEditForm((p) => ({ ...p, amount: e.target.value }))}
                                                 slotProps={{
                                                     input: {
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">€</InputAdornment>
-                                                        ),
+                                                        endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                                     },
                                                 }}
                                             />
                                         ) : (
                                             <Typography component="span">
-                                                {row.value.toLocaleString("it-IT", {
+                                                {row.amount.toLocaleString("it-IT", {
                                                     style: "currency",
                                                     currency: "EUR",
                                                     minimumFractionDigits: 2,
@@ -330,46 +358,40 @@ const IncomeTable: React.FC = () => {
                                                 size="small"
                                                 type="date"
                                                 InputLabelProps={{ shrink: true }}
-                                                value={ editForm.date}
-                                                onChange={(e) =>
-                                                    setEditForm((prev) => ({ ...prev, date: e.target.value }))
-                                                }
-                                                sx={{
-                                                    // forza il browser a rendere i controlli nativi coerenti col tema
-                                                    "& input": { colorScheme: "light" }, // oppure "dark" se hai tema scuro
-                                                }}
+                                                value={editForm.date}
+                                                onChange={(e) => setEditForm((p) => ({ ...p, date: e.target.value }))}
+                                                sx={{ "& input": { colorScheme: "light" } }}
                                             />
                                         ) : (
-                                                formatYYYYMMDDtoDDMMYYYY(row.date)
+                                            formatYYYYMMDDtoDDMMYYYY(row.date)
                                         )}
                                     </TableCell>
 
                                     <TableCell align="center">
                                         {isEditing ? (
-                                            <Button
-                                                variant="contained"
-                                                color="success"
-                                                size="small"
-                                                onClick={() => saveEdit(row)}
-                                            >
-                                                Salva
-                                            </Button>
+                                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                                                <Button variant="contained" color="success" size="small" onClick={() => saveInlineEdit(row)}>
+                                                    Salva
+                                                </Button>
+                                                <Button variant="outlined" size="small" onClick={cancelInlineEdit}>
+                                                    Annulla
+                                                </Button>
+                                            </Box>
                                         ) : (
-                                            <>
-                                                <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
-                                                    <IconButton size="small" onClick={() => startEdit(row)}>
-                                                        <EditIcon fontSize="small" />
-                                                    </IconButton>
-                                                    <IconButton size="small" onClick={() => handleDelete(row)}>
-                                                        <DeleteIcon fontSize="small" />
-                                                    </IconButton>
-                                                </Box>
-                                            </>
+                                            <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
+                                                <IconButton size="small" onClick={() => startEditRow(row)}>
+                                                    <EditIcon fontSize="small" />
+                                                </IconButton>
+                                                <IconButton size="small" onClick={() => handleDelete(row)}>
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                            </Box>
                                         )}
                                     </TableCell>
                                 </TableRow>
                             );
                         })}
+
                         <TableRow>
                             <TableCell colSpan={2} />
                             <TableCell align="right" sx={{ fontWeight: 700 }}>

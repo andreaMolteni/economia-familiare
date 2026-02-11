@@ -6,7 +6,7 @@ export type MonthRow = {
     userId: number;
     type: string;
     description: string;
-    value: number;
+    amount: number;
     date: string; // YYYY-MM-DD
     source: "single" | "recurring";
     recurringId?: number; // opzionale se vuoi distinguere
@@ -23,7 +23,7 @@ export function resolveMonthRows<TSingle extends Expense | Income, TRec extends 
         userId: x.userId,
         type: x.type,
         description: x.description,
-        value: x.value,
+        amount: x.amount,
         date: x.date,
         source: "single",
     }));
@@ -34,7 +34,7 @@ export function resolveMonthRows<TSingle extends Expense | Income, TRec extends 
         
         .map((r) => {
             const d = r.date?.[monthIdx0] ?? null;
-            const v = r.value?.[monthIdx0] ?? null;
+            const v = r.amount?.[monthIdx0] ?? null;
             if (!d || v == null) return null;
 
             return {
@@ -43,7 +43,7 @@ export function resolveMonthRows<TSingle extends Expense | Income, TRec extends 
                 userId: r.userId,
                 type: r.type,
                 description: r.description,
-                value: v,
+                amount: v,
                 date: d,
                 source: "recurring",
                 recurringId: r.id,
@@ -55,7 +55,7 @@ export function resolveMonthRows<TSingle extends Expense | Income, TRec extends 
 
         .map((r) => {
             const d = r.date?.[monthIdx0_prev] ?? null;
-            const v = r.value?.[monthIdx0] ?? null;
+            const v = r.amount?.[monthIdx0] ?? null;
             if (!d || v == null) return null;
 
             return {
@@ -64,7 +64,7 @@ export function resolveMonthRows<TSingle extends Expense | Income, TRec extends 
                 userId: r.userId,
                 type: r.type,
                 description: r.description,
-                value: v,
+                amount: v,
                 date: d,
                 source: "recurring",
                 recurringId: r.id,

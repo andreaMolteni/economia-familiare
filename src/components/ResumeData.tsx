@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState, useMemo } from "react";
 import {
     Typography,
     Grid,
@@ -9,7 +9,9 @@ import {
     IconButton,
     TextField,
     Stack,
-    Button
+    Button,
+    Tooltip,
+    Box
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -31,7 +33,7 @@ import {
     getIndexMonthByFixedDate,
     todayISO
 } from "../utils/dateUtils";
-import { setDayCountDown, setMonth, setMonthIndex, shiftAccountingMonthBy, setCurrentDate } from "../slices/dateSlice";
+import { setDayCountDown, setMonth, setMonthIndex, shiftAccountingMonthBy, setCurrentDate, setClosingDay } from "../slices/dateSlice";
 import { setBalance, setBudget } from "../slices/moneySlice";
 
 const ResumeData: React.FC = () => {
@@ -54,14 +56,48 @@ const ResumeData: React.FC = () => {
     const remainingIncome = useSelector(
         (state: RootState) => state.money.remainingIncome
     );
+    const [editing, setEditing] = useState(false);
+    const [draft, setDraft] = useState<string>(String(closingDay));
 
     /* ======================
        DATE CALCULATIONS
     ====================== */
-    const fixedDate: Date = getNextAvailableDayOfMonth(
-        stringToDate(currentDate),
-        closingDay
+    const fixedDate = useMemo(
+        () => getNextAvailableDayOfMonth(stringToDate(currentDate), closingDay),
+        [currentDate, closingDay]
     );
+
+    const closingDateLabel = useMemo(() => {
+        // fixedDate è la “data di chiusura” che già calcoli
+        // se vuoi usare un altro calcolo, sostituisci qui
+        const y = fixedDate.getFullYear();
+        const m = String(fixedDate.getMonth() + 1).padStart(2, "0");
+        const d = String(fixedDate.getDate()).padStart(2, "0");
+        return formatYYYYMMDDtoDDMMYYYY(`${y}-${m}-${d}`);
+    }, [fixedDate]);
+
+    const onStart = () => {
+        setDraft(String(closingDay));
+        setEditing(true);
+    };
+
+    const onCancel = () => {
+        setDraft(String(closingDay));
+        setEditing(false);
+    };
+
+    const onSave = () => {
+        const n = Number(draft);
+        if (!Number.isFinite(n)) return;
+        const v = Math.min(31, Math.max(1, Math.trunc(n)));
+        dispatch(setClosingDay(v));
+        setEditing(false);
+    };
+
+    const canSave = (() => {
+        const n = Number(draft);
+        return Number.isFinite(n) && n >= 1 && n <= 31 && Math.trunc(n) !== closingDay;
+    })();
 
     /* ======================
        LOCAL STATE (EDIT BALANCE)
@@ -154,8 +190,41 @@ const ResumeData: React.FC = () => {
                             variant="h5"
                             sx={{ fontWeight: 600, color: "primary.main" }}
                         >
-                            Il mese contabile si chiude il  <br /> {getDateDDMMYYYY(fixedDate)}
+                            Il mese contabile si chiude il  <br /> {closingDateLabel}
                         </Typography>
+                        {!editing ? (
+                            <Tooltip title="Modifica giorno di chiusura">
+                                <IconButton size="small" onClick={onStart}>
+                                    <EditIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                <TextField
+                                    size="small"
+                                    value={draft}
+                                    onChange={(e) => setDraft(e.target.value)}
+                                    type="number"
+                                    slotProps={{
+                                        htmlInput: { min: 1, max: 31, style: { width: 70 } },
+                                    }}
+                                />
+
+                                <Tooltip title="Salva">
+                                    <span>
+                                        <IconButton size="small" onClick={onSave} disabled={!canSave}>
+                                            <CheckIcon fontSize="small" />
+                                        </IconButton>
+                                    </span>
+                                </Tooltip>
+
+                                <Tooltip title="Annulla">
+                                    <IconButton size="small" onClick={onCancel}>
+                                        <CloseIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        )}
                     </Grid>
 
                     {/* Centro */}

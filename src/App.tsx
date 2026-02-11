@@ -1,10 +1,9 @@
 ﻿import React from "react";
 import {
-    Box,
-    Paper
+    Box
 } from "@mui/material";
-import IncomeTable from "./components/IncomeTable";
-import ExpensesTable from "./components/ExpensesTable";
+
+import FinanceDashboard from "./components/FinanceDashboard"
 import ResumeData from "./components/ResumeData";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -43,29 +42,8 @@ const App: React.FC = () => {
                 <ResumeData />
 
                 {/* TABELLE AFFIANCATE FULL WIDTH */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: { xs: "column", md: "row" }, // colonna su mobile, affiancate da md in su
-                        gap: 3,
-                        alignItems: "stretch",
-                        width: "100%",
-                    }}
-                >
-                    {/* Colonna sinistra: Entrate */}
-                    <Box sx={{ flex: 1 }}>
-                        <Paper sx={{ p: 2, height: "100%" }}>
-                            <IncomeTable />
-                        </Paper>
-                    </Box>
-
-                    {/* Colonna destra: Uscite */}
-                    <Box sx={{ flex: 1 }}>
-                        <Paper sx={{ p: 2, height: "100%" }}>
-                            <ExpensesTable />
-                        </Paper>
-                    </Box>
-                </Box>
+                <FinanceDashboard />
+                
             </Box>
 
             {/* FOOTER */}

@@ -3,7 +3,7 @@
     {
       "type": "Loan Car",
       "description": "Car loan monthly payment",
-      "value": 250,
+      "amount": 250,
       "date": "2026-02-13",
       "id": "16"
     },
@@ -12,7 +12,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 34.47,
+      "amount": 34.47,
       "date": "2026-01-24"
     },
     {
@@ -20,7 +20,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 135.71,
+      "amount": 135.71,
       "date": "2026-01-05"
     },
     {
@@ -28,7 +28,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 22.69,
+      "amount": 22.69,
       "date": "2026-01-24"
     },
     {
@@ -36,7 +36,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 31.3,
+      "amount": 31.3,
       "date": "2026-01-14"
     },
     {
@@ -44,7 +44,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 32.68,
+      "amount": 32.68,
       "date": "2026-01-07"
     },
     {
@@ -52,7 +52,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 120.86,
+      "amount": 120.86,
       "date": "2026-01-01"
     },
     {
@@ -60,7 +60,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 45.85,
+      "amount": 45.85,
       "date": "2026-01-21"
     },
     {
@@ -68,7 +68,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 55.87,
+      "amount": 55.87,
       "date": "2026-01-08"
     },
     {
@@ -76,7 +76,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 71.25,
+      "amount": 71.25,
       "date": "2026-01-26"
     },
     {
@@ -84,7 +84,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 98.29,
+      "amount": 98.29,
       "date": "2026-01-06"
     },
     {
@@ -92,7 +92,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 46.7,
+      "amount": 46.7,
       "date": "2026-01-09"
     },
     {
@@ -100,7 +100,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 5.58,
+      "amount": 5.58,
       "date": "2026-01-25"
     },
     {
@@ -108,7 +108,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 15.11,
+      "amount": 15.11,
       "date": "2026-01-13"
     },
     {
@@ -116,7 +116,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 38.33,
+      "amount": 38.33,
       "date": "2026-01-12"
     },
     {
@@ -124,7 +124,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 25.87,
+      "amount": 25.87,
       "date": "2026-01-02"
     },
     {
@@ -132,7 +132,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 49.46,
+      "amount": 49.46,
       "date": "2026-01-04"
     },
     {
@@ -140,7 +140,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 15.52,
+      "amount": 15.52,
       "date": "2026-01-10"
     },
     {
@@ -148,7 +148,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 100.41,
+      "amount": 100.41,
       "date": "2026-01-28"
     },
     {
@@ -156,7 +156,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 38.87,
+      "amount": 38.87,
       "date": "2026-01-23"
     },
     {
@@ -164,7 +164,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 17.98,
+      "amount": 17.98,
       "date": "2026-01-08"
     },
     {
@@ -172,7 +172,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 40.8,
+      "amount": 40.8,
       "date": "2026-02-22"
     },
     {
@@ -180,7 +180,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 51.75,
+      "amount": 51.75,
       "date": "2026-02-13"
     },
     {
@@ -188,7 +188,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 51.71,
+      "amount": 51.71,
       "date": "2026-02-15"
     },
     {
@@ -196,7 +196,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 52.68,
+      "amount": 52.68,
       "date": "2026-02-18"
     },
     {
@@ -204,7 +204,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 91.23,
+      "amount": 91.23,
       "date": "2026-02-04"
     },
     {
@@ -212,7 +212,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 135.02,
+      "amount": 135.02,
       "date": "2026-02-25"
     },
     {
@@ -220,7 +220,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 319.01,
+      "amount": 319.01,
       "date": "2026-02-11"
     },
     {
@@ -228,7 +228,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 34.08,
+      "amount": 34.08,
       "date": "2026-02-06"
     },
     {
@@ -236,7 +236,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 30.23,
+      "amount": 30.23,
       "date": "2026-02-24"
     },
     {
@@ -244,7 +244,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 34.75,
+      "amount": 34.75,
       "date": "2026-02-17"
     },
     {
@@ -252,7 +252,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 9.09,
+      "amount": 9.09,
       "date": "2026-02-04"
     },
     {
@@ -260,7 +260,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 58.8,
+      "amount": 58.8,
       "date": "2026-02-21"
     },
     {
@@ -268,7 +268,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 99.17,
+      "amount": 99.17,
       "date": "2026-02-05"
     },
     {
@@ -276,7 +276,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 48.13,
+      "amount": 48.13,
       "date": "2026-02-18"
     },
     {
@@ -284,7 +284,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 139.4,
+      "amount": 139.4,
       "date": "2026-02-20"
     },
     {
@@ -292,7 +292,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 34.43,
+      "amount": 34.43,
       "date": "2026-02-04"
     },
     {
@@ -300,7 +300,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 53.94,
+      "amount": 53.94,
       "date": "2026-02-27"
     },
     {
@@ -308,7 +308,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 133.81,
+      "amount": 133.81,
       "date": "2026-02-08"
     },
     {
@@ -316,7 +316,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 66.82,
+      "amount": 66.82,
       "date": "2026-02-03"
     },
     {
@@ -324,13 +324,13 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 51.45,
+      "amount": 51.45,
       "date": "2026-02-03"
     },
     {
       "type": "Books",
       "description": "Books expense",
-      "value": 50.03,
+      "amount": 50.03,
       "date": "2026-03-04",
       "userId": 101,
       "id": "61"
@@ -340,7 +340,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 70.65,
+      "amount": 70.65,
       "date": "2026-03-18"
     },
     {
@@ -348,7 +348,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 39.81,
+      "amount": 39.81,
       "date": "2026-03-06"
     },
     {
@@ -356,7 +356,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 211.92,
+      "amount": 211.92,
       "date": "2026-03-28"
     },
     {
@@ -364,7 +364,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 43.8,
+      "amount": 43.8,
       "date": "2026-03-28"
     },
     {
@@ -372,7 +372,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 32.73,
+      "amount": 32.73,
       "date": "2026-03-21"
     },
     {
@@ -380,7 +380,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 128.68,
+      "amount": 128.68,
       "date": "2026-03-03"
     },
     {
@@ -388,7 +388,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 66.61,
+      "amount": 66.61,
       "date": "2026-03-16"
     },
     {
@@ -396,7 +396,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 44.96,
+      "amount": 44.96,
       "date": "2026-03-13"
     },
     {
@@ -404,7 +404,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 44.82,
+      "amount": 44.82,
       "date": "2026-03-01"
     },
     {
@@ -412,7 +412,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 28.56,
+      "amount": 28.56,
       "date": "2026-03-26"
     },
     {
@@ -420,7 +420,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 49.97,
+      "amount": 49.97,
       "date": "2026-03-23"
     },
     {
@@ -428,7 +428,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 89.66,
+      "amount": 89.66,
       "date": "2026-03-18"
     },
     {
@@ -436,7 +436,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 113.39,
+      "amount": 113.39,
       "date": "2026-03-05"
     },
     {
@@ -444,7 +444,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 87.47,
+      "amount": 87.47,
       "date": "2026-03-02"
     },
     {
@@ -452,7 +452,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 54.14,
+      "amount": 54.14,
       "date": "2026-03-02"
     },
     {
@@ -460,7 +460,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 38.52,
+      "amount": 38.52,
       "date": "2026-03-02"
     },
     {
@@ -468,7 +468,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 38.61,
+      "amount": 38.61,
       "date": "2026-03-28"
     },
     {
@@ -476,7 +476,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 40.47,
+      "amount": 40.47,
       "date": "2026-03-17"
     },
     {
@@ -484,7 +484,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 70.34,
+      "amount": 70.34,
       "date": "2026-03-03"
     },
     {
@@ -492,7 +492,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 56.49,
+      "amount": 56.49,
       "date": "2026-04-09"
     },
     {
@@ -500,7 +500,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 261.69,
+      "amount": 261.69,
       "date": "2026-04-23"
     },
     {
@@ -508,7 +508,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 20.18,
+      "amount": 20.18,
       "date": "2026-04-21"
     },
     {
@@ -516,7 +516,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 226.89,
+      "amount": 226.89,
       "date": "2026-04-09"
     },
     {
@@ -524,7 +524,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 38.31,
+      "amount": 38.31,
       "date": "2026-04-14"
     },
     {
@@ -532,7 +532,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 65.43,
+      "amount": 65.43,
       "date": "2026-04-11"
     },
     {
@@ -540,7 +540,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 10.65,
+      "amount": 10.65,
       "date": "2026-04-09"
     },
     {
@@ -548,7 +548,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 11.89,
+      "amount": 11.89,
       "date": "2026-04-18"
     },
     {
@@ -556,7 +556,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 47.08,
+      "amount": 47.08,
       "date": "2026-04-01"
     },
     {
@@ -564,7 +564,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 19.89,
+      "amount": 19.89,
       "date": "2026-04-23"
     },
     {
@@ -572,7 +572,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 9.55,
+      "amount": 9.55,
       "date": "2026-04-27"
     },
     {
@@ -580,7 +580,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 39.13,
+      "amount": 39.13,
       "date": "2026-04-05"
     },
     {
@@ -588,7 +588,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 18.92,
+      "amount": 18.92,
       "date": "2026-04-10"
     },
     {
@@ -596,7 +596,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 54.95,
+      "amount": 54.95,
       "date": "2026-04-26"
     },
     {
@@ -604,7 +604,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 110.9,
+      "amount": 110.9,
       "date": "2026-04-07"
     },
     {
@@ -612,7 +612,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 52.44,
+      "amount": 52.44,
       "date": "2026-04-04"
     },
     {
@@ -620,7 +620,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 49.01,
+      "amount": 49.01,
       "date": "2026-04-28"
     },
     {
@@ -628,7 +628,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 78.17,
+      "amount": 78.17,
       "date": "2026-04-24"
     },
     {
@@ -636,7 +636,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 14.11,
+      "amount": 14.11,
       "date": "2026-04-08"
     },
     {
@@ -644,7 +644,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 14.71,
+      "amount": 14.71,
       "date": "2026-04-26"
     },
     {
@@ -652,7 +652,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 109.29,
+      "amount": 109.29,
       "date": "2026-05-24"
     },
     {
@@ -660,7 +660,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 65.3,
+      "amount": 65.3,
       "date": "2026-05-12"
     },
     {
@@ -668,7 +668,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 14.9,
+      "amount": 14.9,
       "date": "2026-05-22"
     },
     {
@@ -676,7 +676,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 41.16,
+      "amount": 41.16,
       "date": "2026-05-22"
     },
     {
@@ -684,7 +684,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 61.78,
+      "amount": 61.78,
       "date": "2026-05-10"
     },
     {
@@ -692,7 +692,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 60.21,
+      "amount": 60.21,
       "date": "2026-05-14"
     },
     {
@@ -700,7 +700,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 30.12,
+      "amount": 30.12,
       "date": "2026-05-10"
     },
     {
@@ -708,7 +708,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 36.55,
+      "amount": 36.55,
       "date": "2026-05-14"
     },
     {
@@ -716,7 +716,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 142.25,
+      "amount": 142.25,
       "date": "2026-05-22"
     },
     {
@@ -724,7 +724,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 82.71,
+      "amount": 82.71,
       "date": "2026-05-20"
     },
     {
@@ -732,7 +732,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 28.06,
+      "amount": 28.06,
       "date": "2026-05-18"
     },
     {
@@ -740,7 +740,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 57.35,
+      "amount": 57.35,
       "date": "2026-05-07"
     },
     {
@@ -748,7 +748,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 65,
+      "amount": 65,
       "date": "2026-05-20"
     },
     {
@@ -756,7 +756,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 61.89,
+      "amount": 61.89,
       "date": "2026-05-15"
     },
     {
@@ -764,7 +764,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 77.29,
+      "amount": 77.29,
       "date": "2026-05-17"
     },
     {
@@ -772,7 +772,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 85.56,
+      "amount": 85.56,
       "date": "2026-05-26"
     },
     {
@@ -780,7 +780,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 27.73,
+      "amount": 27.73,
       "date": "2026-05-03"
     },
     {
@@ -788,7 +788,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 230.41,
+      "amount": 230.41,
       "date": "2026-05-21"
     },
     {
@@ -796,7 +796,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 30.11,
+      "amount": 30.11,
       "date": "2026-05-27"
     },
     {
@@ -804,7 +804,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 147.65,
+      "amount": 147.65,
       "date": "2026-05-08"
     },
     {
@@ -812,7 +812,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 132.07,
+      "amount": 132.07,
       "date": "2026-06-11"
     },
     {
@@ -820,7 +820,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 54.65,
+      "amount": 54.65,
       "date": "2026-06-03"
     },
     {
@@ -828,7 +828,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 4.81,
+      "amount": 4.81,
       "date": "2026-06-13"
     },
     {
@@ -836,7 +836,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 26.46,
+      "amount": 26.46,
       "date": "2026-06-07"
     },
     {
@@ -844,7 +844,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 41.97,
+      "amount": 41.97,
       "date": "2026-06-11"
     },
     {
@@ -852,7 +852,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 80.57,
+      "amount": 80.57,
       "date": "2026-06-02"
     },
     {
@@ -860,7 +860,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 173.26,
+      "amount": 173.26,
       "date": "2026-06-13"
     },
     {
@@ -868,7 +868,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 66.76,
+      "amount": 66.76,
       "date": "2026-06-01"
     },
     {
@@ -876,7 +876,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 32.82,
+      "amount": 32.82,
       "date": "2026-06-01"
     },
     {
@@ -884,7 +884,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 24.93,
+      "amount": 24.93,
       "date": "2026-06-13"
     },
     {
@@ -892,7 +892,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 47.68,
+      "amount": 47.68,
       "date": "2026-06-24"
     },
     {
@@ -900,7 +900,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 123.98,
+      "amount": 123.98,
       "date": "2026-06-08"
     },
     {
@@ -908,7 +908,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 45.36,
+      "amount": 45.36,
       "date": "2026-06-14"
     },
     {
@@ -916,7 +916,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 32.03,
+      "amount": 32.03,
       "date": "2026-06-11"
     },
     {
@@ -924,7 +924,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 108.29,
+      "amount": 108.29,
       "date": "2026-06-13"
     },
     {
@@ -932,7 +932,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 27.38,
+      "amount": 27.38,
       "date": "2026-06-15"
     },
     {
@@ -940,7 +940,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 14.77,
+      "amount": 14.77,
       "date": "2026-06-18"
     },
     {
@@ -948,7 +948,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 111.62,
+      "amount": 111.62,
       "date": "2026-06-19"
     },
     {
@@ -956,7 +956,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 49.78,
+      "amount": 49.78,
       "date": "2026-06-03"
     },
     {
@@ -964,7 +964,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 75.72,
+      "amount": 75.72,
       "date": "2026-06-28"
     },
     {
@@ -972,7 +972,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 347.6,
+      "amount": 347.6,
       "date": "2026-07-20"
     },
     {
@@ -980,7 +980,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 66.75,
+      "amount": 66.75,
       "date": "2026-07-19"
     },
     {
@@ -988,7 +988,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 61.25,
+      "amount": 61.25,
       "date": "2026-07-14"
     },
     {
@@ -996,7 +996,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 68.17,
+      "amount": 68.17,
       "date": "2026-07-17"
     },
     {
@@ -1004,7 +1004,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 64.36,
+      "amount": 64.36,
       "date": "2026-07-28"
     },
     {
@@ -1012,7 +1012,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 67.56,
+      "amount": 67.56,
       "date": "2026-07-04"
     },
     {
@@ -1020,7 +1020,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 77.26,
+      "amount": 77.26,
       "date": "2026-07-21"
     },
     {
@@ -1028,7 +1028,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 79.51,
+      "amount": 79.51,
       "date": "2026-07-14"
     },
     {
@@ -1036,7 +1036,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 11.81,
+      "amount": 11.81,
       "date": "2026-07-21"
     },
     {
@@ -1044,7 +1044,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 265.57,
+      "amount": 265.57,
       "date": "2026-07-18"
     },
     {
@@ -1052,7 +1052,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 62.54,
+      "amount": 62.54,
       "date": "2026-07-27"
     },
     {
@@ -1060,7 +1060,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 59.44,
+      "amount": 59.44,
       "date": "2026-07-11"
     },
     {
@@ -1068,7 +1068,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 172.92,
+      "amount": 172.92,
       "date": "2026-07-03"
     },
     {
@@ -1076,7 +1076,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 358.57,
+      "amount": 358.57,
       "date": "2026-07-08"
     },
     {
@@ -1084,7 +1084,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 69.89,
+      "amount": 69.89,
       "date": "2026-07-22"
     },
     {
@@ -1092,7 +1092,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 33.55,
+      "amount": 33.55,
       "date": "2026-07-16"
     },
     {
@@ -1100,7 +1100,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 19.09,
+      "amount": 19.09,
       "date": "2026-07-07"
     },
     {
@@ -1108,7 +1108,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 49.89,
+      "amount": 49.89,
       "date": "2026-07-11"
     },
     {
@@ -1116,7 +1116,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 358.11,
+      "amount": 358.11,
       "date": "2026-07-23"
     },
     {
@@ -1124,7 +1124,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 244.53,
+      "amount": 244.53,
       "date": "2026-07-17"
     },
     {
@@ -1132,7 +1132,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 37.18,
+      "amount": 37.18,
       "date": "2026-08-01"
     },
     {
@@ -1140,7 +1140,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 27.06,
+      "amount": 27.06,
       "date": "2026-08-16"
     },
     {
@@ -1148,7 +1148,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 53.85,
+      "amount": 53.85,
       "date": "2026-08-02"
     },
     {
@@ -1156,7 +1156,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 379.37,
+      "amount": 379.37,
       "date": "2026-08-16"
     },
     {
@@ -1164,7 +1164,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 68.44,
+      "amount": 68.44,
       "date": "2026-08-13"
     },
     {
@@ -1172,7 +1172,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 35.19,
+      "amount": 35.19,
       "date": "2026-08-21"
     },
     {
@@ -1180,7 +1180,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 26.97,
+      "amount": 26.97,
       "date": "2026-08-05"
     },
     {
@@ -1188,7 +1188,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 66.95,
+      "amount": 66.95,
       "date": "2026-08-03"
     },
     {
@@ -1196,7 +1196,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 58.95,
+      "amount": 58.95,
       "date": "2026-08-25"
     },
     {
@@ -1204,7 +1204,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 52.44,
+      "amount": 52.44,
       "date": "2026-08-26"
     },
     {
@@ -1212,7 +1212,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 23.54,
+      "amount": 23.54,
       "date": "2026-08-17"
     },
     {
@@ -1220,7 +1220,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 41.54,
+      "amount": 41.54,
       "date": "2026-08-15"
     },
     {
@@ -1228,7 +1228,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 351.06,
+      "amount": 351.06,
       "date": "2026-08-14"
     },
     {
@@ -1236,7 +1236,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 249.02,
+      "amount": 249.02,
       "date": "2026-08-02"
     },
     {
@@ -1244,7 +1244,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 67.61,
+      "amount": 67.61,
       "date": "2026-08-04"
     },
     {
@@ -1252,7 +1252,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 140.08,
+      "amount": 140.08,
       "date": "2026-08-09"
     },
     {
@@ -1260,7 +1260,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 30.55,
+      "amount": 30.55,
       "date": "2026-08-08"
     },
     {
@@ -1268,7 +1268,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 9.62,
+      "amount": 9.62,
       "date": "2026-08-06"
     },
     {
@@ -1276,7 +1276,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 66.77,
+      "amount": 66.77,
       "date": "2026-08-23"
     },
     {
@@ -1284,7 +1284,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 38.19,
+      "amount": 38.19,
       "date": "2026-08-02"
     },
     {
@@ -1292,7 +1292,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 97.83,
+      "amount": 97.83,
       "date": "2026-09-16"
     },
     {
@@ -1300,7 +1300,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 30.42,
+      "amount": 30.42,
       "date": "2026-09-11"
     },
     {
@@ -1308,7 +1308,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 33.6,
+      "amount": 33.6,
       "date": "2026-09-06"
     },
     {
@@ -1316,7 +1316,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 30.58,
+      "amount": 30.58,
       "date": "2026-09-16"
     },
     {
@@ -1324,7 +1324,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 281.9,
+      "amount": 281.9,
       "date": "2026-09-13"
     },
     {
@@ -1332,7 +1332,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 24.77,
+      "amount": 24.77,
       "date": "2026-09-03"
     },
     {
@@ -1340,7 +1340,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 22.62,
+      "amount": 22.62,
       "date": "2026-09-04"
     },
     {
@@ -1348,7 +1348,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 70.54,
+      "amount": 70.54,
       "date": "2026-09-27"
     },
     {
@@ -1356,7 +1356,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 89.19,
+      "amount": 89.19,
       "date": "2026-09-18"
     },
     {
@@ -1364,7 +1364,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 58.93,
+      "amount": 58.93,
       "date": "2026-09-07"
     },
     {
@@ -1372,7 +1372,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 67.03,
+      "amount": 67.03,
       "date": "2026-09-25"
     },
     {
@@ -1380,7 +1380,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 73.78,
+      "amount": 73.78,
       "date": "2026-09-25"
     },
     {
@@ -1388,7 +1388,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 48.32,
+      "amount": 48.32,
       "date": "2026-09-18"
     },
     {
@@ -1396,7 +1396,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 14.13,
+      "amount": 14.13,
       "date": "2026-09-15"
     },
     {
@@ -1404,7 +1404,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 51.35,
+      "amount": 51.35,
       "date": "2026-09-01"
     },
     {
@@ -1412,7 +1412,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 99.15,
+      "amount": 99.15,
       "date": "2026-09-08"
     },
     {
@@ -1420,7 +1420,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 26.88,
+      "amount": 26.88,
       "date": "2026-09-18"
     },
     {
@@ -1428,7 +1428,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 79.7,
+      "amount": 79.7,
       "date": "2026-09-03"
     },
     {
@@ -1436,7 +1436,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 198.76,
+      "amount": 198.76,
       "date": "2026-09-04"
     },
     {
@@ -1444,7 +1444,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 96.29,
+      "amount": 96.29,
       "date": "2026-09-21"
     },
     {
@@ -1452,7 +1452,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 147.51,
+      "amount": 147.51,
       "date": "2026-10-16"
     },
     {
@@ -1460,7 +1460,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 41.36,
+      "amount": 41.36,
       "date": "2026-10-19"
     },
     {
@@ -1468,7 +1468,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 53.49,
+      "amount": 53.49,
       "date": "2026-10-28"
     },
     {
@@ -1476,7 +1476,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 36.98,
+      "amount": 36.98,
       "date": "2026-10-15"
     },
     {
@@ -1484,7 +1484,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 95.02,
+      "amount": 95.02,
       "date": "2026-10-14"
     },
     {
@@ -1492,7 +1492,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 146.09,
+      "amount": 146.09,
       "date": "2026-10-03"
     },
     {
@@ -1500,7 +1500,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 84.71,
+      "amount": 84.71,
       "date": "2026-10-09"
     },
     {
@@ -1508,7 +1508,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 41.16,
+      "amount": 41.16,
       "date": "2026-10-13"
     },
     {
@@ -1516,7 +1516,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 30.44,
+      "amount": 30.44,
       "date": "2026-10-11"
     },
     {
@@ -1524,7 +1524,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 131.71,
+      "amount": 131.71,
       "date": "2026-10-13"
     },
     {
@@ -1532,7 +1532,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 41.34,
+      "amount": 41.34,
       "date": "2026-10-25"
     },
     {
@@ -1540,7 +1540,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 91.07,
+      "amount": 91.07,
       "date": "2026-10-02"
     },
     {
@@ -1548,7 +1548,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 14.11,
+      "amount": 14.11,
       "date": "2026-10-21"
     },
     {
@@ -1556,7 +1556,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 139.72,
+      "amount": 139.72,
       "date": "2026-10-08"
     },
     {
@@ -1564,7 +1564,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 21.78,
+      "amount": 21.78,
       "date": "2026-10-04"
     },
     {
@@ -1572,7 +1572,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 111.51,
+      "amount": 111.51,
       "date": "2026-10-04"
     },
     {
@@ -1580,7 +1580,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 41.65,
+      "amount": 41.65,
       "date": "2026-10-10"
     },
     {
@@ -1588,7 +1588,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 34.14,
+      "amount": 34.14,
       "date": "2026-10-26"
     },
     {
@@ -1596,7 +1596,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 56.4,
+      "amount": 56.4,
       "date": "2026-10-12"
     },
     {
@@ -1604,7 +1604,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 20.19,
+      "amount": 20.19,
       "date": "2026-10-17"
     },
     {
@@ -1612,7 +1612,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 287.22,
+      "amount": 287.22,
       "date": "2026-11-24"
     },
     {
@@ -1620,7 +1620,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 108.51,
+      "amount": 108.51,
       "date": "2026-11-05"
     },
     {
@@ -1628,7 +1628,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 32.63,
+      "amount": 32.63,
       "date": "2026-11-21"
     },
     {
@@ -1636,7 +1636,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 25.12,
+      "amount": 25.12,
       "date": "2026-11-26"
     },
     {
@@ -1644,7 +1644,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 32.34,
+      "amount": 32.34,
       "date": "2026-11-12"
     },
     {
@@ -1652,7 +1652,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 24.86,
+      "amount": 24.86,
       "date": "2026-11-10"
     },
     {
@@ -1660,7 +1660,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 47.37,
+      "amount": 47.37,
       "date": "2026-11-06"
     },
     {
@@ -1668,7 +1668,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 61.15,
+      "amount": 61.15,
       "date": "2026-11-18"
     },
     {
@@ -1676,7 +1676,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 36.54,
+      "amount": 36.54,
       "date": "2026-11-09"
     },
     {
@@ -1684,7 +1684,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 6.08,
+      "amount": 6.08,
       "date": "2026-11-27"
     },
     {
@@ -1692,7 +1692,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 97.72,
+      "amount": 97.72,
       "date": "2026-11-10"
     },
     {
@@ -1700,7 +1700,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 80.28,
+      "amount": 80.28,
       "date": "2026-11-26"
     },
     {
@@ -1708,7 +1708,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 45.44,
+      "amount": 45.44,
       "date": "2026-11-03"
     },
     {
@@ -1716,7 +1716,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 12.05,
+      "amount": 12.05,
       "date": "2026-11-08"
     },
     {
@@ -1724,7 +1724,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 114.15,
+      "amount": 114.15,
       "date": "2026-11-13"
     },
     {
@@ -1732,7 +1732,7 @@
       "userId": 101,
       "type": "Healthcare",
       "description": "Healthcare expense",
-      "value": 67.55,
+      "amount": 67.55,
       "date": "2026-11-26"
     },
     {
@@ -1740,7 +1740,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 10.97,
+      "amount": 10.97,
       "date": "2026-11-18"
     },
     {
@@ -1748,7 +1748,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 44.56,
+      "amount": 44.56,
       "date": "2026-11-22"
     },
     {
@@ -1756,7 +1756,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 65.43,
+      "amount": 65.43,
       "date": "2026-11-19"
     },
     {
@@ -1764,7 +1764,7 @@
       "userId": 101,
       "type": "Toys",
       "description": "Toys expense",
-      "value": 67.57,
+      "amount": 67.57,
       "date": "2026-11-12"
     },
     {
@@ -1772,7 +1772,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 103.13,
+      "amount": 103.13,
       "date": "2026-12-01"
     },
     {
@@ -1780,7 +1780,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 100.81,
+      "amount": 100.81,
       "date": "2026-12-08"
     },
     {
@@ -1788,7 +1788,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 12.44,
+      "amount": 12.44,
       "date": "2026-12-07"
     },
     {
@@ -1796,7 +1796,7 @@
       "userId": 101,
       "type": "Dining Out",
       "description": "Dining Out expense",
-      "value": 68.94,
+      "amount": 68.94,
       "date": "2026-12-18"
     },
     {
@@ -1804,7 +1804,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 133.82,
+      "amount": 133.82,
       "date": "2026-12-27"
     },
     {
@@ -1812,7 +1812,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 92.57,
+      "amount": 92.57,
       "date": "2026-12-05"
     },
     {
@@ -1820,7 +1820,7 @@
       "userId": 101,
       "type": "Household",
       "description": "Household expense",
-      "value": 10.17,
+      "amount": 10.17,
       "date": "2026-12-28"
     },
     {
@@ -1828,7 +1828,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 14.85,
+      "amount": 14.85,
       "date": "2026-12-18"
     },
     {
@@ -1836,7 +1836,7 @@
       "userId": 101,
       "type": "Electronics",
       "description": "Electronics expense",
-      "value": 329.48,
+      "amount": 329.48,
       "date": "2026-12-04"
     },
     {
@@ -1844,7 +1844,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 132.64,
+      "amount": 132.64,
       "date": "2026-12-05"
     },
     {
@@ -1852,7 +1852,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 62.24,
+      "amount": 62.24,
       "date": "2026-12-26"
     },
     {
@@ -1860,7 +1860,7 @@
       "userId": 101,
       "type": "Clothes",
       "description": "Clothes expense",
-      "value": 134.22,
+      "amount": 134.22,
       "date": "2026-12-01"
     },
     {
@@ -1868,7 +1868,7 @@
       "userId": 101,
       "type": "Coffee",
       "description": "Coffee expense",
-      "value": 6.18,
+      "amount": 6.18,
       "date": "2026-12-05"
     },
     {
@@ -1876,7 +1876,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 46.57,
+      "amount": 46.57,
       "date": "2026-12-04"
     },
     {
@@ -1884,7 +1884,7 @@
       "userId": 101,
       "type": "Entertainment",
       "description": "Entertainment expense",
-      "value": 19.77,
+      "amount": 19.77,
       "date": "2026-12-15"
     },
     {
@@ -1892,7 +1892,7 @@
       "userId": 101,
       "type": "Books",
       "description": "Books expense",
-      "value": 35.66,
+      "amount": 35.66,
       "date": "2026-12-04"
     },
     {
@@ -1900,7 +1900,7 @@
       "userId": 101,
       "type": "Fuel",
       "description": "Fuel expense",
-      "value": 65.27,
+      "amount": 65.27,
       "date": "2026-12-20"
     },
     {
@@ -1908,7 +1908,7 @@
       "userId": 101,
       "type": "Groceries",
       "description": "Groceries expense",
-      "value": 95.45,
+      "amount": 95.45,
       "date": "2026-12-28"
     },
     {
@@ -1916,7 +1916,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 87.79,
+      "amount": 87.79,
       "date": "2026-12-15"
     },
     {
@@ -1924,7 +1924,7 @@
       "userId": 101,
       "type": "Gifts",
       "description": "Gifts expense",
-      "value": 145.32,
+      "amount": 145.32,
       "date": "2026-12-02"
     },
     {
@@ -1932,7 +1932,7 @@
       "userId": 101,
       "type": "alimentari",
       "description": "dodecaà",
-      "value": 30,
+      "amount": 30,
       "date": "2026-12-22"
     },
     {
@@ -1940,13 +1940,13 @@
       "userId": 101,
       "type": "pippo",
       "description": "pluto",
-      "value": 0,
+      "amount": 0,
       "date": "2026-12-10"
     },
     {
       "type": "pippo",
       "description": "pluto paperino",
-      "value": 400,
+      "amount": 400,
       "date": "2026-12-13",
       "id": "9690"
     },
@@ -1955,7 +1955,7 @@
       "userId": 101,
       "type": "hdzh",
       "description": "zdfbhzdfh",
-      "value": 34,
+      "amount": 34,
       "date": "2026-01-30"
     },
     {
@@ -1964,7 +1964,7 @@
       "userId": 101,
       "type": "test",
       "description": "test_1",
-      "value": 20,
+      "amount": 20,
       "date": "2026-02-07"
     },
     {
@@ -1973,7 +1973,7 @@
       "userId": 101,
       "type": "test",
       "description": "test_on line",
-      "value": 10,
+      "amount": 10,
       "date": "2026-02-09"
     }
   ],
@@ -1983,7 +1983,7 @@
       "userId": 101,
       "type": "Rent",
       "description": "Monthly apartment rent",
-      "value": [
+      "amount": [
         900,
         900,
         900,
@@ -2032,7 +2032,7 @@
       "userId": 101,
       "type": "Utilities",
       "description": "Electricity and gas bill",
-      "value": [
+      "amount": [
         130,
         130,
         130,
@@ -2081,7 +2081,7 @@
       "userId": 101,
       "type": "Water",
       "description": "Water bill",
-      "value": [
+      "amount": [
         35,
         35,
         35,
@@ -2130,7 +2130,7 @@
       "userId": 101,
       "type": "Internet",
       "description": "Home internet subscription",
-      "value": [
+      "amount": [
         45,
         45,
         45,
@@ -2179,7 +2179,7 @@
       "userId": 101,
       "type": "Streaming",
       "description": "Streaming services (Netflix, Spotify, etc.)",
-      "value": [
+      "amount": [
         25,
         25,
         25,
@@ -2228,7 +2228,7 @@
       "userId": 101,
       "type": "Mobile",
       "description": "Mobile phone plan",
-      "value": [
+      "amount": [
         20,
         20,
         20,
@@ -2277,7 +2277,7 @@
       "userId": 101,
       "type": "Transport Pass",
       "description": "Monthly public transport pass",
-      "value": [
+      "amount": [
         50,
         50,
         50,
@@ -2326,7 +2326,7 @@
       "userId": 101,
       "type": "Gym",
       "description": "Gym membership",
-      "value": [
+      "amount": [
         40,
         40,
         40,
@@ -2375,7 +2375,7 @@
       "userId": 101,
       "type": "Parking",
       "description": "Monthly parking fee",
-      "value": [
+      "amount": [
         60,
         60,
         60,
@@ -2424,7 +2424,7 @@
       "userId": 101,
       "type": "Insurance Car",
       "description": "Car insurance installment",
-      "value": [
+      "amount": [
         70,
         70,
         70,
@@ -2473,7 +2473,7 @@
       "userId": 101,
       "type": "Insurance Home",
       "description": "Home insurance",
-      "value": [
+      "amount": [
         40,
         40,
         40,
@@ -2522,7 +2522,7 @@
       "userId": 101,
       "type": "Kindergarten",
       "description": "Kindergarten fee",
-      "value": [
+      "amount": [
         250,
         250,
         250,
@@ -2571,7 +2571,7 @@
       "userId": 101,
       "type": "School Lunch",
       "description": "School canteen service",
-      "value": [
+      "amount": [
         90,
         90,
         90,
@@ -2620,7 +2620,7 @@
       "userId": 101,
       "type": "Subscriptions",
       "description": "Software and cloud subscriptions",
-      "value": [
+      "amount": [
         30,
         30,
         30,
@@ -2669,7 +2669,7 @@
       "userId": 101,
       "type": "Loan House",
       "description": "Mortgage monthly payment",
-      "value": [
+      "amount": [
         600,
         600,
         600,
@@ -2718,7 +2718,7 @@
       "userId": 101,
       "type": "Condominium",
       "description": "Condominium service charges",
-      "value": [
+      "amount": [
         110,
         110,
         110,
@@ -2767,7 +2767,7 @@
       "userId": 101,
       "type": "Pet Food",
       "description": "Pet food subscription",
-      "value": [
+      "amount": [
         35,
         35,
         35,
@@ -2816,7 +2816,7 @@
       "userId": 101,
       "type": "Charity",
       "description": "Monthly charity donation",
-      "value": [
+      "amount": [
         20,
         20,
         20,
@@ -2865,7 +2865,7 @@
       "userId": 101,
       "type": "Savings Plan",
       "description": "Automatic transfer to savings account",
-      "value": [
+      "amount": [
         150,
         150,
         150,
@@ -2914,7 +2914,7 @@
       "userId": 101,
       "type": "rate",
       "description": "rata computer Marina",
-      "value": [
+      "amount": [
         56,
         56,
         56,
@@ -2964,7 +2964,7 @@
       "userId": 101,
       "type": "test",
       "description": "test_2",
-      "value": [
+      "amount": [
         20,
         20,
         20,
@@ -3026,7 +3026,7 @@
         12
       ],
       "dayOfTheMonth": 8,
-      "value": [
+      "amount": [
         12,
         12,
         12,
@@ -3061,7 +3061,7 @@
     {
       "type": "Rental Income",
       "description": "Rent from secondary apartment",
-      "value": 650,
+      "amount": 650,
       "date": "2026-12-10",
       "id": "3"
     },
@@ -3070,7 +3070,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 197.19,
+      "amount": 197.19,
       "date": "2026-01-28"
     },
     {
@@ -3078,7 +3078,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 131.98,
+      "amount": 131.98,
       "date": "2026-01-13"
     },
     {
@@ -3086,7 +3086,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 96.15,
+      "amount": 96.15,
       "date": "2026-01-27"
     },
     {
@@ -3094,7 +3094,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 17.2,
+      "amount": 17.2,
       "date": "2026-01-12"
     },
     {
@@ -3102,7 +3102,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 105.47,
+      "amount": 105.47,
       "date": "2026-01-23"
     },
     {
@@ -3110,7 +3110,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 324.11,
+      "amount": 324.11,
       "date": "2026-01-06"
     },
     {
@@ -3118,7 +3118,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 37.81,
+      "amount": 37.81,
       "date": "2026-01-06"
     },
     {
@@ -3126,7 +3126,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 57.95,
+      "amount": 57.95,
       "date": "2026-01-21"
     },
     {
@@ -3134,7 +3134,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 14.88,
+      "amount": 14.88,
       "date": "2026-01-11"
     },
     {
@@ -3142,7 +3142,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 130.17,
+      "amount": 130.17,
       "date": "2026-01-02"
     },
     {
@@ -3150,7 +3150,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 35.09,
+      "amount": 35.09,
       "date": "2026-01-03"
     },
     {
@@ -3158,7 +3158,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 138.27,
+      "amount": 138.27,
       "date": "2026-01-19"
     },
     {
@@ -3166,7 +3166,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 20.95,
+      "amount": 20.95,
       "date": "2026-01-16"
     },
     {
@@ -3174,7 +3174,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 224.63,
+      "amount": 224.63,
       "date": "2026-01-21"
     },
     {
@@ -3182,7 +3182,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 34.29,
+      "amount": 34.29,
       "date": "2026-01-05"
     },
     {
@@ -3190,7 +3190,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 115.57,
+      "amount": 115.57,
       "date": "2026-01-18"
     },
     {
@@ -3198,7 +3198,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 151.93,
+      "amount": 151.93,
       "date": "2026-01-14"
     },
     {
@@ -3206,7 +3206,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 123.87,
+      "amount": 123.87,
       "date": "2026-01-08"
     },
     {
@@ -3214,7 +3214,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 111.71,
+      "amount": 111.71,
       "date": "2026-01-03"
     },
     {
@@ -3222,7 +3222,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 351.39,
+      "amount": 351.39,
       "date": "2026-01-05"
     },
     {
@@ -3230,7 +3230,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 39.46,
+      "amount": 39.46,
       "date": "2026-02-05"
     },
     {
@@ -3238,7 +3238,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 114.68,
+      "amount": 114.68,
       "date": "2026-02-06"
     },
     {
@@ -3246,7 +3246,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 110.26,
+      "amount": 110.26,
       "date": "2026-02-20"
     },
     {
@@ -3254,7 +3254,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 242.16,
+      "amount": 242.16,
       "date": "2026-02-18"
     },
     {
@@ -3262,7 +3262,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 111.25,
+      "amount": 111.25,
       "date": "2026-02-13"
     },
     {
@@ -3270,7 +3270,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 37.86,
+      "amount": 37.86,
       "date": "2026-02-17"
     },
     {
@@ -3278,7 +3278,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 32.1,
+      "amount": 32.1,
       "date": "2026-02-08"
     },
     {
@@ -3286,7 +3286,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 202.14,
+      "amount": 202.14,
       "date": "2026-02-19"
     },
     {
@@ -3294,7 +3294,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 15.36,
+      "amount": 15.36,
       "date": "2026-02-08"
     },
     {
@@ -3302,7 +3302,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 74.85,
+      "amount": 74.85,
       "date": "2026-02-21"
     },
     {
@@ -3310,7 +3310,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 130.13,
+      "amount": 130.13,
       "date": "2026-02-02"
     },
     {
@@ -3318,7 +3318,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 10.31,
+      "amount": 10.31,
       "date": "2026-02-08"
     },
     {
@@ -3326,7 +3326,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 137.11,
+      "amount": 137.11,
       "date": "2026-02-07"
     },
     {
@@ -3334,7 +3334,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 10.95,
+      "amount": 10.95,
       "date": "2026-02-19"
     },
     {
@@ -3342,7 +3342,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 139.26,
+      "amount": 139.26,
       "date": "2026-02-26"
     },
     {
@@ -3350,7 +3350,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 100.75,
+      "amount": 100.75,
       "date": "2026-02-07"
     },
     {
@@ -3358,7 +3358,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 93.62,
+      "amount": 93.62,
       "date": "2026-02-14"
     },
     {
@@ -3366,7 +3366,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 36.77,
+      "amount": 36.77,
       "date": "2026-02-15"
     },
     {
@@ -3374,7 +3374,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 285.68,
+      "amount": 285.68,
       "date": "2026-02-21"
     },
     {
@@ -3382,7 +3382,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 77.28,
+      "amount": 77.28,
       "date": "2026-02-24"
     },
     {
@@ -3390,7 +3390,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 54.27,
+      "amount": 54.27,
       "date": "2026-03-28"
     },
     {
@@ -3398,7 +3398,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 69.51,
+      "amount": 69.51,
       "date": "2026-03-19"
     },
     {
@@ -3406,7 +3406,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 93.15,
+      "amount": 93.15,
       "date": "2026-03-02"
     },
     {
@@ -3414,7 +3414,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 57.22,
+      "amount": 57.22,
       "date": "2026-03-22"
     },
     {
@@ -3422,7 +3422,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 158.7,
+      "amount": 158.7,
       "date": "2026-03-11"
     },
     {
@@ -3430,7 +3430,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 48.81,
+      "amount": 48.81,
       "date": "2026-03-23"
     },
     {
@@ -3438,7 +3438,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 22.9,
+      "amount": 22.9,
       "date": "2026-03-13"
     },
     {
@@ -3446,7 +3446,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 140.9,
+      "amount": 140.9,
       "date": "2026-03-10"
     },
     {
@@ -3454,7 +3454,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 51.62,
+      "amount": 51.62,
       "date": "2026-03-25"
     },
     {
@@ -3462,7 +3462,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 54.19,
+      "amount": 54.19,
       "date": "2026-03-20"
     },
     {
@@ -3470,7 +3470,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 249.18,
+      "amount": 249.18,
       "date": "2026-03-03"
     },
     {
@@ -3478,7 +3478,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 14.59,
+      "amount": 14.59,
       "date": "2026-03-09"
     },
     {
@@ -3486,7 +3486,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 187.99,
+      "amount": 187.99,
       "date": "2026-03-03"
     },
     {
@@ -3494,7 +3494,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 64.89,
+      "amount": 64.89,
       "date": "2026-03-06"
     },
     {
@@ -3502,7 +3502,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 103.37,
+      "amount": 103.37,
       "date": "2026-03-23"
     },
     {
@@ -3510,7 +3510,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 126.22,
+      "amount": 126.22,
       "date": "2026-03-26"
     },
     {
@@ -3518,7 +3518,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 5.35,
+      "amount": 5.35,
       "date": "2026-03-27"
     },
     {
@@ -3526,7 +3526,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 18.47,
+      "amount": 18.47,
       "date": "2026-03-22"
     },
     {
@@ -3534,13 +3534,13 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 472.52,
+      "amount": 472.52,
       "date": "2026-03-05"
     },
     {
       "type": "Refund",
       "description": "Refund income",
-      "value": 31.93,
+      "amount": 31.93,
       "date": "2026-03-04",
       "userId": 101,
       "id": "80"
@@ -3550,7 +3550,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 178.65,
+      "amount": 178.65,
       "date": "2026-04-01"
     },
     {
@@ -3558,7 +3558,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 152.58,
+      "amount": 152.58,
       "date": "2026-04-11"
     },
     {
@@ -3566,7 +3566,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 206.49,
+      "amount": 206.49,
       "date": "2026-04-28"
     },
     {
@@ -3574,7 +3574,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 51.02,
+      "amount": 51.02,
       "date": "2026-04-26"
     },
     {
@@ -3582,7 +3582,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 222.14,
+      "amount": 222.14,
       "date": "2026-04-02"
     },
     {
@@ -3590,7 +3590,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 42.24,
+      "amount": 42.24,
       "date": "2026-04-27"
     },
     {
@@ -3598,7 +3598,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 54.97,
+      "amount": 54.97,
       "date": "2026-04-27"
     },
     {
@@ -3606,7 +3606,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 45.09,
+      "amount": 45.09,
       "date": "2026-04-22"
     },
     {
@@ -3614,7 +3614,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 68.79,
+      "amount": 68.79,
       "date": "2026-04-09"
     },
     {
@@ -3622,7 +3622,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 485.1,
+      "amount": 485.1,
       "date": "2026-04-09"
     },
     {
@@ -3630,7 +3630,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 53.11,
+      "amount": 53.11,
       "date": "2026-04-13"
     },
     {
@@ -3638,7 +3638,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 19.9,
+      "amount": 19.9,
       "date": "2026-04-01"
     },
     {
@@ -3646,7 +3646,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 444.67,
+      "amount": 444.67,
       "date": "2026-04-09"
     },
     {
@@ -3654,7 +3654,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 124.51,
+      "amount": 124.51,
       "date": "2026-04-09"
     },
     {
@@ -3662,7 +3662,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 87.94,
+      "amount": 87.94,
       "date": "2026-04-14"
     },
     {
@@ -3670,7 +3670,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 59.64,
+      "amount": 59.64,
       "date": "2026-04-11"
     },
     {
@@ -3678,7 +3678,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 163.37,
+      "amount": 163.37,
       "date": "2026-04-17"
     },
     {
@@ -3686,7 +3686,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 223.34,
+      "amount": 223.34,
       "date": "2026-04-19"
     },
     {
@@ -3694,7 +3694,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 49.39,
+      "amount": 49.39,
       "date": "2026-04-23"
     },
     {
@@ -3702,7 +3702,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 30.37,
+      "amount": 30.37,
       "date": "2026-04-26"
     },
     {
@@ -3710,7 +3710,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 34.89,
+      "amount": 34.89,
       "date": "2026-05-02"
     },
     {
@@ -3718,7 +3718,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 147.83,
+      "amount": 147.83,
       "date": "2026-05-20"
     },
     {
@@ -3726,7 +3726,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 254.94,
+      "amount": 254.94,
       "date": "2026-05-21"
     },
     {
@@ -3734,7 +3734,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 80.83,
+      "amount": 80.83,
       "date": "2026-05-23"
     },
     {
@@ -3742,7 +3742,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 138.76,
+      "amount": 138.76,
       "date": "2026-05-08"
     },
     {
@@ -3750,7 +3750,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 138.09,
+      "amount": 138.09,
       "date": "2026-05-01"
     },
     {
@@ -3758,7 +3758,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 400.29,
+      "amount": 400.29,
       "date": "2026-05-08"
     },
     {
@@ -3766,7 +3766,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 164.74,
+      "amount": 164.74,
       "date": "2026-05-23"
     },
     {
@@ -3774,7 +3774,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 25.9,
+      "amount": 25.9,
       "date": "2026-05-18"
     },
     {
@@ -3782,7 +3782,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 138.86,
+      "amount": 138.86,
       "date": "2026-05-04"
     },
     {
@@ -3790,7 +3790,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 33.33,
+      "amount": 33.33,
       "date": "2026-05-15"
     },
     {
@@ -3798,7 +3798,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 49.46,
+      "amount": 49.46,
       "date": "2026-05-20"
     },
     {
@@ -3806,7 +3806,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 76.25,
+      "amount": 76.25,
       "date": "2026-05-15"
     },
     {
@@ -3814,7 +3814,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 211.15,
+      "amount": 211.15,
       "date": "2026-05-17"
     },
     {
@@ -3822,7 +3822,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 212.73,
+      "amount": 212.73,
       "date": "2026-05-18"
     },
     {
@@ -3830,7 +3830,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 109.72,
+      "amount": 109.72,
       "date": "2026-05-24"
     },
     {
@@ -3838,7 +3838,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 65.01,
+      "amount": 65.01,
       "date": "2026-05-25"
     },
     {
@@ -3846,7 +3846,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 128.38,
+      "amount": 128.38,
       "date": "2026-05-09"
     },
     {
@@ -3854,7 +3854,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 26.81,
+      "amount": 26.81,
       "date": "2026-05-08"
     },
     {
@@ -3862,7 +3862,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 93.58,
+      "amount": 93.58,
       "date": "2026-05-23"
     },
     {
@@ -3870,7 +3870,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 38.17,
+      "amount": 38.17,
       "date": "2026-06-09"
     },
     {
@@ -3878,7 +3878,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 102.02,
+      "amount": 102.02,
       "date": "2026-06-15"
     },
     {
@@ -3886,7 +3886,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 30.31,
+      "amount": 30.31,
       "date": "2026-06-13"
     },
     {
@@ -3894,7 +3894,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 152.88,
+      "amount": 152.88,
       "date": "2026-06-27"
     },
     {
@@ -3902,7 +3902,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 85.5,
+      "amount": 85.5,
       "date": "2026-06-03"
     },
     {
@@ -3910,7 +3910,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 21.94,
+      "amount": 21.94,
       "date": "2026-06-18"
     },
     {
@@ -3918,7 +3918,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 399.97,
+      "amount": 399.97,
       "date": "2026-06-12"
     },
     {
@@ -3926,7 +3926,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 102.77,
+      "amount": 102.77,
       "date": "2026-06-25"
     },
     {
@@ -3934,7 +3934,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 313.98,
+      "amount": 313.98,
       "date": "2026-06-08"
     },
     {
@@ -3942,7 +3942,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 128.3,
+      "amount": 128.3,
       "date": "2026-06-20"
     },
     {
@@ -3950,7 +3950,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 62.94,
+      "amount": 62.94,
       "date": "2026-06-16"
     },
     {
@@ -3958,7 +3958,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 303.79,
+      "amount": 303.79,
       "date": "2026-06-07"
     },
     {
@@ -3966,7 +3966,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 89.95,
+      "amount": 89.95,
       "date": "2026-06-25"
     },
     {
@@ -3974,7 +3974,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 17.58,
+      "amount": 17.58,
       "date": "2026-06-20"
     },
     {
@@ -3982,7 +3982,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 400.01,
+      "amount": 400.01,
       "date": "2026-06-06"
     },
     {
@@ -3990,7 +3990,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 30.54,
+      "amount": 30.54,
       "date": "2026-06-01"
     },
     {
@@ -3998,7 +3998,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 119.4,
+      "amount": 119.4,
       "date": "2026-06-13"
     },
     {
@@ -4006,7 +4006,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 237.12,
+      "amount": 237.12,
       "date": "2026-06-07"
     },
     {
@@ -4014,7 +4014,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 316.44,
+      "amount": 316.44,
       "date": "2026-06-27"
     },
     {
@@ -4022,7 +4022,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 28.76,
+      "amount": 28.76,
       "date": "2026-06-25"
     },
     {
@@ -4030,7 +4030,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 26.56,
+      "amount": 26.56,
       "date": "2026-07-24"
     },
     {
@@ -4038,7 +4038,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 137.49,
+      "amount": 137.49,
       "date": "2026-07-25"
     },
     {
@@ -4046,7 +4046,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 108.23,
+      "amount": 108.23,
       "date": "2026-07-21"
     },
     {
@@ -4054,7 +4054,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 64.82,
+      "amount": 64.82,
       "date": "2026-07-01"
     },
     {
@@ -4062,7 +4062,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 182.41,
+      "amount": 182.41,
       "date": "2026-07-13"
     },
     {
@@ -4070,7 +4070,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 56.34,
+      "amount": 56.34,
       "date": "2026-07-19"
     },
     {
@@ -4078,7 +4078,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 40.49,
+      "amount": 40.49,
       "date": "2026-07-17"
     },
     {
@@ -4086,7 +4086,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 36.91,
+      "amount": 36.91,
       "date": "2026-07-24"
     },
     {
@@ -4094,7 +4094,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 19.89,
+      "amount": 19.89,
       "date": "2026-07-23"
     },
     {
@@ -4102,7 +4102,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 47.09,
+      "amount": 47.09,
       "date": "2026-07-09"
     },
     {
@@ -4110,7 +4110,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 31.29,
+      "amount": 31.29,
       "date": "2026-07-07"
     },
     {
@@ -4118,7 +4118,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 13.97,
+      "amount": 13.97,
       "date": "2026-07-18"
     },
     {
@@ -4126,7 +4126,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 54.48,
+      "amount": 54.48,
       "date": "2026-07-24"
     },
     {
@@ -4134,7 +4134,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 47.65,
+      "amount": 47.65,
       "date": "2026-07-19"
     },
     {
@@ -4142,7 +4142,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 31.86,
+      "amount": 31.86,
       "date": "2026-07-04"
     },
     {
@@ -4150,7 +4150,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 54.99,
+      "amount": 54.99,
       "date": "2026-07-12"
     },
     {
@@ -4158,7 +4158,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 74.41,
+      "amount": 74.41,
       "date": "2026-07-23"
     },
     {
@@ -4166,7 +4166,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 10.7,
+      "amount": 10.7,
       "date": "2026-07-02"
     },
     {
@@ -4174,7 +4174,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 243.68,
+      "amount": 243.68,
       "date": "2026-07-23"
     },
     {
@@ -4182,7 +4182,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 134.82,
+      "amount": 134.82,
       "date": "2026-07-25"
     },
     {
@@ -4190,7 +4190,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 53.89,
+      "amount": 53.89,
       "date": "2026-08-10"
     },
     {
@@ -4198,7 +4198,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 27.12,
+      "amount": 27.12,
       "date": "2026-08-08"
     },
     {
@@ -4206,7 +4206,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 159.69,
+      "amount": 159.69,
       "date": "2026-08-21"
     },
     {
@@ -4214,7 +4214,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 178.85,
+      "amount": 178.85,
       "date": "2026-08-07"
     },
     {
@@ -4222,7 +4222,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 55.25,
+      "amount": 55.25,
       "date": "2026-08-08"
     },
     {
@@ -4230,7 +4230,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 183.51,
+      "amount": 183.51,
       "date": "2026-08-27"
     },
     {
@@ -4238,7 +4238,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 32.85,
+      "amount": 32.85,
       "date": "2026-08-06"
     },
     {
@@ -4246,7 +4246,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 123.06,
+      "amount": 123.06,
       "date": "2026-08-27"
     },
     {
@@ -4254,7 +4254,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 233.45,
+      "amount": 233.45,
       "date": "2026-08-15"
     },
     {
@@ -4262,7 +4262,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 260.91,
+      "amount": 260.91,
       "date": "2026-08-10"
     },
     {
@@ -4270,7 +4270,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 237.39,
+      "amount": 237.39,
       "date": "2026-08-17"
     },
     {
@@ -4278,7 +4278,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 27.22,
+      "amount": 27.22,
       "date": "2026-08-03"
     },
     {
@@ -4286,7 +4286,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 48.37,
+      "amount": 48.37,
       "date": "2026-08-14"
     },
     {
@@ -4294,7 +4294,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 50.28,
+      "amount": 50.28,
       "date": "2026-08-01"
     },
     {
@@ -4302,7 +4302,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 153.02,
+      "amount": 153.02,
       "date": "2026-08-22"
     },
     {
@@ -4310,7 +4310,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 163.3,
+      "amount": 163.3,
       "date": "2026-08-01"
     },
     {
@@ -4318,7 +4318,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 119.49,
+      "amount": 119.49,
       "date": "2026-08-25"
     },
     {
@@ -4326,7 +4326,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 104.69,
+      "amount": 104.69,
       "date": "2026-08-21"
     },
     {
@@ -4334,7 +4334,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 111.61,
+      "amount": 111.61,
       "date": "2026-08-06"
     },
     {
@@ -4342,7 +4342,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 131.54,
+      "amount": 131.54,
       "date": "2026-08-27"
     },
     {
@@ -4350,7 +4350,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 109.71,
+      "amount": 109.71,
       "date": "2026-09-23"
     },
     {
@@ -4358,7 +4358,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 106.69,
+      "amount": 106.69,
       "date": "2026-09-09"
     },
     {
@@ -4366,7 +4366,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 213.64,
+      "amount": 213.64,
       "date": "2026-09-16"
     },
     {
@@ -4374,7 +4374,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 76.67,
+      "amount": 76.67,
       "date": "2026-09-05"
     },
     {
@@ -4382,7 +4382,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 71.93,
+      "amount": 71.93,
       "date": "2026-09-20"
     },
     {
@@ -4390,7 +4390,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 38.58,
+      "amount": 38.58,
       "date": "2026-09-05"
     },
     {
@@ -4398,7 +4398,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 174.31,
+      "amount": 174.31,
       "date": "2026-09-26"
     },
     {
@@ -4406,7 +4406,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 104.77,
+      "amount": 104.77,
       "date": "2026-09-26"
     },
     {
@@ -4414,7 +4414,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 17.02,
+      "amount": 17.02,
       "date": "2026-09-01"
     },
     {
@@ -4422,7 +4422,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 147.95,
+      "amount": 147.95,
       "date": "2026-09-27"
     },
     {
@@ -4430,7 +4430,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 161.78,
+      "amount": 161.78,
       "date": "2026-09-22"
     },
     {
@@ -4438,7 +4438,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 106.53,
+      "amount": 106.53,
       "date": "2026-09-15"
     },
     {
@@ -4446,7 +4446,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 26.8,
+      "amount": 26.8,
       "date": "2026-09-11"
     },
     {
@@ -4454,7 +4454,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 39.33,
+      "amount": 39.33,
       "date": "2026-09-13"
     },
     {
@@ -4462,7 +4462,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 113.29,
+      "amount": 113.29,
       "date": "2026-09-28"
     },
     {
@@ -4470,7 +4470,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 147.4,
+      "amount": 147.4,
       "date": "2026-09-08"
     },
     {
@@ -4478,7 +4478,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 120.42,
+      "amount": 120.42,
       "date": "2026-09-28"
     },
     {
@@ -4486,7 +4486,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 39.6,
+      "amount": 39.6,
       "date": "2026-09-24"
     },
     {
@@ -4494,7 +4494,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 90.52,
+      "amount": 90.52,
       "date": "2026-09-26"
     },
     {
@@ -4502,7 +4502,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 114.94,
+      "amount": 114.94,
       "date": "2026-09-22"
     },
     {
@@ -4510,7 +4510,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 154.5,
+      "amount": 154.5,
       "date": "2026-10-26"
     },
     {
@@ -4518,7 +4518,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 50.6,
+      "amount": 50.6,
       "date": "2026-10-03"
     },
     {
@@ -4526,7 +4526,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 222.88,
+      "amount": 222.88,
       "date": "2026-10-20"
     },
     {
@@ -4534,7 +4534,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 82.19,
+      "amount": 82.19,
       "date": "2026-10-19"
     },
     {
@@ -4542,7 +4542,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 61.79,
+      "amount": 61.79,
       "date": "2026-10-21"
     },
     {
@@ -4550,7 +4550,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 97.32,
+      "amount": 97.32,
       "date": "2026-10-22"
     },
     {
@@ -4558,7 +4558,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 364.62,
+      "amount": 364.62,
       "date": "2026-10-15"
     },
     {
@@ -4566,7 +4566,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 138.75,
+      "amount": 138.75,
       "date": "2026-10-06"
     },
     {
@@ -4574,7 +4574,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 248.78,
+      "amount": 248.78,
       "date": "2026-10-12"
     },
     {
@@ -4582,7 +4582,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 102.82,
+      "amount": 102.82,
       "date": "2026-10-14"
     },
     {
@@ -4590,7 +4590,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 96.8,
+      "amount": 96.8,
       "date": "2026-10-10"
     },
     {
@@ -4598,7 +4598,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 149.92,
+      "amount": 149.92,
       "date": "2026-10-28"
     },
     {
@@ -4606,7 +4606,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 30.67,
+      "amount": 30.67,
       "date": "2026-10-13"
     },
     {
@@ -4614,7 +4614,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 115.38,
+      "amount": 115.38,
       "date": "2026-10-10"
     },
     {
@@ -4622,7 +4622,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 14.17,
+      "amount": 14.17,
       "date": "2026-10-27"
     },
     {
@@ -4630,7 +4630,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 90.39,
+      "amount": 90.39,
       "date": "2026-10-19"
     },
     {
@@ -4638,7 +4638,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 368.72,
+      "amount": 368.72,
       "date": "2026-10-24"
     },
     {
@@ -4646,7 +4646,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 103.28,
+      "amount": 103.28,
       "date": "2026-10-10"
     },
     {
@@ -4654,7 +4654,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 96.95,
+      "amount": 96.95,
       "date": "2026-10-12"
     },
     {
@@ -4662,7 +4662,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 100.94,
+      "amount": 100.94,
       "date": "2026-10-20"
     },
     {
@@ -4670,7 +4670,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 353.68,
+      "amount": 353.68,
       "date": "2026-11-16"
     },
     {
@@ -4678,7 +4678,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 266.84,
+      "amount": 266.84,
       "date": "2026-11-18"
     },
     {
@@ -4686,7 +4686,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 73.64,
+      "amount": 73.64,
       "date": "2026-11-08"
     },
     {
@@ -4694,7 +4694,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 335.93,
+      "amount": 335.93,
       "date": "2026-11-15"
     },
     {
@@ -4702,7 +4702,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 133.36,
+      "amount": 133.36,
       "date": "2026-11-04"
     },
     {
@@ -4710,7 +4710,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 28.16,
+      "amount": 28.16,
       "date": "2026-11-02"
     },
     {
@@ -4718,7 +4718,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 199.23,
+      "amount": 199.23,
       "date": "2026-11-04"
     },
     {
@@ -4726,7 +4726,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 155.66,
+      "amount": 155.66,
       "date": "2026-11-18"
     },
     {
@@ -4734,7 +4734,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 89.96,
+      "amount": 89.96,
       "date": "2026-11-12"
     },
     {
@@ -4742,7 +4742,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 23.86,
+      "amount": 23.86,
       "date": "2026-11-24"
     },
     {
@@ -4750,7 +4750,7 @@
       "userId": 101,
       "type": "Gift",
       "description": "Gift income",
-      "value": 179.37,
+      "amount": 179.37,
       "date": "2026-11-21"
     },
     {
@@ -4758,7 +4758,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 425.16,
+      "amount": 425.16,
       "date": "2026-11-20"
     },
     {
@@ -4766,7 +4766,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 236.59,
+      "amount": 236.59,
       "date": "2026-11-09"
     },
     {
@@ -4774,7 +4774,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 291.6,
+      "amount": 291.6,
       "date": "2026-11-07"
     },
     {
@@ -4782,7 +4782,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 64.47,
+      "amount": 64.47,
       "date": "2026-11-08"
     },
     {
@@ -4790,7 +4790,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 12.45,
+      "amount": 12.45,
       "date": "2026-11-22"
     },
     {
@@ -4798,7 +4798,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 45.83,
+      "amount": 45.83,
       "date": "2026-11-21"
     },
     {
@@ -4806,7 +4806,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 9.54,
+      "amount": 9.54,
       "date": "2026-11-09"
     },
     {
@@ -4814,7 +4814,7 @@
       "userId": 101,
       "type": "Resale",
       "description": "Resale income",
-      "value": 145.71,
+      "amount": 145.71,
       "date": "2026-11-28"
     },
     {
@@ -4822,7 +4822,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 29.17,
+      "amount": 29.17,
       "date": "2026-11-07"
     },
     {
@@ -4830,7 +4830,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 104.73,
+      "amount": 104.73,
       "date": "2026-12-14"
     },
     {
@@ -4838,7 +4838,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 270.62,
+      "amount": 270.62,
       "date": "2026-12-15"
     },
     {
@@ -4846,7 +4846,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 454.67,
+      "amount": 454.67,
       "date": "2026-12-11"
     },
     {
@@ -4854,7 +4854,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 71.15,
+      "amount": 71.15,
       "date": "2026-12-05"
     },
     {
@@ -4862,7 +4862,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 128.62,
+      "amount": 128.62,
       "date": "2026-12-19"
     },
     {
@@ -4870,7 +4870,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 37.05,
+      "amount": 37.05,
       "date": "2026-12-13"
     },
     {
@@ -4878,7 +4878,7 @@
       "userId": 101,
       "type": "Rental Extra",
       "description": "Rental Extra income",
-      "value": 151.42,
+      "amount": 151.42,
       "date": "2026-12-15"
     },
     {
@@ -4886,7 +4886,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 32.24,
+      "amount": 32.24,
       "date": "2026-12-04"
     },
     {
@@ -4894,7 +4894,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 433.76,
+      "amount": 433.76,
       "date": "2026-12-21"
     },
     {
@@ -4902,7 +4902,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 37.44,
+      "amount": 37.44,
       "date": "2026-12-07"
     },
     {
@@ -4910,7 +4910,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 129.34,
+      "amount": 129.34,
       "date": "2026-12-08"
     },
     {
@@ -4918,7 +4918,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 104.56,
+      "amount": 104.56,
       "date": "2026-12-15"
     },
     {
@@ -4926,7 +4926,7 @@
       "userId": 101,
       "type": "Overtime",
       "description": "Overtime income",
-      "value": 121.52,
+      "amount": 121.52,
       "date": "2026-12-04"
     },
     {
@@ -4934,7 +4934,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 37.01,
+      "amount": 37.01,
       "date": "2026-12-22"
     },
     {
@@ -4942,7 +4942,7 @@
       "userId": 101,
       "type": "Refund",
       "description": "Refund income",
-      "value": 81.12,
+      "amount": 81.12,
       "date": "2026-12-05"
     },
     {
@@ -4950,7 +4950,7 @@
       "userId": 101,
       "type": "Small Job",
       "description": "Small Job income",
-      "value": 26.71,
+      "amount": 26.71,
       "date": "2026-12-27"
     },
     {
@@ -4958,7 +4958,7 @@
       "userId": 101,
       "type": "Bonus",
       "description": "Bonus income",
-      "value": 91.95,
+      "amount": 91.95,
       "date": "2026-12-04"
     },
     {
@@ -4966,7 +4966,7 @@
       "userId": 101,
       "type": "Lottery Win",
       "description": "Lottery Win income",
-      "value": 65.88,
+      "amount": 65.88,
       "date": "2026-12-18"
     },
     {
@@ -4974,7 +4974,7 @@
       "userId": 101,
       "type": "Freelance",
       "description": "Freelance income",
-      "value": 255.26,
+      "amount": 255.26,
       "date": "2026-12-18"
     },
     {
@@ -4982,7 +4982,7 @@
       "userId": 101,
       "type": "Cashback",
       "description": "Cashback income",
-      "value": 19.83,
+      "amount": 19.83,
       "date": "2026-12-04"
     },
     {
@@ -4990,7 +4990,7 @@
       "userId": 101,
       "type": "lezione privata",
       "description": "Filippo",
-      "value": 30,
+      "amount": 30,
       "date": "2026-12-13"
     },
     {
@@ -4999,7 +4999,7 @@
       "userId": 101,
       "type": "test",
       "description": "test_1",
-      "value": 35,
+      "amount": 35,
       "date": "2026-02-08"
     }
   ],
@@ -5009,7 +5009,7 @@
       "userId": 101,
       "type": "Salary",
       "description": "Net monthly salary",
-      "value": [
+      "amount": [
         2500,
         2500,
         2500,
@@ -5058,7 +5058,7 @@
       "userId": 101,
       "type": "Partner Salary",
       "description": "Net monthly salary partner",
-      "value": [
+      "amount": [
         1900,
         1900,
         1900,
@@ -5107,7 +5107,7 @@
       "userId": 101,
       "type": "Child Benefit",
       "description": "Government child benefit",
-      "value": [
+      "amount": [
         180,
         180,
         180,
@@ -5156,7 +5156,7 @@
       "userId": 101,
       "type": "Scholarship",
       "description": "Scholarship support",
-      "value": [
+      "amount": [
         300,
         300,
         300,
@@ -5205,7 +5205,7 @@
       "userId": 101,
       "type": "Investment Plan",
       "description": "Monthly ETF accumulation plan",
-      "value": [
+      "amount": [
         120,
         120,
         120,
@@ -5254,7 +5254,7 @@
       "userId": 101,
       "type": "Pension Fund",
       "description": "Company pension contribution",
-      "value": [
+      "amount": [
         90,
         90,
         90,
@@ -5303,7 +5303,7 @@
       "userId": 101,
       "type": "Side Hustle",
       "description": "Recurring freelance income",
-      "value": [
+      "amount": [
         200,
         200,
         200,
@@ -5352,7 +5352,7 @@
       "userId": 101,
       "type": "Music Lessons",
       "description": "Piano lessons income",
-      "value": [
+      "amount": [
         160,
         160,
         160,
@@ -5401,7 +5401,7 @@
       "userId": 101,
       "type": "Tutoring",
       "description": "Math tutoring income",
-      "value": [
+      "amount": [
         140,
         140,
         140,
@@ -5450,7 +5450,7 @@
       "userId": 101,
       "type": "Interest",
       "description": "Interest from savings account",
-      "value": [
+      "amount": [
         30,
         30,
         30,
@@ -5499,7 +5499,7 @@
       "userId": 101,
       "type": "Dividends",
       "description": "Quarterly stock dividends",
-      "value": [
+      "amount": [
         null,
         null,
         80,
@@ -5540,7 +5540,7 @@
       "userId": 101,
       "type": "Bonus Card",
       "description": "Cashback from credit card",
-      "value": [
+      "amount": [
         25,
         25,
         25,
@@ -5589,7 +5589,7 @@
       "userId": 101,
       "type": "Room Rent",
       "description": "Rent from rented room",
-      "value": [
+      "amount": [
         300,
         300,
         300,
@@ -5638,7 +5638,7 @@
       "userId": 101,
       "type": "Online Store",
       "description": "Average monthly store income",
-      "value": [
+      "amount": [
         220,
         220,
         220,
@@ -5687,7 +5687,7 @@
       "userId": 101,
       "type": "Blog Ads",
       "description": "Blog advertising revenue",
-      "value": [
+      "amount": [
         70,
         70,
         70,
@@ -5736,7 +5736,7 @@
       "userId": 101,
       "type": "Affiliate",
       "description": "Affiliate program commission",
-      "value": [
+      "amount": [
         60,
         60,
         60,
@@ -5785,7 +5785,7 @@
       "userId": 101,
       "type": "Parking Spot Rent",
       "description": "Rent of private parking spot",
-      "value": [
+      "amount": [
         90,
         90,
         90,
@@ -5848,7 +5848,7 @@
         12
       ],
       "dayOfTheMonth": 4,
-      "value": [
+      "amount": [
         110,
         110,
         110,
@@ -5883,7 +5883,7 @@
       "userId": 101,
       "type": "Occasional Teaching",
       "description": "Regular local course teaching",
-      "value": [
+      "amount": [
         130,
         130,
         130,
@@ -5932,7 +5932,7 @@
       "userId": 101,
       "type": "lezioni private",
       "description": "lezioni Simone",
-      "value": [
+      "amount": [
         30,
         30,
         30,
@@ -5982,7 +5982,7 @@
       "userId": 101,
       "type": "test",
       "description": "test_2",
-      "value": [
+      "amount": [
         35,
         35,
         35,
