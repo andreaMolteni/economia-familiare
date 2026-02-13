@@ -6,7 +6,7 @@ import type {
     RecurringIncome,
 } from "../../types";
 import type { OverviewResponse } from "../types/overview";
-import { baseQueryWithAuth } from "../app/baseQuery";
+import { baseQueryWithReauth } from "./baseQueryWithReauth";
 
 type AnyObj = Record<string, unknown>;
 
@@ -20,7 +20,7 @@ function stripClientFields<T extends AnyObj>(payload: T) {
 
 export const financeApi = createApi({
     reducerPath: "financeApi",
-    baseQuery: baseQueryWithAuth,
+    baseQuery: baseQueryWithReauth,
     tagTypes: ["Overview", "Expenses", "Income", "RecurringExpenses", "RecurringIncome"],
     endpoints: (builder) => ({
         // ---------------- OVERVIEW (flattened) ----------------
