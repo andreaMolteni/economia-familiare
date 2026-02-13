@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "./authApi";
 import { setCredentials } from "./authSlice";
-import { flushSync } from "react-dom";
 
 
 export default function LoginPage() {

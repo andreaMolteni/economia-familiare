@@ -1,5 +1,4 @@
-﻿import React from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+﻿import { Navigate, Outlet, useLocation } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
