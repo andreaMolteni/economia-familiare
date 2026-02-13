@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import type {
     Expense,
     Income,
@@ -6,36 +6,21 @@ import type {
     RecurringIncome,
 } from "../../types";
 import type { OverviewResponse } from "../types/overview";
-
-const baseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
-
-
-const BASIC_USER = import.meta.env.VITE_BASIC_USER as string | undefined;
-const BASIC_PASS = import.meta.env.VITE_BASIC_PASS as string | undefined;
-
-const basicAuthHeader = (() => {
-    if (!BASIC_USER || !BASIC_PASS) return undefined;
-    return `Basic ${btoa(`${BASIC_USER}:${BASIC_PASS}`)}`;
-})();
+import { baseQueryWithAuth } from "../app/baseQuery";
 
 type AnyObj = Record<string, unknown>;
 
 function stripClientFields<T extends AnyObj>(payload: T) {
     // rimuove campi “solo FE” che il backend non mappa
     const { kind, userId, ...rest } = payload as AnyObj;
+    void kind;
+    void userId;
     return rest;
 }
 
-
 export const financeApi = createApi({
     reducerPath: "financeApi",
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-        prepareHeaders: (headers) => {
-            if (basicAuthHeader) headers.set("Authorization", basicAuthHeader);
-            return headers;
-        },
-    }),
+    baseQuery: baseQueryWithAuth,
     tagTypes: ["Overview", "Expenses", "Income", "RecurringExpenses", "RecurringIncome"],
     endpoints: (builder) => ({
         // ---------------- OVERVIEW (flattened) ----------------

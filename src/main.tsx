@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { BrowserRouter } from "react-router-dom";
 
 const theme = createTheme({
     palette: {
@@ -66,12 +67,12 @@ const theme = createTheme({
 
 
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Provider store={store}>
+    <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Provider store={store}>
+            <BrowserRouter>
                 <App />
-            </Provider>
-        </ThemeProvider>
-  </StrictMode>,
-)
+            </BrowserRouter>
+        </Provider>
+    </ThemeProvider>
+);

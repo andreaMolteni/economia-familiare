@@ -2,15 +2,18 @@
 import {
     Box
 } from "@mui/material";
-
-import FinanceDashboard from "./components/FinanceDashboard"
-import ResumeData from "./components/ResumeData";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
+import RequireAuth from "./feature/auth/RequireAuth";
+import LoginPage from "./feature/auth/LoginPage";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import TablesPage from "./pages/TablesPage";
+import { useLocation } from "react-router-dom";
 
 const App: React.FC = () => {
-
+    const loc = useLocation();
+    console.log("ROUTE:", loc.pathname);
 
     //const contDown: number = 31;
 
@@ -38,12 +41,21 @@ const App: React.FC = () => {
                     width: "100%",
                 }}
             >
-                {/* BOX RIEPILOGO SUPERIORE */}
-                <ResumeData />
+                <Routes>
+                    {/* entry point */}
+                    <Route path="/" element={<Navigate to="/app" replace />} />
 
-                {/* TABELLE AFFIANCATE FULL WIDTH */}
-                <FinanceDashboard />
-                
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+                    {/* area protetta */}
+                    <Route element={<RequireAuth />}>
+                        <Route path="/app" element={<TablesPage />} />
+                    </Route>
+
+                    {/* fallback */}
+                    <Route path="*" element={<Navigate to="/app" replace />} />
+                </Routes>
             </Box>
 
             {/* FOOTER */}
