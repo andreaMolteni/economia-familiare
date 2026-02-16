@@ -7,30 +7,38 @@ export async function onRequest(context) {
 
     // Preflight
     if (request.method === "OPTIONS") {
-        return new Response(null, { status: 204, headers: { "x-pages-proxy": "preflight" } });
+        return new Response(null, {
+            status: 204,
+            headers: { "x-pages-proxy": "preflight" },
+        });
     }
 
     try {
-        // Clona headers e rimuovi quelli che spesso rompono il forward
         const headers = new Headers(request.headers);
         headers.delete("host");
-        headers.delete("content-length"); // IMPORTANTISSIMO
-        headers.delete("accept-encoding"); // lascia che CF gestisca
+        headers.delete("content-length");
+        headers.delete("accept-encoding");
+
+        // Bufferizza il body (evita problemi stream)
+        let body = undefined;
+        if (!["GET", "HEAD"].includes(request.method)) {
+            body = await request.arrayBuffer();
+        }
 
         const upstreamReq = new Request(targetUrl, {
             method: request.method,
             headers,
-            body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
+            body,
             redirect: "manual",
         });
 
         const upstream = await fetch(upstreamReq);
 
         const resHeaders = new Headers(upstream.headers);
-        resHeaders.set("x-pages-proxy", "1");                 // marker: sei passato dalla function
+        resHeaders.set("x-pages-proxy", "1");
         resHeaders.set("x-upstream-status", String(upstream.status));
 
-        // Riscrivi Set-Cookie Path (/auth -> /api/auth)
+        // Riscrivi Set-Cookie Path: /auth -> /api/auth
         const sc = resHeaders.get("Set-Cookie");
         if (sc) {
             resHeaders.set("Set-Cookie", sc.replace(/;\s*Path=\/auth\b/i, "; Path=/api/auth"));
@@ -42,10 +50,17 @@ export async function onRequest(context) {
             headers: resHeaders,
         });
     } catch (err) {
-        // Se il proxy crasha, lo vedi qui (e non più "misterioso 500")
+        // NON HTML: ritorna testo chiaro
         return new Response(
             `Pages proxy error: ${err?.message || String(err)}\nTarget: ${targetUrl}`,
-            { status: 502, headers: { "content-type": "text/plain", "x-pages-proxy": "error" } }
+            {
+                status: 502,
+                headers: {
+                    "content-type": "text/plain; charset=utf-8",
+                    "x-pages-proxy": "error",
+                },
+            }
         );
     }
 }
+
