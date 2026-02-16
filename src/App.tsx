@@ -10,6 +10,7 @@ import LoginPage from "./feature/auth/LoginPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import TablesPage from "./pages/TablesPage";
 import { useLocation } from "react-router-dom";
+import ServerWarmingBanner from "./components/ServerWarmingBanner";
 
 const App: React.FC = () => {
     const loc = useLocation();
@@ -41,6 +42,7 @@ const App: React.FC = () => {
                     width: "100%",
                 }}
             >
+                <ServerWarmingBanner />
                 <Routes>
                     {/* entry point */}
                     <Route path="/" element={<Navigate to="/app" replace />} />
