@@ -8,29 +8,19 @@ export async function onRequest(context) {
     // /api/...  ->  backend/...
     const targetUrl = BACKEND + url.pathname.replace(/^\/api/, "") + url.search;
 
-    // Preflight (in teoria same-origin non serve, ma va bene gestirlo)
+    // Preflight: rispondi OK (evita 405 su OPTIONS)
     if (request.method === "OPTIONS") {
         return new Response(null, { status: 204 });
     }
 
     const upstream = await fetch(targetUrl, request);
 
-    // Copia headers e riscrivi Set-Cookie Path
+    // Copia headers e riscrivi Set-Cookie Path (Path=/auth -> Path=/api/auth)
     const headers = new Headers(upstream.headers);
 
-    // Riscrittura cookie: Path=/auth -> Path=/api/auth
-    // (necessario perché dal browser ora chiami /api/auth/*)
-    const setCookies =
-        typeof upstream.headers.getSetCookie === "function"
-            ? upstream.headers.getSetCookie()
-            : (headers.get("Set-Cookie") ? [headers.get("Set-Cookie")] : []);
-
-    if (setCookies.length > 0) {
-        headers.delete("Set-Cookie");
-        for (const sc of setCookies) {
-            const rewritten = sc.replace(/;\s*Path=\/auth\b/i, "; Path=/api/auth");
-            headers.append("Set-Cookie", rewritten);
-        }
+    const sc = headers.get("Set-Cookie");
+    if (sc) {
+        headers.set("Set-Cookie", sc.replace(/;\s*Path=\/auth\b/i, "; Path=/api/auth"));
     }
 
     return new Response(upstream.body, {
