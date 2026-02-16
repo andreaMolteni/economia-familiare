@@ -2,7 +2,8 @@
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "./authApi";
 import { setCredentials } from "./authSlice";
-import  { useState } from "react";
+import { useState } from "react";
+import { setWarmingUp } from "../../slices/serverSlice";
 
 
 export default function LoginPage() {
@@ -16,13 +17,24 @@ export default function LoginPage() {
     const onSubmit = async () => {
         if (isLoading) return;
 
+        // 👇 Banner immediato al click
+        dispatch(
+            setWarmingUp({
+                warmingUp: true,
+                message:
+                    "Accesso in corso… se il server era inattivo potrebbe volerci qualche minuto per riavviarsi.",
+            })
+        );
+
         try {
             const res = await login({ userName, password }).unwrap();
             dispatch(setCredentials(res.accessToken));
+            dispatch(setWarmingUp({ warmingUp: false })); // 👈 spegni banner su successo
             console.log("NAVIGATE TO /app", window.location.pathname);
             navigate("/app", { replace: true });
         } catch (err){
             console.log("LOGIN ERROR:", err);
+            dispatch(setWarmingUp({ warmingUp: false })); // 👈 spegni banner su successo
         }
     };
 
