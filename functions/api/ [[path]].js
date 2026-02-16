@@ -1,47 +1,47 @@
-export async function onRequest(context) {
-    const { request } = context;
-    const url = new URL(request.url);
-
-    const BACKEND = "https://economia-familiare.onrender.com";
-    const targetUrl = BACKEND + url.pathname.replace(/^\/api/, "") + url.search;
-
-    // Preflight
-    if (request.method === "OPTIONS") {
-        return new Response(null, {
-            status: 204,
-            headers: { "x-pages-proxy": "preflight" },
-        });
-    }
-
+export async function onRequest({ request }) {
     try {
+        const url = new URL(request.url);
+
+        const BACKEND_ORIGIN = "https://economia-familiare.onrender.com";
+        const targetUrl =
+            BACKEND_ORIGIN + url.pathname.replace(/^\/api/, "") + url.search;
+
+        // Preflight
+        if (request.method === "OPTIONS") {
+            return new Response(null, { status: 204 });
+        }
+
+        // Clona headers e rimuovi quelli "pericolosi" nei proxy
         const headers = new Headers(request.headers);
         headers.delete("host");
         headers.delete("content-length");
         headers.delete("accept-encoding");
+        headers.delete("connection");
 
-        // Bufferizza il body (evita problemi stream)
+        // Bufferizza body in modo sicuro (clone!)
         let body = undefined;
         if (!["GET", "HEAD"].includes(request.method)) {
-            body = await request.arrayBuffer();
+            body = await request.clone().arrayBuffer();
         }
 
-        const upstreamReq = new Request(targetUrl, {
+        const upstream = await fetch(targetUrl, {
             method: request.method,
             headers,
             body,
             redirect: "manual",
         });
 
-        const upstream = await fetch(upstreamReq);
-
         const resHeaders = new Headers(upstream.headers);
         resHeaders.set("x-pages-proxy", "1");
         resHeaders.set("x-upstream-status", String(upstream.status));
 
         // Riscrivi Set-Cookie Path: /auth -> /api/auth
-        const sc = resHeaders.get("Set-Cookie");
-        if (sc) {
-            resHeaders.set("Set-Cookie", sc.replace(/;\s*Path=\/auth\b/i, "; Path=/api/auth"));
+        const setCookie = resHeaders.get("set-cookie");
+        if (setCookie) {
+            resHeaders.set(
+                "set-cookie",
+                setCookie.replace(/;\s*Path=\/auth\b/i, "; Path=/api/auth")
+            );
         }
 
         return new Response(upstream.body, {
@@ -49,18 +49,11 @@ export async function onRequest(context) {
             statusText: upstream.statusText,
             headers: resHeaders,
         });
-    } catch (err) {
-        // NON HTML: ritorna testo chiaro
+    } catch (e) {
+        // Se esplode, NON far vedere HTML Cloudflare: ritorna testo chiaro
         return new Response(
-            `Pages proxy error: ${err?.message || String(err)}\nTarget: ${targetUrl}`,
-            {
-                status: 502,
-                headers: {
-                    "content-type": "text/plain; charset=utf-8",
-                    "x-pages-proxy": "error",
-                },
-            }
+            `Pages proxy exception:\n${e && e.stack ? e.stack : String(e)}`,
+            { status: 500, headers: { "content-type": "text/plain; charset=utf-8" } }
         );
     }
 }
-
