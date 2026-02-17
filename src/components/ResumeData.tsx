@@ -185,45 +185,49 @@ const ResumeData: React.FC = () => {
                         >
                             Oggi è il {formatYYYYMMDDtoDDMMYYYY(currentDate)}
                         </Typography>
-                        <Typography
-                            variant="h5"
-                            sx={{ fontWeight: 600, color: "primary.main" }}
-                        >
-                            Il mese contabile si chiude il  <br /> {closingDateLabel}
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+                            Il mese contabile si chiude il
                         </Typography>
-                        {!editing ? (
-                            <Tooltip title="Modifica giorno di chiusura">
-                                <IconButton size="small" onClick={onStart}>
-                                    <EditIcon fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        ) : (
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                                <TextField
-                                    size="small"
-                                    value={draft}
-                                    onChange={(e) => setDraft(e.target.value)}
-                                    type="number"
-                                    slotProps={{
-                                        htmlInput: { min: 1, max: 31, style: { width: 70 } },
-                                    }}
-                                />
 
-                                <Tooltip title="Salva">
-                                    <span>
-                                        <IconButton size="small" onClick={onSave} disabled={!canSave}>
-                                            <CheckIcon fontSize="small" />
-                                        </IconButton>
-                                    </span>
-                                </Tooltip>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+                                {closingDateLabel}
+                            </Typography>
 
-                                <Tooltip title="Annulla">
-                                    <IconButton size="small" onClick={onCancel}>
-                                        <CloseIcon fontSize="small" />
+                            {!editing ? (
+                                <Tooltip title="Modifica giorno di chiusura">
+                                    <IconButton size="small" onClick={onStart} sx={{ mt: 0.2 }}>
+                                        <EditIcon fontSize="small" />
                                     </IconButton>
                                 </Tooltip>
-                            </Box>
-                        )}
+                            ) : (
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                    <TextField
+                                        size="small"
+                                        value={draft}
+                                        onChange={(e) => setDraft(e.target.value)}
+                                        type="number"
+                                        slotProps={{
+                                            htmlInput: { min: 1, max: 31, style: { width: 70 } },
+                                        }}
+                                    />
+
+                                    <Tooltip title="Salva">
+                                        <span>
+                                            <IconButton size="small" onClick={onSave} disabled={!canSave}>
+                                                <CheckIcon fontSize="small" />
+                                            </IconButton>
+                                        </span>
+                                    </Tooltip>
+
+                                    <Tooltip title="Annulla">
+                                        <IconButton size="small" onClick={onCancel}>
+                                            <CloseIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                            )}
+                        </Box>
                     </Grid>
 
                     {/* Centro */}

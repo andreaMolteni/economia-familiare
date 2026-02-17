@@ -14,6 +14,7 @@ const Footer: React.FC = () => {
                 textAlign: "center",
                 backgroundColor: "primary.main",
                 color: "#fff",
+                width: "100%"
             }}
         >
             <Typography sx={{ textDecoration: "underline", cursor: "pointer" }}>

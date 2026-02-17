@@ -4,6 +4,7 @@ import { useLoginMutation } from "./authApi";
 import { setCredentials } from "./authSlice";
 import { useState } from "react";
 import { setWarmingUp } from "../../slices/serverSlice";
+import { loginErrorInvalidCredentials } from "./authSlice";
 
 
 export default function LoginPage() {
@@ -32,7 +33,15 @@ export default function LoginPage() {
             dispatch(setWarmingUp({ warmingUp: false })); // 👈 spegni banner su successo
             console.log("NAVIGATE TO /app", window.location.pathname);
             navigate("/app", { replace: true });
-        } catch (err){
+        } catch (err: unknown) {
+            if (
+                typeof err === "object" &&
+                err !== null &&
+                "status" in err &&
+                (err as { status: number }).status === 401 || (err as { status: number }).status === 403
+            ) {
+                dispatch(loginErrorInvalidCredentials());
+            }
             console.log("LOGIN ERROR:", err);
             dispatch(setWarmingUp({ warmingUp: false })); // 👈 spegni banner su successo
         }
@@ -77,7 +86,7 @@ export default function LoginPage() {
                     {isLoading ? "Accesso..." : "Entra"}
                 </button>
 
-                {errorMsg && <div style={{ color: "crimson" }}>{errorMsg}</div>}
+                { /*errorMsg && <div style={{ color: "crimson" }}>{errorMsg}</div>*/}
             </form>
         </div>
     );

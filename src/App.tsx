@@ -11,6 +11,8 @@ import UnauthorizedPage from "./pages/UnauthorizedPage";
 import TablesPage from "./pages/TablesPage";
 import { useLocation } from "react-router-dom";
 import ServerWarmingBanner from "./components/ServerWarmingBanner";
+import SessionExpiredGuard from "./components/SessionExpiredGuard";
+import LoginFailedBanner from "./components/LoginFailedBanner";
 
 const App: React.FC = () => {
     const loc = useLocation();
@@ -21,46 +23,55 @@ const App: React.FC = () => {
     return (
         <Box
             sx={{
-                borderRadius: 0,
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
-                backgroundColor: "background.default",
+                bgcolor: "background.default",
                 width: "100%",
             }}
         >
-            {/* HEADER */}
             <Header />
-           
 
-            {/* CONTENUTO PRINCIPALE FULL WIDTH */}
+            {/* MAIN: centra i contenuti */}
             <Box
+                component="main"
                 sx={{
-                    px: 4,
-                    py: 3,
                     flexGrow: 1,
                     width: "100%",
+                    display: "flex",
+                    mx: "auto",
+                    justifyContent: "center",
+                    px: 2,
+                    py: 3,
                 }}
             >
-                <ServerWarmingBanner />
-                <Routes>
-                    {/* entry point */}
-                    <Route path="/" element={<Navigate to="/app" replace />} />
+                    <SessionExpiredGuard />
+                    <LoginFailedBanner />
+                    <ServerWarmingBanner />
 
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/unauthorized" element={<UnauthorizedPage />} />
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/app" replace />} />
 
-                    {/* area protetta */}
-                    <Route element={<RequireAuth />}>
-                        <Route path="/app" element={<TablesPage />} />
-                    </Route>
+                        {/* Login centrata */}
+                        <Route
+                            path="/login"
+                            element={
+                                <Box sx={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <LoginPage />
+                                </Box>
+                            }
+                        />
 
-                    {/* fallback */}
-                    <Route path="*" element={<Navigate to="/app" replace />} />
-                </Routes>
+                        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+                        <Route element={<RequireAuth />}>
+                            <Route path="/app" element={<TablesPage />} />
+                        </Route>
+
+                        <Route path="*" element={<Navigate to="/app" replace />} />
+                    </Routes>
             </Box>
 
-            {/* FOOTER */}
             <Footer />
         </Box>
     );

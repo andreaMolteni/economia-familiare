@@ -7,6 +7,9 @@ type AuthState = {
     userName: string | null;
     roles: string[];
     exp: number | null;
+    sessionExpired: false | true,
+    loginFailed: false | true,
+    loginFailedMessage: string | null
 };
 
 type JwtClaims = {
@@ -37,6 +40,10 @@ const initialState: AuthState = {
     accessToken: initialToken,
     ...initialDecoded,
     lastAuthError: null,
+    sessionExpired: false,
+    loginFailed: false,
+    loginFailedMessage: null as string | null,
+
 };
 
 const authSlice = createSlice({
@@ -47,6 +54,7 @@ const authSlice = createSlice({
             const token = action.payload;
             state.accessToken = token;
             state.lastAuthError = null;
+            state.sessionExpired = false;
             localStorage.setItem("accessToken", token);
             const d = decode(token);
             state.userName = d.userName;
@@ -59,13 +67,34 @@ const authSlice = createSlice({
             state.roles = [];
             state.exp = null;
             state.lastAuthError = null;
+            state.sessionExpired = false;
             localStorage.removeItem("accessToken");
         },
         authErrorUnauthorized(state) {
+            state.sessionExpired = true;
             state.lastAuthError = "unauthorized";
-        }
+        },
+        clearSessionExpired(state) {
+            state.sessionExpired = false;
+            state.lastAuthError = null;
+        },
+        loginErrorInvalidCredentials(state) {
+            state.loginFailed = true;
+            state.loginFailedMessage = "Credenziali non valide. Controlla username e password.";
+        },
+        clearLoginFailed(state) {
+            state.loginFailed = false;
+            state.loginFailedMessage = null;
+        },
     },
 });
 
-export const { setCredentials, logout, authErrorUnauthorized } = authSlice.actions;
+export const {
+    setCredentials,
+    logout,
+    authErrorUnauthorized,
+    clearSessionExpired,
+    loginErrorInvalidCredentials,
+    clearLoginFailed
+} = authSlice.actions;
 export default authSlice.reducer;

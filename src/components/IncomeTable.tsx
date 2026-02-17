@@ -266,17 +266,17 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                     size="small"
                     sx={{
                         tableLayout: "fixed",
-                        "& .MuiTableCell-root": { py: 1, px: 1 },
+                        "& .MuiTableCell-root": { py: 1, px: 1, overflow: "hidden" },
                     }}
                 >
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 130, minWidth: 130 }}>Type</TableCell>
-                            <TableCell>Description</TableCell>
-                            <TableCell sx={{ width: 140, minWidth: 140 }} align="right">
+                            <TableCell sx={{ width: 100, minWidth: 100 }}>Type</TableCell>
+                            <TableCell sx={{ width: 160, minWidth: 100 }}>Description</TableCell>
+                            <TableCell sx={{ width: 100, minWidth: 80 }} align="right">
                                 Value
                             </TableCell>
-                            <TableCell sx={{ width: 160, minWidth: 160, whiteSpace: "nowrap" }}>
+                            <TableCell sx={{ width: 150, minWidth: 150, whiteSpace: "nowrap" }}>
                                 Date
                             </TableCell>
                             <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">
@@ -309,7 +309,6 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                                 fullWidth
                                                 value={editForm.type}
                                                 onChange={(e) => setEditForm((p) => ({ ...p, type: e.target.value }))}
-                                                sx={{ minWidth: 110 }}
                                             />
                                         ) : (
                                             row.type
@@ -320,6 +319,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
+                                                fullWidth
                                                 value={editForm.description}
                                                 onChange={(e) => setEditForm((p) => ({ ...p, description: e.target.value }))}
                                             />
@@ -332,6 +332,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
+                                                fullWidth
                                                 type="number"
                                                 value={editForm.amount}
                                                 onChange={(e) => setEditForm((p) => ({ ...p, amount: e.target.value }))}
@@ -356,6 +357,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                         {isEditing ? (
                                             <TextField
                                                 size="small"
+                                                fullWidth
                                                 type="date"
                                                 InputLabelProps={{ shrink: true }}
                                                 value={editForm.date}
@@ -369,7 +371,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
 
                                     <TableCell align="center">
                                         {isEditing ? (
-                                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center", flexWrap: "nowrap", "& .MuiButton-root": { minWidth: 0, px: 1.25 }, }}>
                                                 <Button variant="contained" color="success" size="small" onClick={() => saveInlineEdit(row)}>
                                                     Salva
                                                 </Button>
@@ -378,7 +380,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                                 </Button>
                                             </Box>
                                         ) : (
-                                            <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
+                                             <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center", flexWrap: "nowrap" }}>
                                                 <IconButton size="small" onClick={() => startEditRow(row)}>
                                                     <EditIcon fontSize="small" />
                                                 </IconButton>

@@ -15,9 +15,7 @@ const Header: React.FC = () => {
     const doLogout = useLogout();
 
     return (
-        <AppBar position="static" color="primary" elevation={0} sx={{
-            borderRadius: 0
-        }} >
+        <AppBar position="static" color="primary" elevation={0} sx={{ borderRadius: 0, width: "100%" }} >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="h5" sx={{ fontWeight: 700 }}>
                     Economia Familiare
