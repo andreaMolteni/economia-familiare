@@ -47,13 +47,6 @@ export default function LoginPage() {
         }
     };
 
-    const errorMsg =
-        error && typeof error === "object" && "status" in error
-            ? `Login fallito (status ${(error as { status: number }).status})`
-            : error
-                ? "Login fallito"
-                : null;
-
     return (
         <div style={{ maxWidth: 360, margin: "60px auto", padding: 16 }}>
             <h2>Login</h2>
