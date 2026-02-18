@@ -11,7 +11,7 @@ export default function LoginPage() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
-    const [login, { isLoading, error }] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
