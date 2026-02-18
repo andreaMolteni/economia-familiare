@@ -48,6 +48,7 @@ const FinanceDashboard: React.FC = () => {
     const loadingOverlay = showOverlay && !!data;
 
 
+
     if(!data && isLoading) return <Typography>Loading...</Typography>;
     if (!data && isError) return <Typography color="error">Errore caricamento</Typography>;
     if (!data) return null;
