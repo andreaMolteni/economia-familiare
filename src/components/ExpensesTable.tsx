@@ -65,6 +65,7 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
         date: "",
     });
 
+
     // supporto edit recurring mese singolo
     const [editingRecurringId, setEditingRecurringId] = useState<number | null>(null);
     const [recurringEdit, setRecurringEdit] = useState<{
@@ -290,7 +291,8 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
                     </TableHead>
 
                     <TableBody>
-                        {orderedRows.map((row) => {
+                        {
+                            orderedRows.map((row) => {
                             const isEditing = editingKey === row.rowKey;
                             const expired = row.expired;
 
