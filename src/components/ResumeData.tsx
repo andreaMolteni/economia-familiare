@@ -20,6 +20,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import TodayIcon from "@mui/icons-material/Today";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetConfigQuery, useUpdateConfigMutation } from "../services/financeApi";
 
 import type { RootState } from "../app/store";
 import {
@@ -55,8 +56,21 @@ const ResumeData: React.FC = () => {
     const remainingIncome = useSelector(
         (state: RootState) => state.money.remainingIncome
     );
+
+    /* ======================
+     API
+    ====================== */
+    const [updateConfig, { isLoading: isSavingConfig }] = useUpdateConfigMutation();
+    const { data: config, isFetching: isFetchingConfig } = useGetConfigQuery();
+
+
+    /* ======================
+       LOCAL STATE (EDIT closing day)
+    ====================== */
     const [editing, setEditing] = useState(false);
-    const [draft, setDraft] = useState<string>(String(closingDay));
+    const [draft, setDraft] = useState<string | null>(null);
+
+    const draftValue = editing ? (draft ?? String(closingDay)) : String(closingDay);
 
     /* ======================
        DATE CALCULATIONS
@@ -81,28 +95,59 @@ const ResumeData: React.FC = () => {
     };
 
     const onCancel = () => {
-        setDraft(String(closingDay));
-        setEditing(false);
-    };
-
-    const onSave = () => {
-        const n = Number(draft);
-        if (!Number.isFinite(n)) return;
-        const v = Math.min(31, Math.max(1, Math.trunc(n)));
-        dispatch(setClosingDay(v));
+        setDraft(null);
         setEditing(false);
     };
 
     const canSave = (() => {
-        const n = Number(draft);
+        const n = Number(draftValue);
         return Number.isFinite(n) && n >= 1 && n <= 31 && Math.trunc(n) !== closingDay;
     })();
+
+    const onSave = async () => {
+        const n = Number(draftValue);
+        if (!Number.isFinite(n)) return;
+
+        const v = Math.min(31, Math.max(1, Math.trunc(n)));
+        if (v === closingDay) {
+            setEditing(false);
+            return;
+        }
+
+        try {
+            const res = await updateConfig({ closingDay: v }).unwrap();
+
+            // ✅ update immediato Redux (in parallelo l'overview verrà invalidata e riallineerà)
+            dispatch(setClosingDay(res.closingDay));
+
+            setEditing(false);
+        } catch (e) {
+            console.log("update closingDay failed:", e);
+            // opzionale: mostra snackbar errore
+        }
+    };
+
+  
 
     /* ======================
        LOCAL STATE (EDIT BALANCE)
     ====================== */
     const [isEditingBalance, setIsEditingBalance] = useState(false);
     const [balanceDraft, setBalanceDraft] = useState(balance.toFixed(2));
+
+    const handleSaveBalance = async () => {
+        const v = Number(balanceDraft);
+        if (!Number.isFinite(v)) return;
+
+        try {
+            const res = await updateConfig({ availableBalance: v }).unwrap();
+            dispatch(setBalance(res.availableBalance));
+            setIsEditingBalance(false);
+        } catch (e) {
+            console.log("update availableBalance failed:", e);
+        }
+    };
+
 
     /* ======================
        BUDGET CALCULATION
@@ -120,12 +165,18 @@ const ResumeData: React.FC = () => {
        SIDE EFFECTS
     ====================== */
     useEffect(() => {
+        if (!config) return;
+
+        // Allinea lo stato Redux con il DB (source of truth)
+        dispatch(setClosingDay(config.closingDay));
+        dispatch(setBalance(config.availableBalance));
+    }, [config, dispatch]);
+
+    useEffect(() => {
         const days = diffInDays(
             stringToDate(getDateYYYYMMDD(fixedDate)),
             stringToDate(currentDate)
         );
-
-        
 
         dispatch(setDayCountDown(days));
 
@@ -148,13 +199,16 @@ const ResumeData: React.FC = () => {
         remainingIncome,
         remainingExpenses,
         balance,
-        month,
         monthIndex
     ]);
 
     const userName = "Andrea";
 
     const goToday = () => dispatch(setCurrentDate(todayISO()));
+
+    if (isFetchingConfig && !config) {
+        return null; // oppure uno skeleton
+    }
 
     return (
         <div>
@@ -196,7 +250,12 @@ const ResumeData: React.FC = () => {
 
                             {!editing ? (
                                 <Tooltip title="Modifica giorno di chiusura">
-                                    <IconButton size="small" onClick={onStart} sx={{ mt: 0.2 }}>
+                                    <IconButton
+                                        size="small"
+                                        onClick={onStart}
+                                        sx={{ mt: 0.2 }}
+                                        disabled={isSavingConfig}
+                                    >
                                         <EditIcon fontSize="small" />
                                     </IconButton>
                                 </Tooltip>
@@ -204,8 +263,9 @@ const ResumeData: React.FC = () => {
                                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                                     <TextField
                                         size="small"
-                                        value={draft}
+                                            value={draftValue}
                                         onChange={(e) => setDraft(e.target.value)}
+                                        disabled={isSavingConfig}
                                         type="number"
                                         slotProps={{
                                             htmlInput: { min: 1, max: 31, style: { width: 70 } },
@@ -214,14 +274,22 @@ const ResumeData: React.FC = () => {
 
                                     <Tooltip title="Salva">
                                         <span>
-                                            <IconButton size="small" onClick={onSave} disabled={!canSave}>
+                                            <IconButton
+                                                size="small"
+                                                onClick={onSave}
+                                                disabled={!canSave || isSavingConfig}
+                                            >
                                                 <CheckIcon fontSize="small" />
                                             </IconButton>
                                         </span>
                                     </Tooltip>
 
                                     <Tooltip title="Annulla">
-                                        <IconButton size="small" onClick={onCancel}>
+                                        <IconButton
+                                            size="small"
+                                            onClick={onCancel}
+                                            disabled={isSavingConfig}
+                                        >
                                             <CloseIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
@@ -316,6 +384,7 @@ const ResumeData: React.FC = () => {
                                                         setIsEditingBalance(true);
                                                     }}
                                                     aria-label="Modifica saldo"
+                                                    disabled={isSavingConfig}
                                                 >
                                                     <EditIcon fontSize="small" />
                                                 </IconButton>
@@ -329,17 +398,14 @@ const ResumeData: React.FC = () => {
                                                     onChange={(e) => setBalanceDraft(e.target.value)}
                                                     inputProps={{ step: "0.01" }}
                                                     sx={{ width: 120 }}
+                                                    disabled={isSavingConfig}
                                                 />
                                                 <IconButton
                                                     size="small"
                                                     color="success"
                                                     aria-label="Salva saldo"
-                                                    onClick={() => {
-                                                        const v = Number(balanceDraft);
-                                                        if (!Number.isFinite(v)) return;
-                                                        dispatch(setBalance(v));
-                                                        setIsEditingBalance(false);
-                                                    }}
+                                                    disabled={isSavingConfig}
+                                                        onClick={handleSaveBalance}
                                                 >
                                                     <CheckIcon fontSize="small" />
                                                 </IconButton>
@@ -348,6 +414,7 @@ const ResumeData: React.FC = () => {
                                                     size="small"
                                                     color="error"
                                                     aria-label="Annulla"
+                                                    disabled={isSavingConfig}
                                                     onClick={() => {
                                                         setBalanceDraft(balance.toFixed(2));
                                                         setIsEditingBalance(false);

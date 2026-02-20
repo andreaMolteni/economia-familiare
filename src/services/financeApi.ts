@@ -8,6 +8,8 @@ import type {
 import type { OverviewResponse } from "../types/overview";
 import { baseQueryWithReauth } from "./baseQueryWithReauth";
 
+type UserConfig = { closingDay: number; availableBalance: number };
+
 type AnyObj = Record<string, unknown>;
 
 function stripClientFields<T extends AnyObj>(payload: T) {
@@ -21,16 +23,18 @@ function stripClientFields<T extends AnyObj>(payload: T) {
 export const financeApi = createApi({
     reducerPath: "financeApi",
     baseQuery: baseQueryWithReauth,
-    tagTypes: ["Overview", "Expenses", "Income", "RecurringExpenses", "RecurringIncome"],
+    tagTypes: ["Overview", "Expenses", "Income", "RecurringExpenses", "RecurringIncome", "UserConfig"],
     endpoints: (builder) => ({
         // ---------------- OVERVIEW (flattened) ----------------
         getOverview: builder.query<
             OverviewResponse,
-            { referenceDate: string; closingDay: number }
+            { referenceDate: string }
         >({
-            query: ({ referenceDate, closingDay }) =>
-                `/me/overview?referenceDate=${referenceDate}&closingDay=${closingDay}`,
-            providesTags: [{ type: "Overview", id: "CURRENT" }],
+            query: ({ referenceDate }) => ({
+                url: "/me/overview",
+                params: { referenceDate },
+            }),
+            providesTags: [{ type: "Overview", id: "CURRENT" },],
         }),
 
         // ---------------- EXPENSES (single) ----------------
@@ -205,6 +209,18 @@ export const financeApi = createApi({
                 { type: "RecurringIncome", id: "LIST" },
             ],
         }),
+        updateConfig: builder.mutation<UserConfig, Partial<UserConfig>>({
+            query: (body) => ({
+                url: "/me/config",
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["Overview", "UserConfig"],
+        }),
+        getConfig: builder.query<UserConfig, void>({
+            query: () => "/me/config",
+            providesTags: ["UserConfig"],
+        }),
     }),
 });
 
@@ -230,4 +246,7 @@ export const {
     useAddRecurringIncomeMutation,
     useUpdateRecurringIncomeMutation,
     useDeleteRecurringIncomeMutation,
+
+    useUpdateConfigMutation,
+    useGetConfigQuery,
 } = financeApi;

@@ -25,4 +25,6 @@ export type OverviewResponse = {
     expenses: FlattenedRow[];
     income: FlattenedRow[];
     totals: OverviewTotals;
+    closingDay: number;
+    availableBalance: number;
 };

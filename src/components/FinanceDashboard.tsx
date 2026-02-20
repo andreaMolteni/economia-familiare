@@ -10,11 +10,9 @@ import IncomeTable from "./IncomeTable";
 const FinanceDashboard: React.FC = () => {
     const dispatch = useDispatch();
     const currentDate = useSelector((s: RootState) => s.date.currentDate);
-    const closingDay = useSelector((s: RootState) => s.date.closingDay);
 
     const { data, isLoading, isFetching, isError } = useGetOverviewQuery({
-        referenceDate: currentDate,
-        closingDay,
+        referenceDate: currentDate
     });
 
     useEffect(() => {
