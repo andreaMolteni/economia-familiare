@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import {
     AppBar,
     Toolbar,
@@ -17,9 +17,34 @@ const Header: React.FC = () => {
     return (
         <AppBar position="static" color="primary" elevation={0} sx={{ borderRadius: 0, width: "100%" }} >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                    Economia Familiare
-                </Typography>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                    }}
+                >
+                    <Box
+                        component="img"
+                        src="/logo.svg"
+                        alt="Economia Familiare"
+                        sx={{
+                            height: 54,   // 👈 più grande
+                            width: "auto",
+                            display: "block",
+                        }}
+                    />
+
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: 600,
+                            letterSpacing: 0.5,
+                        }}
+                    >
+                        Economia Familiare
+                    </Typography>
+                </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Typography
                         variant="body1"

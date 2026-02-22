@@ -5,6 +5,7 @@ import { setCredentials } from "./authSlice";
 import { useState } from "react";
 import { setWarmingUp } from "../../slices/serverSlice";
 import { loginErrorInvalidCredentials } from "./authSlice";
+import { Typography, Box } from "@mui/material";
 
 
 export default function LoginPage() {
@@ -48,39 +49,100 @@ export default function LoginPage() {
     };
 
     return (
-        <div style={{ maxWidth: 360, margin: "60px auto", padding: 16 }}>
-            <h2>Login</h2>
+        <Box
+            sx={{
+                height: "100dvh",              // meglio di 100vh su alcuni browser
+                overflow: "hidden",            // niente scroll se ci stai dentro
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                px: 3,
+                boxSizing: "border-box",
+            }}
+        >
+            <Typography
+                variant="h3"
+                color="primary"
+                sx={{
+                    fontWeight: 800,
+                    lineHeight: 1.1,
+                    textAlign: "center",
+                    mb: 6,                       // 👈 PIÙ spazio sotto al titolo
+                }}
+            >
+                Benvenuti in Economia Familiare
+            </Typography>
 
-            <form onSubmit={(e) => e.preventDefault()} style={{ display: "grid", gap: 12 }}>
-                <label>
-                    Username
-                    <input
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        autoComplete="username"
-                        required
-                        style={{ width: "100%", padding: 8 }}
-                    />
-                </label>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    flexWrap: "wrap",
+                    maxWidth: 900,
+                    width: "100%",
+                }}
+            >
+                <Box
+                    component="img"
+                    src="/logo.svg"
+                    alt="Economia Familiare"
+                    sx={{
+                        height: "clamp(160px, 22vw, 260px)", // 👈 si adatta, evita overflow
+                        width: "auto",
+                        display: "block",
+                    }}
+                />
 
-                <label>
-                    Password
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
-                        required
-                        style={{ width: "100%", padding: 8 }}
-                    />
-                </label>
+                <Box
+                    sx={{
+                        width: 320,
+                        p: 3,
+                        borderRadius: 2,
+                        border: "1px solid",
+                        borderColor: "divider",
+                        bgcolor: "background.paper",
+                        boxSizing: "border-box",
+                    }}
+                >
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onSubmit();
+                        }}
+                        style={{ display: "grid", gap: 16 }}
+                    >
+                        <label>
+                            Username
+                            <input
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                autoComplete="username"
+                                required
+                                style={{ width: "100%", padding: 10, boxSizing: "border-box" }}
+                            />
+                        </label>
 
-                <button type="button" onClick={onSubmit} disabled={isLoading}>
-                    {isLoading ? "Accesso..." : "Entra"}
-                </button>
+                        <label>
+                            Password
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="current-password"
+                                required
+                                style={{ width: "100%", padding: 10, boxSizing: "border-box" }}
+                            />
+                        </label>
 
-                { /*errorMsg && <div style={{ color: "crimson" }}>{errorMsg}</div>*/}
-            </form>
-        </div>
+                        <button type="submit" disabled={isLoading}>
+                            {isLoading ? "Accesso..." : "Entra"}
+                        </button>
+                    </form>
+                </Box>
+            </Box>
+        </Box>
     );
 }

@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -84,3 +84,10 @@ body {
     display: block !important;
     place-items: unset !important;
 }
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
