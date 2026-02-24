@@ -2,6 +2,7 @@
 import { clearSessionExpired } from "../feature/auth/authSlice"
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
+import logo from "../assets/logo.svg";
 
 export default function UnauthorizedPage() {
     const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export default function UnauthorizedPage() {
             >
                 <Box
                     component="img"
-                    src={`${import.meta.env.BASE_URL}logo.svg`}
+                    src={logo}
                     alt="Economia Familiare"
                     sx={{
                         height: "clamp(160px, 22vw, 260px)",

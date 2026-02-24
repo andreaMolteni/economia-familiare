@@ -336,7 +336,7 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
 
                                         // Testo scaduto
                                         ...(expired && {
-                                            "& td": {
+                                            "& td:not(:last-child)": {
                                                 color: "text.disabled",
                                                 textDecoration: "line-through",
                                             },

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { setWarmingUp } from "../../slices/serverSlice";
 import { loginErrorInvalidCredentials } from "./authSlice";
 import { Typography,Box, Button, TextField } from "@mui/material";
-
+import logo from "../../assets/logo.svg";
 
 export default function LoginPage() {
     const [userName, setUserName] = useState("");
@@ -87,7 +87,7 @@ export default function LoginPage() {
             >
                 <Box
                     component="img"
-                    src={`${import.meta.env.BASE_URL}logo.svg`}
+                    src={logo}
                     alt="Economia Familiare"
                     sx={{
                         height: "clamp(160px, 22vw, 260px)", // 👈 si adatta, evita overflow

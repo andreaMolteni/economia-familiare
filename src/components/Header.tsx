@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import type { RootState } from "../app/store";
 import { useLogout } from "../feature/auth/useLogout";
+import logo from "../assets/logo.svg";
 
 const Header: React.FC = () => {
     const token = useSelector((s: RootState) => s.auth.accessToken);
@@ -26,7 +27,7 @@ const Header: React.FC = () => {
                 >
                     <Box
                         component="img"
-                        src={`${import.meta.env.BASE_URL}logo.svg`}
+                        src={logo}
                         alt="Economia Familiare"
                         sx={{
                             height: 54,   // 👈 più grande

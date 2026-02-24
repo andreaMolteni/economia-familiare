@@ -304,7 +304,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
                                 Data
                             </TableCell>
                             <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">
-                                Actioni
+                                Azioni
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -329,7 +329,7 @@ const IncomeTable: React.FC<Props> = ({ rows, totals }) => {
 
                                         // Testo scaduto
                                         ...(expired && {
-                                            "& td": {
+                                            "& td:not(:last-child)": {
                                                 color: "text.disabled",
                                                 textDecoration: "line-through",
                                             },
