@@ -210,22 +210,28 @@ const ResumeData: React.FC = () => {
         return null; // oppure uno skeleton
     }
 
+    const elevatedCardSx = {
+        borderRadius: 4,
+        boxShadow: 6, // usa le ombre del tema
+        border: "1px solid",
+        borderColor: "divider",
+        bgcolor: "background.paper",
+    };
+
     return (
         <div>
             {/* BOX RIEPILOGO SUPERIORE */}
             <Paper
                 sx={{
-                    borderRadius: 4,
-                    border: "2px solid",
-                    borderColor: "primary.main",
+                    ...elevatedCardSx,
                     p: 2,
                     mb: 2,
                 }}
             >
-                <Grid container spacing={2}>
+                <Grid container spacing={2} alignItems="center">
                     {/* Sinistra */}
                     <Grid
-                        size={{ xs: 4 }}
+                        size={{ xs: 12, md: 4 }}
                     >
                         <Typography
                             variant="h5"
@@ -300,51 +306,50 @@ const ResumeData: React.FC = () => {
 
                     {/* Centro */}
                     <Grid
-                        size={{ xs: 4 }}
+                        size={{ xs: 12, md: 4 }}
+                        sx={{ display: "flex", justifyContent: "center" }}  // centra il contenuto nella colonna
                     >
-                        <Typography
-                            variant="h2"
-                            sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
-                        >
-                            {month}
-                        </Typography>
+                        <Stack alignItems="center" spacing={2}>
+                            <Typography
+                                variant="h2"
+                                sx={{ fontWeight: 600, color: "primary.main", textAlign: "center" }}
+                            >
+                                {month}
+                            </Typography>
 
-                        {/* Pulsanti SOTTO al mese */}
-                        <Stack direction="row" spacing={6} alignItems="center">
-                            <IconButton
-                                aria-label="Mese precedente"
-                                onClick={() => dispatch(shiftAccountingMonthBy(-1))}
-                                size="large"
-                            >
-                                <ChevronLeftIcon fontSize="large" />
-                            </IconButton>
-                            {/* Pulsante OGGI */}
-                            <Button
-                                variant="outlined"
-                                startIcon={<TodayIcon />}
-                                onClick={goToday}
-                                sx={{ borderRadius: 999, px: 2 }}
-                            >
-                                Oggi
-                            </Button>
-                            {/*
-                            <IconButton aria-label="Torna a oggi" onClick={goToday} size="large">
-                                <TodayIcon fontSize="large" />
-                            </IconButton>
-                            */}
-                            <IconButton
-                                aria-label="Mese successivo"
-                                onClick={() => dispatch(shiftAccountingMonthBy(+1))}
-                                size="large"
-                            >
-                                <ChevronRightIcon fontSize="large" />
-                            </IconButton>
+                            {/* Pulsanti SOTTO al mese */}
+                            <Stack direction="row" spacing={6} alignItems="center" justifyContent="center">
+                                <IconButton
+                                    aria-label="Mese precedente"
+                                    onClick={() => dispatch(shiftAccountingMonthBy(-1))}
+                                    size="large"
+                                >
+                                    <ChevronLeftIcon fontSize="large" />
+                                </IconButton>
+
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<TodayIcon />}
+                                    onClick={goToday}
+                                    sx={{ borderRadius: 999, px: 2 }}
+                                >
+                                    Oggi
+                                </Button>
+
+                                <IconButton
+                                    aria-label="Mese successivo"
+                                    onClick={() => dispatch(shiftAccountingMonthBy(+1))}
+                                    size="large"
+                                >
+                                    <ChevronRightIcon fontSize="large" />
+                                </IconButton>
+                            </Stack>
                         </Stack>
                     </Grid>
 
                     {/* Destra */}
                     <Grid
-                        size={{ xs: 4 }}
+                        size={{ xs: 12, md: 4 }}
                     >
                         <Paper elevation={5}
                             sx={{

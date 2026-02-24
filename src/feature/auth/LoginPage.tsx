@@ -5,7 +5,7 @@ import { setCredentials } from "./authSlice";
 import { useState } from "react";
 import { setWarmingUp } from "../../slices/serverSlice";
 import { loginErrorInvalidCredentials } from "./authSlice";
-import { Typography, Box } from "@mui/material";
+import { Typography,Box, Button, TextField } from "@mui/material";
 
 
 export default function LoginPage() {
@@ -107,40 +107,41 @@ export default function LoginPage() {
                         boxSizing: "border-box",
                     }}
                 >
-                    <form
+                    <Box
+                        component="form"
                         onSubmit={(e) => {
                             e.preventDefault();
                             onSubmit();
                         }}
-                        style={{ display: "grid", gap: 16 }}
+                        sx={{ display: "grid", gap: 2 }}
                     >
-                        <label>
-                            Username
-                            <input
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                                autoComplete="username"
-                                required
-                                style={{ width: "100%", padding: 10, boxSizing: "border-box" }}
-                            />
-                        </label>
+                        <TextField
+                            label="Username"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            autoComplete="username"
+                            fullWidth
+                        />
 
-                        <label>
-                            Password
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                autoComplete="current-password"
-                                required
-                                style={{ width: "100%", padding: 10, boxSizing: "border-box" }}
-                            />
-                        </label>
+                        <TextField
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="current-password"
+                            fullWidth
+                        />
 
-                        <button type="submit" disabled={isLoading}>
-                            {isLoading ? "Accesso..." : "Entra"}
-                        </button>
-                    </form>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                            disabled={isLoading}
+                        >
+                        {isLoading ? "Accesso..." : "Entra"}
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
         </Box>

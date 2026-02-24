@@ -90,6 +90,10 @@ export const baseQueryWithReauth: BaseQueryFn<
                 result = await authedBaseQuery(args, api, extraOptions);
             } else {
                 api.dispatch(authErrorUnauthorized());
+
+                if (window.location.pathname !== "/unauthorized") {
+                    window.location.replace("/unauthorized");
+                }
             }
         }
 

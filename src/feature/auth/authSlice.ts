@@ -73,6 +73,11 @@ const authSlice = createSlice({
         authErrorUnauthorized(state) {
             state.sessionExpired = true;
             state.lastAuthError = "unauthorized";
+            state.accessToken = null;
+            state.userName = null;
+            state.roles = [];
+            state.exp = null;
+            localStorage.removeItem("accessToken");
         },
         clearSessionExpired(state) {
             state.sessionExpired = false;

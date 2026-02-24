@@ -246,6 +246,13 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
     const totalShown = totals.expensesMonth;
     const totalNotExpired = totals.expensesNotExpired;
 
+    const cardSx = {
+        borderRadius: 4,
+        boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+        border: "1px solid rgba(0,0,0,0.05)",
+        overflow: "hidden",
+    };
+
     return (
         <Box>
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
@@ -266,15 +273,38 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
                 recurringEdit={recurringEdit}
             />
 
-            <TableContainer component={Paper}>
+            <TableContainer
+                component={Paper}
+                elevation={0}
+                sx={{
+                    ...cardSx,
+                    overflowX: "auto",
+                    WebkitOverflowScrolling: "touch",
+}}
+            >
                 <Table
                     size="small"
                     sx={{
                         tableLayout: "fixed",
-                        "& .MuiTableCell-root": { py: 1, px: 1, overflow: "hidden" },
+                        "& .MuiTableCell-root": { py: 1.8, px: 1, overflow: "hidden" },
                     }}
+                    stickyHeader
                 >
-                    <TableHead>
+                    <TableHead
+                        sx={{
+                            "& th": {
+                                fontWeight: 700,
+                                color: "text.secondary",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.06em",
+                                fontSize: 12,
+                                backgroundColor: "rgba(25,118,210,0.06)",
+                                borderBottom: "1px solid",
+                                borderColor: "divider",
+                                py: 1.5,
+                            },
+                        }}
+                    >
                         <TableRow>
                             <TableCell sx={{ width: 100, minWidth: 100 }}>Type</TableCell>
                             <TableCell sx={{ width: 160, minWidth: 100 }}>Description</TableCell>
@@ -298,15 +328,25 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
 
                             return (
                                 <TableRow
-                                    key={row.rowKey}
-                                    sx={
-                                        expired
-                                            ? {
-                                                opacity: 0.65,
-                                                "& td": { textDecoration: "line-through", textDecorationThickness: "1px" },
-                                            }
-                                            : undefined
-                                    }
+                                    hover
+                                    sx={{
+                                        transition: "background-color 0.15s ease",
+
+                                        // Hover diverso per scadute vs attive
+                                        "&:hover td, &:hover th": {
+                                            backgroundColor: expired
+                                                ? "rgba(25,118,210,0.08)"   // blu soft
+                                                : "rgba(0,0,0,0.03)",       // grigio leggero
+                                        },
+
+                                        // Testo scaduto
+                                        ...(expired && {
+                                            "& td": {
+                                                color: "text.disabled",
+                                                textDecoration: "line-through",
+                                            },
+                                        }),
+                                    }}
                                 >
                                     <TableCell>
                                         {isEditing ? (
