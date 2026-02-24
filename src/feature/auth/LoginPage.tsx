@@ -87,7 +87,7 @@ export default function LoginPage() {
             >
                 <Box
                     component="img"
-                    src="/logo.svg"
+                    src={`${import.meta.env.BASE_URL}logo.svg`}
                     alt="Economia Familiare"
                     sx={{
                         height: "clamp(160px, 22vw, 260px)", // 👈 si adatta, evita overflow

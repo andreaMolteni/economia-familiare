@@ -26,7 +26,7 @@ const Header: React.FC = () => {
                 >
                     <Box
                         component="img"
-                        src="/logo.svg"
+                        src={`${import.meta.env.BASE_URL}logo.svg`}
                         alt="Economia Familiare"
                         sx={{
                             height: 54,   // 👈 più grande
