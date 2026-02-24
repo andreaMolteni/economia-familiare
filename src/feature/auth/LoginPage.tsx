@@ -100,11 +100,14 @@ export default function LoginPage() {
                     sx={{
                         width: 320,
                         p: 3,
-                        borderRadius: 2,
+                        borderRadius: 3,
                         border: "1px solid",
                         borderColor: "divider",
                         bgcolor: "background.paper",
                         boxSizing: "border-box",
+                        boxShadow: 3,
+                        display: "grid",
+                        gap: 2,
                     }}
                 >
                     <Box

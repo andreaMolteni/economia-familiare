@@ -33,6 +33,7 @@ import {
 import type { RecurringExpense, InitialValues } from "../../types";
 import { formatYYYYMMDDtoDDMMYYYY } from "../utils/dateUtils";
 import type { FlattenedRow, OverviewTotals } from "../types/overview";
+import { cardSx } from "../theme/cardSx";
 
 type Props = {
     rows: FlattenedRow[];
@@ -246,12 +247,6 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
     const totalShown = totals.expensesMonth;
     const totalNotExpired = totals.expensesNotExpired;
 
-    const cardSx = {
-        borderRadius: 4,
-        boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
-        border: "1px solid rgba(0,0,0,0.05)",
-        overflow: "hidden",
-    };
 
     return (
         <Box>
@@ -306,16 +301,16 @@ const ExpensesTable: React.FC<Props> = ({ rows, totals }) => {
                         }}
                     >
                         <TableRow>
-                            <TableCell sx={{ width: 100, minWidth: 100 }}>Type</TableCell>
-                            <TableCell sx={{ width: 160, minWidth: 100 }}>Description</TableCell>
+                            <TableCell sx={{ width: 100, minWidth: 100 }}>Tipologia</TableCell>
+                            <TableCell sx={{ width: 160, minWidth: 100 }}>Descrizione</TableCell>
                             <TableCell sx={{ width: 100, minWidth: 80 }} align="right">
-                                Value
+                                Importo
                             </TableCell>
                             <TableCell sx={{ width: 150, minWidth: 150, whiteSpace: "nowrap" }}>
-                                Date
+                                Data
                             </TableCell>
                             <TableCell sx={{ width: 130, minWidth: 130, whiteSpace: "nowrap" }} align="center">
-                                Actions
+                                Azioni
                             </TableCell>
                         </TableRow>
                     </TableHead>
