@@ -1,4 +1,4 @@
-export interface Recurring {
+﻿export interface Recurring {
     months: number[];
     dayOfTheMonth: number | null;
 }
@@ -66,3 +66,11 @@ export interface RecurringIncome {
     months: number[];        // 1..12
     dayOfTheMonth: number;   // 1..31
 }
+
+
+export type User = {
+    id: string;
+    email: string;
+    nome: string;
+    cognome: string;
+};

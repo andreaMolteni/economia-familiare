@@ -21,7 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TodayIcon from "@mui/icons-material/Today";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetConfigQuery, useUpdateConfigMutation } from "../services/financeApi";
-
+import { useGetCurrentUserQuery } from "../services/userApi";
 import type { RootState } from "../app/store";
 import {
     getNextAvailableDayOfMonth,
@@ -88,6 +88,37 @@ const ResumeData: React.FC = () => {
         const d = String(fixedDate.getDate()).padStart(2, "0");
         return formatYYYYMMDDtoDDMMYYYY(`${y}-${m}-${d}`);
     }, [fixedDate]);
+
+    const realToday = todayISO();
+
+    const selectedPeriodStart = currentDate;
+
+    // se vuoi che il periodo finisca il giorno PRIMA della chiusura:
+    const selectedPeriodEnd = useMemo(() => {
+        const d = new Date(fixedDate);
+        d.setDate(d.getDate());
+        return getDateYYYYMMDD(d);
+    }, [fixedDate]);
+
+    // mese contabile corrente calcolato partendo da OGGI reale
+    const todayFixedDate = useMemo(
+        () => getNextAvailableDayOfMonth(stringToDate(realToday), closingDay),
+        [realToday, closingDay]
+    );
+
+    const currentAccountingMonthIndex = useMemo(
+        () => getIndexMonthByFixedDate(todayFixedDate),
+        [todayFixedDate]
+    );
+
+    const selectedAccountingMonthIndex = useMemo(
+        () => getIndexMonthByFixedDate(fixedDate),
+        [fixedDate]
+    );
+
+    const isCurrentAccountingMonth =
+        selectedAccountingMonthIndex === currentAccountingMonthIndex;
+
 
     const onStart = () => {
         setDraft(String(closingDay));
@@ -172,6 +203,8 @@ const ResumeData: React.FC = () => {
         dispatch(setBalance(config.availableBalance));
     }, [config, dispatch]);
 
+    
+
     useEffect(() => {
         const days = diffInDays(
             stringToDate(getDateYYYYMMDD(fixedDate)),
@@ -202,7 +235,10 @@ const ResumeData: React.FC = () => {
         monthIndex
     ]);
 
-    const userName = "Andrea";
+    const { data: user } = useGetCurrentUserQuery();
+    const fullName = [user?.nome, user?.cognome].filter(Boolean).join(" ");
+
+    console.log("fullName: ", fullName);
 
     const goToday = () => dispatch(setCurrentDate(todayISO()));
 
@@ -237,71 +273,80 @@ const ResumeData: React.FC = () => {
                             variant="h5"
                             sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
                         >
-                            Ciao {userName}
+                            Ciao {fullName}
                         </Typography>
                         <Typography
                             variant="h5"
                             sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
                         >
-                            Oggi è il {formatYYYYMMDDtoDDMMYYYY(currentDate)}
+                            Oggi è il {formatYYYYMMDDtoDDMMYYYY(realToday)}
                         </Typography>
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
-                            Il mese contabile si chiude il
-                        </Typography>
+                        {isCurrentAccountingMonth ? (
+                            <>
+                                <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+                                    Il mese contabile si chiude il
+                                </Typography>
 
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
-                                {closingDateLabel}
-                            </Typography>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+                                        {closingDateLabel}
+                                    </Typography>
 
-                            {!editing ? (
-                                <Tooltip title="Modifica giorno di chiusura">
-                                    <IconButton
-                                        size="small"
-                                        onClick={onStart}
-                                        sx={{ mt: 0.2 }}
-                                        disabled={isSavingConfig}
-                                    >
-                                        <EditIcon fontSize="small" />
-                                    </IconButton>
-                                </Tooltip>
-                            ) : (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                                    <TextField
-                                        size="small"
-                                            value={draftValue}
-                                        onChange={(e) => setDraft(e.target.value)}
-                                        disabled={isSavingConfig}
-                                        type="number"
-                                        slotProps={{
-                                            htmlInput: { min: 1, max: 31, style: { width: 70 } },
-                                        }}
-                                    />
-
-                                    <Tooltip title="Salva">
-                                        <span>
+                                    {!editing ? (
+                                        <Tooltip title="Modifica giorno di chiusura">
                                             <IconButton
                                                 size="small"
-                                                onClick={onSave}
-                                                disabled={!canSave || isSavingConfig}
+                                                onClick={onStart}
+                                                sx={{ mt: 0.2 }}
+                                                disabled={isSavingConfig}
                                             >
-                                                <CheckIcon fontSize="small" />
+                                                <EditIcon fontSize="small" />
                                             </IconButton>
-                                        </span>
-                                    </Tooltip>
+                                        </Tooltip>
+                                    ) : (
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                            <TextField
+                                                size="small"
+                                                value={draftValue}
+                                                onChange={(e) => setDraft(e.target.value)}
+                                                disabled={isSavingConfig}
+                                                type="number"
+                                                slotProps={{
+                                                    htmlInput: { min: 1, max: 31, style: { width: 70 } },
+                                                }}
+                                            />
 
-                                    <Tooltip title="Annulla">
-                                        <IconButton
-                                            size="small"
-                                            onClick={onCancel}
-                                            disabled={isSavingConfig}
-                                        >
-                                            <CloseIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
+                                            <Tooltip title="Salva">
+                                                <span>
+                                                    <IconButton
+                                                        size="small"
+                                                        onClick={onSave}
+                                                        disabled={!canSave || isSavingConfig}
+                                                    >
+                                                        <CheckIcon fontSize="small" />
+                                                    </IconButton>
+                                                </span>
+                                            </Tooltip>
+
+                                            <Tooltip title="Annulla">
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={onCancel}
+                                                    disabled={isSavingConfig}
+                                                >
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Box>
+                                    )}
                                 </Box>
-                            )}
-                        </Box>
+                            </>
+                        ) : (
+                            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+                                Dati dal {formatYYYYMMDDtoDDMMYYYY(selectedPeriodStart)} al{" "}
+                                {formatYYYYMMDDtoDDMMYYYY(selectedPeriodEnd)}
+                            </Typography>
+                        )}
                     </Grid>
 
                     {/* Centro */}
